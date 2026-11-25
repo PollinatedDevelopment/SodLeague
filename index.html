@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="sod-version" content="1.4.0">
 <title>Sod League</title>
 <style>
 :root{--bg:#0a0f1e;--fg:#f4f7ff;--pn:rgba(8,12,28,.66);--bl:#2f8cff;--or:#ff8a1f;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -65,12 +66,15 @@ kbd{font:700 10px/1.4 system-ui,sans-serif;background:#232c42;border:1px solid r
 #ov.res #op{font-size:15px;color:rgba(220,232,248,.8);max-width:520px}
 #ov.res .mi{max-width:420px}
 body.m canvas{filter:brightness(.86) saturate(.96)}
-#pz{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(6,9,20,.6);backdrop-filter:blur(4px);z-index:4}
-#pz.on{display:flex}
-#pz>div{display:grid;gap:10px;width:min(80vw,300px);padding:24px;background:var(--pn);border-radius:16px;text-align:center}
-#pz h2{margin:0 0 6px;font-size:40px;font-style:italic}
-#pz button{font:inherit;color:#fff;background:var(--bl);border:0;border-radius:10px;padding:12px 20px;cursor:pointer}
-#pz button:focus-visible{outline:3px solid #fff;outline-offset:3px}
+#pz,#npz{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(6,9,20,.6);backdrop-filter:blur(4px);z-index:4}
+#pz.on,#npz.on{display:flex}
+#npz small{display:block;color:#b8c4dc;font-size:13px;line-height:1.4;margin:-2px 0 4px}
+#npz button.danger{background:#b3372f}
+#pmBtn{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));right:10px;z-index:3;display:none;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;border:1px solid #ffffff40;background:rgba(10,14,26,.72);color:#fff;font:900 18px system-ui;cursor:pointer;backdrop-filter:blur(4px)}
+#pz>div,#npz>div{display:grid;gap:10px;width:min(80vw,300px);padding:24px;background:var(--pn);border-radius:16px;text-align:center}
+#pz h2,#npz h2{margin:0 0 6px;font-size:40px;font-style:italic}
+#pz button,#npz button{font:inherit;color:#fff;background:var(--bl);border:0;border-radius:10px;padding:12px 20px;cursor:pointer}
+#pz button:focus-visible,#npz button:focus-visible{outline:3px solid #fff;outline-offset:3px}
 .m #hud,.m #bx{visibility:hidden}
 @media (max-width:1024px){#news{display:none}#mn{width:min(62vw,420px)}}
 @media (max-width:700px){#mn{width:min(86vw,420px)}#ft .wel{display:none}}
@@ -79,7 +83,7 @@ body.m canvas{filter:brightness(.86) saturate(.96)}
 #lob>div{display:grid;gap:10px;width:min(92vw,420px);max-height:96vh;overflow:auto;padding:22px;background:var(--pn);border-radius:16px;text-align:center}#lob h2{margin:0 0 4px;font-size:36px}#lob p{margin:0;font-size:15px}
 #lob input{font:inherit;text-transform:uppercase;text-align:center;padding:10px;border-radius:10px;border:2px solid var(--bl);background:#0e1630;color:#fff;letter-spacing:.2em}#lob #lname{text-transform:none;letter-spacing:normal;font:600 15px system-ui,sans-serif}#le{color:#ffd24a;min-height:1.2em}
 #lob{z-index:5}#lob button{font:inherit;color:#fff;background:var(--bl);border:0;border-radius:10px;padding:11px 18px;cursor:pointer}#lob h2{font-style:italic}
-#lob button.alt{background:#1a2442}#lob button:disabled{cursor:default}
+#lob button.alt{background:#1a2442}#lob select{font:inherit;font-weight:700;color:#fff;background:#1a2442 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23fff' stroke-width='2'/%3E%3C/svg%3E") no-repeat right 14px center;border:2px solid var(--bl);border-radius:10px;padding:11px 38px 11px 14px;cursor:pointer;appearance:none;-webkit-appearance:none;width:100%}#lob select:disabled{cursor:default;opacity:.6}#lob select:focus-visible{outline:2px solid #79bcff;outline-offset:1px}#lob select option{background:#0e1630;color:#fff}#lob button:disabled{cursor:default}
 #l0,#l1{display:grid;gap:10px}
 #lt{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .tc{display:grid;gap:5px;align-content:start;padding:10px;border-radius:12px;background:rgba(255,255,255,.05);font:700 14px/1.3 system-ui,sans-serif;font-style:normal}
@@ -152,7 +156,7 @@ body.touch-device #mobileControls.active{display:block}
 
 
 /* Championship-series UI skin: matches the lobby's dark, angled menu panels. */
-#lob>div,#pz>div,.feature-wrap{
+#lob>div,#pz>div,.feature-wrap,#npz>div{
  background:linear-gradient(165deg,rgba(20,25,34,.98),rgba(7,10,16,.99) 62%,#05070c);
  border:1px solid rgba(143,190,255,.24);
  border-radius:5px;
@@ -160,7 +164,7 @@ body.touch-device #mobileControls.active{display:block}
  color:#eef4ff;
 }
 #lob>div{width:min(92vw,470px);padding:24px;gap:12px;text-align:left}
-#lob h2,#pz h2,.feature-head h2{
+#lob h2,#pz h2,.feature-head h2,#npz h2{
  font:italic 900 clamp(25px,3vw,36px)/1 system-ui,sans-serif;
  letter-spacing:.035em;text-transform:uppercase;color:#fff;
  text-shadow:0 4px 22px #000b;
@@ -172,7 +176,7 @@ body.touch-device #mobileControls.active{display:block}
  font:800 14px system-ui,sans-serif;letter-spacing:.12em;
 }
 #lob input:focus{outline:2px solid #79bcff;outline-offset:1px}
-#lob button,#pz button,.feature-wrap button{
+#lob button,#pz button,.feature-wrap button,#npz button{
  min-height:40px;padding:10px 16px;border:0;border-radius:1px;
  clip-path:polygon(3% 0,100% 0,97% 100%,0 100%);
  background:linear-gradient(100deg,#dceaff,#a9caff 58%,#83b2f2);
@@ -181,10 +185,10 @@ body.touch-device #mobileControls.active{display:block}
  box-shadow:inset 0 0 0 1px #ffffff55,0 5px 15px #0005;
  transition:filter .14s,transform .14s;
 }
-#lob button:hover,#pz button:hover,.feature-wrap button:hover{
+#lob button:hover,#pz button:hover,.feature-wrap button:hover,#npz button:hover{
  filter:brightness(1.12);transform:translateX(3px)
 }
-#lob button.alt,#pz button.alt,.feature-head button{
+#lob button.alt,#pz button.alt,.feature-head button,#npz button.alt{
  background:linear-gradient(100deg,#151e2c,#0b111b);
  color:#dce8fa;box-shadow:inset 0 0 0 1px #ffffff22;
 }
@@ -199,9 +203,9 @@ body.touch-device #mobileControls.active{display:block}
 #lob .tc>b{font:italic 900 13px system-ui,sans-serif;letter-spacing:.2em}
 #lob .tc div div{padding:5px 0;border-bottom:1px solid #ffffff12;font:700 12px system-ui,sans-serif;color:#c4d1e4}
 #lob #le{color:#ffd36a;font:700 12px system-ui,sans-serif}
-#pz>div{width:min(88vw,340px);padding:26px;text-align:left;gap:9px}
-#pz h2{margin-bottom:12px}
-#pz button{width:100%}
+#pz>div,#npz>div{width:min(88vw,340px);padding:26px;text-align:left;gap:9px}
+#pz h2,#npz h2{margin-bottom:12px}
+#pz button,#npz button{width:100%}
 #lockerPanel,#passPanel{background:linear-gradient(115deg,rgba(3,7,15,.94),rgba(5,10,20,.98)),radial-gradient(circle at 50% 0%,#25466b,transparent 65%);backdrop-filter:blur(14px)}
 .feature-wrap{max-width:960px;margin:3vh auto;padding:clamp(18px,3vw,30px);border-radius:4px}
 .feature-head{padding-bottom:16px;border-bottom:1px solid #ffffff24}
@@ -417,6 +421,30 @@ body.touch-device #mobileControls.active{display:block}
 @media(max-width:760px){.nav-panel-inner,#lockerPanel .feature-wrap,#passPanel .feature-wrap,#lob>div{width:min(92vw,560px);max-height:82vh;padding:16px}.career-rewards{grid-template-columns:1fr 1fr}#navPanel{padding:12px 4vw 70px}#lockerPanel,#passPanel{padding:12px 4vw 70px}#lob>div{left:4vw;top:5vh}}
 @media(prefers-reduced-motion:reduce){#ov #mn,#ov #news,#ov #ft,#navPanel,#lockerPanel,#passPanel,#lob{transition:none!important;animation:none!important}}
 
+.prof{cursor:pointer}
+.av img{width:100%;height:100%;object-fit:cover;display:block;border-radius:inherit}
+.profile-head{display:flex;gap:14px;align-items:center;margin-bottom:14px}
+.pfp-wrap{position:relative;width:72px;height:72px;border-radius:14px;overflow:hidden;background:linear-gradient(150deg,#2f6bff,#0a1738);box-shadow:inset 0 0 0 1px #ffffff35;flex:none;cursor:pointer}
+.pfp-wrap img{width:100%;height:100%;object-fit:cover;display:block}
+.pfp-wrap .pfp-edit{position:absolute;left:0;right:0;bottom:0;background:#000a;color:#fff;font:800 8px system-ui;text-align:center;padding:3px 0;letter-spacing:.08em}
+.bio-box{margin:12px 0}
+.bio-box textarea{width:100%;box-sizing:border-box;min-height:64px;resize:vertical;background:#070e19;border:1px solid #526783;border-radius:6px;color:#fff;padding:10px;font:600 13px/1.5 system-ui}
+.sods-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(50px,1fr));gap:7px;margin:10px 0 16px}
+.sod-chip{position:relative;aspect-ratio:1;border-radius:8px;border:1px solid #ffffff22;display:flex;align-items:center;justify-content:center;font:900 13px system-ui;color:#fff}
+.sod-chip.locked{opacity:.22;filter:grayscale(1);background:#222!important}
+.sod-chip b{position:absolute;bottom:1px;left:0;right:0;text-align:center;font-size:7px;background:#0007;padding:1px 0}
+.friend-row{display:flex;align-items:center;gap:10px;padding:10px;border:1px solid #ffffff1c;border-radius:8px;background:#0c1727;margin-bottom:8px}
+.friend-row .pfp-wrap{width:40px;height:40px;border-radius:8px;cursor:default}
+.friend-row>div:nth-child(2){flex:1;min-width:0}
+.friend-row strong{display:block;font:900 13px system-ui;color:#eaf2ff}
+.friend-row small{display:block;font:600 11px system-ui;color:#9eafc8}
+.friend-row .fr-actions{display:flex;gap:6px;flex-wrap:wrap}
+.friend-row .fr-actions button{border:1px solid #ffffff44;border-radius:8px;background:#24476d;color:#fff;padding:6px 10px;font:800 10px system-ui;cursor:pointer}
+.friend-row .fr-actions button:disabled{opacity:.5;cursor:default}
+.friend-search{display:flex;gap:8px;margin-bottom:12px}
+.friend-search input{flex:1;padding:10px;border-radius:6px;border:1px solid #526783;background:#070e19;color:#fff;font:600 13px system-ui}
+.friend-section-title{font:900 11px system-ui;letter-spacing:.1em;color:#9fcaff;margin:16px 0 8px;text-transform:uppercase}
+.friend-empty{color:#9aacc5;font:600 12px system-ui;padding:8px 0}
 </style></head><body>
 <div id="hud">
   <div class="sc" style="--t:var(--bl)"><em>BLUE</em><b id="sb">0</b></div>
@@ -429,6 +457,7 @@ body.touch-device #mobileControls.active{display:block}
   <div class="brand"><span class="ball"></span><b id="ot">Sod League</b></div>
   <p id="op">Rocket-powered car soccer and 50v50 team deathmatch with bots or friends.</p>
   <button class="mi prime" id="go" data-d="Play against bots. Pick your mode and team below."><i id="gl">Single player</i></button>
+  <button class="mi" id="pr" data-d="Free play with just you and the ball. Pick your map size."><i>Practice<b>Free play</b></i></button>
   <button class="mi" id="on" data-d="Create a party or join one with a code. Empty slots are filled with bots."><i>Multiplayer</i></button>
   <button class="mi" id="md" data-d="Choose 1v1 to 4v4 soccer or 50v50 Deathmatch."><i>Mode<b>1v1</b></i></button>
   <button class="mi" id="lockerOpen" data-d="Customise your sod, hat, car body and car decal in the Locker."><i>Locker<b>Open</b></i></button>
@@ -439,7 +468,7 @@ body.touch-device #mobileControls.active{display:block}
     <button class="mi" id="tb" data-d="Pick which team you play for."><i>Team<b>Blue</b></i></button>
     <button class="mi" id="sl" data-d="Choose how long a match lasts."><i>Match length<b>5 min</b></i></button>
     <button class="mi" id="sd" data-d="Choose how tough the bots are."><i>Bot skill<b>Pro</b></i></button>
-    <button class="mi" id="cm" data-d="Ball cam keeps the ball in view."><i>Camera<b>Ball cam</b></i></button>
+    <button class="mi" id="cm" data-d="Ball cam keeps the ball in view."><i>Camera<b>Car cam</b></i></button>
     <button class="mi" id="sn" data-d="Turn music and sound effects on or off."><i>Sound<b>On</b></i></button>
   </div>
   <p id="ds">Start a match against the computer.</p>
@@ -459,7 +488,7 @@ body.touch-device #mobileControls.active{display:block}
   <div class="hint">Press <kbd>Space</kbd> to play</div>
 </footer></div>
 <div id="lob"><div><h2>Multiplayer</h2><input id="lname" maxlength="16" placeholder="Your lobby name" autocomplete="nickname"><div id="l0"><button id="lc">Create party</button><input id="lj" maxlength="6" placeholder="CODE"><button id="lg">Join party</button></div>
-<div id="l1" style="display:none"><p id="lcode"></p><button id="lm" class="alt">Mode: 1v1</button><div id="lt"><div class="tc b"><b>BLUE</b><div id="t0"></div><button id="j0" class="alt">Join Blue</button></div><div class="tc o"><b>ORANGE</b><div id="t1"></div><button id="j1" class="alt">Join Orange</button></div></div><p id="lp"></p><button id="lr">Ready</button><button id="lk" class="alt">Copy invite link</button></div><p id="le"></p><button id="lx" class="alt">Back</button></div></div>
+<div id="l1" style="display:none"><p id="lcode"></p><select id="lm" aria-label="Game mode"><option value="1">1v1 \u00b7 Compact</option><option value="2">2v2 Skirmish \u00b7 Compact</option><option value="3">3v3 \u00b7 Medium</option><option value="4">4v4 \u00b7 Large</option><option value="50">50v50 Deathmatch \u00b7 Huge</option></select><div id="lt"><div class="tc b"><b>BLUE</b><div id="t0"></div><button id="j0" class="alt">Join Blue</button></div><div class="tc o"><b>ORANGE</b><div id="t1"></div><button id="j1" class="alt">Join Orange</button></div></div><p id="lp"></p><button id="lr">Ready</button><button id="lk" class="alt">Copy invite link</button></div><p id="le"></p><button id="lx" class="alt">Back</button></div></div>
 
 <div id="mobileControls" aria-label="Touch driving controls">
  <div class="stick-wrap"><div id="stickBase"><div id="stickNub"></div></div><small>STEER</small></div>
@@ -472,6 +501,8 @@ body.touch-device #mobileControls.active{display:block}
 </div>
 <div id="lockerPanel"><div class="feature-wrap"><div class="feature-head"><h2>🔧 THE LOCKER</h2><button id="lockerClose">CLOSE ✕</button></div><p class="feature-muted">Build your own look. Your selections save automatically.</p><div class="feature-grid"><div class="feature-card"><strong>Base Sod</strong><p id="lockerSodName">Classic</p><div class="feature-actions"><button id="sodPrev">◀</button><button id="sodNext">▶</button></div></div><div class="feature-card"><strong>Hat</strong><p id="lockerHatName">None</p><div class="feature-actions"><button id="hatPrev">◀</button><button id="hatNext">▶</button></div></div><div class="feature-card"><strong>Car Model</strong><p id="lockerCarName">Street Racer</p><div class="feature-actions"><button id="carPrev">◀</button><button id="carNext">▶</button></div></div><div class="feature-card"><strong>Car Decal</strong><p id="lockerDecalName">Classic Stripe</p><div class="feature-actions"><button id="decalPrev">◀</button><button id="decalNext">▶</button></div></div></div><p id="lockerNotice" class="feature-muted">Some cosmetics unlock through the League Pass.</p><button id="lockerPass">VIEW LEAGUE PASS</button></div></div>
 <div id="passPanel"><div class="feature-wrap"><div class="feature-head"><h2>🏆 SOD LEAGUE PASS</h2><button id="passClose">CLOSE ✕</button></div><p>Play matches, score goals and get eliminations to earn XP. Progress is saved on this device.</p><div style="display:flex;justify-content:space-between;gap:10px"><b id="passLevel">TIER 1 / 30</b><b id="passXP">0 XP</b></div><div class="progress-rail"><i id="passFill"></i></div><div class="pass-track" id="passRewards"></div><p class="feature-muted" id="passRefresh">Weekly pass · refreshes every Monday (UTC).</p><p class="feature-muted">Earn XP: elimination +25 · goal +40 · match completed +100 · win bonus +75.</p><button id="passToLocker">OPEN LOCKER</button></div></div>
+<button id="pmBtn" aria-label="Pause menu">II</button>
+<div id="npz"><div><h2>Menu</h2><small>The match keeps running while this menu is open.</small><button id="npzResume">Resume</button><button id="npzEnd" class="danger" style="display:none">End match for everyone</button><button id="npzLeave" class="alt">Leave match</button></div></div>
 <div id="pz"><div><h2>Paused</h2><button id="rs">Resume</button><button id="rt">Restart match</button><button id="mm">Main menu</button></div></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
@@ -652,24 +683,26 @@ const accountBoardCanvases=[];
 function makeArenaBillboard(x,rot){
  const cv=document.createElement('canvas');cv.width=1024;cv.height=256;const cx=cv.getContext('2d');
  const tex=new THREE.CanvasTexture(cv);tex.colorSpace=THREE.SRGBColorSpace;
- const board=new THREE.Mesh(new THREE.PlaneGeometry(30,7.5),new THREE.MeshBasicMaterial({map:tex,side:THREE.DoubleSide}));
- board.position.set(x,9,0);board.rotation.y=rot;stadiumRoot.add(board);
- const frame=new THREE.Mesh(new THREE.BoxGeometry(.65,8,30.5),M(0x101a2a));frame.position.copy(board.position);frame.rotation.copy(board.rotation);stadiumRoot.add(frame);
+ const board=new THREE.Mesh(new THREE.PlaneGeometry(48,12),new THREE.MeshBasicMaterial({map:tex,side:THREE.DoubleSide}));
+ board.position.set(x,28,0);board.rotation.y=rot;stadiumRoot.add(board);
+ const frame=new THREE.Mesh(new THREE.BoxGeometry(.5,12.8,48.8),M(0x101a2a));frame.position.copy(board.position);frame.rotation.copy(board.rotation);stadiumRoot.add(frame);
  accountBoardCanvases.push({cv,cx,tex});
 }
-makeArenaBillboard(-W/2+6,Math.PI/2);makeArenaBillboard(W/2-6,-Math.PI/2);
+makeArenaBillboard(-W/2+1.4,Math.PI/2);makeArenaBillboard(W/2-1.4,-Math.PI/2);
 let accountBoardIndex=0,accountBoardTimer=0;
 const guestBoardLines=[['SAVE YOUR CAREER','Create a free Sod League account.'],['PLAY ANYWHERE','Keep your level, rewards and stats on every device.'],['JOIN THE LEAGUE','Create an account and build your legacy.']];
 const memberBoardLines=[['WELCOME BACK','Your Sod League career is ready.'],['YOUR PROGRESS, EVERYWHERE','Your level and rewards are synced.'],['NEXT STOP: LEVEL 87','Keep playing and climb the career ladder.']];
 function paintAccountBillboards(){
  const lines=accountToken?memberBoardLines:guestBoardLines;
  accountBoardCanvases.forEach((b,i)=>{const [headline,sub]=lines[(accountBoardIndex+i)%lines.length],c=b.cx,w=1024,h=256;c.clearRect(0,0,w,h);
-  const g=c.createLinearGradient(0,0,w,h);g.addColorStop(0,'#18365a');g.addColorStop(.6,'#0b1729');g.addColorStop(1,'#060a12');c.fillStyle=g;c.fillRect(0,0,w,h);
-  c.strokeStyle='#79bdff';c.lineWidth=7;c.strokeRect(8,8,w-16,h-16);
-  c.fillStyle='#8fc8ff';c.font='900 27px system-ui';c.fillText('SOD LEAGUE  /  CHAMPIONSHIP SERIES',42,55);
-  c.fillStyle='#fff';c.font='italic 900 66px system-ui';c.fillText(headline,42,137);
-  c.fillStyle='#c1d1e6';c.font='600 30px system-ui';c.fillText(sub,42,190);
-  c.fillStyle='#ffd36a';c.font='800 21px system-ui';c.fillText(accountToken?'ACCOUNT CONNECTED':'FREE ACCOUNT  ·  SODLEAGUE',42,230);b.tex.needsUpdate=true;
+  const g=c.createLinearGradient(0,0,w,0);g.addColorStop(0,'#0a1730');g.addColorStop(.55,'#0d1c38');g.addColorStop(1,'#1c1208');c.fillStyle=g;c.fillRect(0,0,w,h);
+   c.fillStyle='#2f8cff';c.fillRect(0,0,26,h);c.fillStyle='#ff8a1f';c.fillRect(w-26,0,26,h);
+   c.fillStyle='rgba(255,255,255,.05)';for(let k=0;k<9;k++){c.beginPath();c.moveTo(60+k*110,0);c.lineTo(110+k*110,0);c.lineTo(50+k*110,h);c.lineTo(0+k*110,h);c.fill()}
+   c.fillStyle='#7fe08a';c.font='900 26px system-ui';c.fillText('SOD LEAGUE',60,50);
+   c.fillStyle='#fff';c.font='italic 900 72px system-ui';c.fillText(headline,60,140);
+   c.fillStyle='#c1d1e6';c.font='600 31px system-ui';c.fillText(sub,60,192);
+   c.fillStyle='#ffd36a';c.font='800 22px system-ui';c.fillText(accountToken?'ACCOUNT CONNECTED':'FREE ACCOUNT  \u00b7  OPEN PROFILE TO JOIN',60,234);
+   b.tex.needsUpdate=true;
  });
 }
 // ---------- car ----------
@@ -714,9 +747,30 @@ function mkCS(team,slot){const c={m:mkCar(team?0xff8a1f:0x2f8cff),team,dz:team?-
 function setCarName(c,name){name=String(name||'Player').replace(/[<>]/g,'').trim().slice(0,16)||'Player';c.displayName=name;const x=c.nameCtx;x.clearRect(0,0,256,64);x.fillStyle='rgba(5,10,24,.82)';x.beginPath();x.roundRect(5,5,246,54,12);x.fill();x.strokeStyle=c.team?'#ff9a36':'#65b4ff';x.lineWidth=4;x.stroke();x.font='bold 27px Arial';x.textAlign='center';x.textBaseline='middle';x.fillStyle='#fff';x.shadowColor='#000';x.shadowBlur=4;x.fillText(name,128,33,226);c.nameTex.needsUpdate=true}
 const POOL=[0,1].map(t=>Array.from({length:50},(_,i)=>mkCS(t,i)));POOL.flat().forEach(c=>c.m.visible=false);let cars=[POOL[0][0]];
 // ---------- ball ----------
-const bc=document.createElement('canvas');bc.width=256;bc.height=128;
-{const x=bc.getContext('2d');x.fillStyle='#f4f7ff';x.fillRect(0,0,256,128);x.fillStyle='#1b2540';for(let i=0;i<18;i++){x.beginPath();x.arc((i%6)*43+((i/6|0)%2)*21+10,20+(i/6|0)*44,12,0,7);x.fill()}}
-const B={x:0,y:BR+.4,z:0,vx:0,vy:0,vz:0,m:new THREE.Mesh(new THREE.SphereGeometry(BR,32,20),PH(0xffffff,{map:new THREE.CanvasTexture(bc),emissive:0x1a2036,shininess:120}))};
+// Rolled-up sod: a cylinder of turf. Grass on the outside, soil spiral on the ends.
+function mkSodTextures(){
+ // side: grass
+ const sc=document.createElement('canvas');sc.width=512;sc.height=128;const sx=sc.getContext('2d');
+ sx.fillStyle='#3f9a2e';sx.fillRect(0,0,512,128);
+ for(let i=0;i<900;i++){const x=Math.random()*512,y=Math.random()*128,h=6+Math.random()*14;sx.strokeStyle=['#2f7d22','#58b83c','#4aa832','#6fcb4c','#2a6e1e'][i%5];sx.lineWidth=1+Math.random()*1.6;sx.beginPath();sx.moveTo(x,y);sx.lineTo(x+(Math.random()-.5)*3,y-h);sx.stroke()}
+ for(let i=0;i<7;i++){sx.fillStyle='rgba(20,60,15,.16)';sx.fillRect(i*73+((i*29)%23),0,10+(i%3)*6,128)}
+ sx.fillStyle='rgba(70,45,20,.55)';sx.fillRect(0,0,512,5);sx.fillRect(0,123,512,5);
+ const side=new THREE.CanvasTexture(sc);
+ // ends: soil + grass spiral
+ const ec=document.createElement('canvas');ec.width=ec.height=256;const ex=ec.getContext('2d');
+ ex.fillStyle='#5a3a1c';ex.fillRect(0,0,256,256);
+ const spiral=(w,col,off)=>{ex.strokeStyle=col;ex.lineWidth=w;ex.lineCap='round';ex.beginPath();for(let a=0;a<6*Math.PI*2;a+=.05){const r=4+a*3.4+off;const x=128+Math.cos(a)*r,y=128+Math.sin(a)*r;a?ex.lineTo(x,y):ex.moveTo(x,y)}ex.stroke()};
+ spiral(11,'#7a4f26',0);spiral(6,'#3f9a2e',6.5);
+ ex.fillStyle='#3f9a2e';ex.beginPath();ex.arc(128,128,126,0,7);ex.lineWidth=14;ex.strokeStyle='#3f9a2e';ex.stroke();
+ const end=new THREE.CanvasTexture(ec);
+ return [side,end];
+}
+const sodTex=mkSodTextures();
+const sodGeo=new THREE.CylinderGeometry(BR*.92,BR*.92,BR*1.3,32,1);sodGeo.rotateZ(Math.PI/2);
+const sodSide=PH(0xffffff,{map:sodTex[0],emissive:0x0d2a0b,shininess:12,specular:0x203020});
+const sodEnd=PH(0xffffff,{map:sodTex[1],emissive:0x1a1006,shininess:8,specular:0x101010});
+const B={x:0,y:BR+.4,z:0,vx:0,vy:0,vz:0,roll:0,yaw:0,m:new THREE.Mesh(sodGeo,[sodSide,sodEnd,sodEnd])};
+B.m.rotation.order='YXZ';
 B.m.castShadow=true;S.add(B.m);
 // ---------- boost pads ----------
 const pads=[];
@@ -731,18 +785,19 @@ function mkPad(x,z,amt,cool,r,color){
 // ---------- state ----------
 const K={};let passXP=0,passWeek='';
 const currentPassWeek=()=>{const d=new Date(),day=(d.getUTCDay()+6)%7;d.setUTCDate(d.getUTCDate()-day);return d.toISOString().slice(0,10)};
-let carModel=0,carDecal=0;const CAR_MODELS=['Street Racer','Rally Buggy','Aero GT','Heavy Hauler','Neon Sprint','League Legend'];const CAR_DECALS=['Classic Stripe','Lightning','Checkerboard','Flames','Starburst','Champion Gold'];const PASS_REWARDS=['Mint Sod','Carbon Hat','Rally Buggy','Lightning Decal','Galaxy Sod','Aero GT','Crown Hat','Flame Decal','Gold Sod','Heavy Hauler','Neon Hat','Starburst Decal','Crystal Sod','Neon Sprint','Champion Hat','Gold Stripe','Shadow Sod','League Legend Car','Royal Crown','Champion Gold Decal','Frost Sod','Turbo Trail','Cosmic Hat','Diamond Decal','Magma Sod','Platinum Body','Victory Crown','Prism Decal','Legend Sod','Ultimate Champion Car'];let jr=0,ballCam=true,st='menu',t=300,gt=0,sc=[0,0],LEN=300,DF=1,pz=0,over=false,kc=0,msgT=0,shake=0,me=0,net=0,cheer=0,ws=null,tgt=null,lsend=0,ssend=0,muted=false,mySod=0,myHat=0,lastN=0,MODE=1,TEAM=0,netHost=false,myId=0,room=null,myName='Player',DM=false;
+let carModel=0,carDecal=0;const CAR_MODELS=['Street Racer','Rally Buggy','Aero GT','Heavy Hauler','Neon Sprint','League Legend'];const CAR_DECALS=['Classic Stripe','Lightning','Checkerboard','Flames','Starburst','Champion Gold'];const PASS_REWARDS=['Mint Sod','Carbon Hat','Rally Buggy','Lightning Decal','Galaxy Sod','Aero GT','Crown Hat','Flame Decal','Gold Sod','Heavy Hauler','Neon Hat','Starburst Decal','Crystal Sod','Neon Sprint','Champion Hat','Gold Stripe','Shadow Sod','League Legend Car','Royal Crown','Champion Gold Decal','Frost Sod','Turbo Trail','Cosmic Hat','Diamond Decal','Magma Sod','Platinum Body','Victory Crown','Prism Decal','Legend Sod','Ultimate Champion Car'];let practiceMap=1,PRACTICE=false,practiceSavedMode=null,npzOpen=false,earlyEnd=false;let jr=0,ballCam=false,st='menu',t=300,gt=0,sc=[0,0],LEN=300,DF=1,pz=0,over=false,kc=0,msgT=0,shake=0,me=0,net=0,cheer=0,ws=null,tgt=null,lsend=0,ssend=0,muted=false,mySod=0,myHat=0,lastN=0,MODE=1,TEAM=0,netHost=false,myId=0,room=null,myName='Player',DM=false;
 addEventListener('keydown',e=>{
  if(e.repeat){K[e.code]=1}else K[e.code]=1;
  if(e.code=='Space'&&!e.repeat)jr=1;
  if(e.code=='KeyC'&&!e.repeat){ballCam=!ballCam;flash(ballCam?'BALL CAM':'CAR CAM',.8);$('cm').querySelector('b').textContent=ballCam?'Ball cam':'Car cam';sv()}
  if((e.code=='Escape'||e.code=='KeyP')&&!e.repeat&&(st=='play'||st=='goal'||st=='kickoff')&&!net)pause(!pz);
+ if((e.code=='Escape'||e.code=='KeyP')&&!e.repeat&&net==1&&(st=='play'||st=='goal'||st=='kickoff'))netPause(!npzOpen);
  if(e.code=='KeyR'&&!e.repeat&&st!='menu'&&!net)start();
  if((st=='menu'||st=='end')&&(e.code=='Space'||e.code=='Enter')&&!e.repeat&&!lob.classList.contains('on'))net==1?toLobby():!net&&start();
  if(/^(Space|Arrow)/.test(e.code))e.preventDefault();
 });
 addEventListener('keyup',e=>{K[e.code]=0});
-const pin=()=>{const j=jr;jr=0;return{th:(K.KeyW||K.ArrowUp?1:0)-(K.KeyS||K.ArrowDown?1:0),st:(K.KeyD||K.ArrowRight?1:0)-(K.KeyA||K.ArrowLeft?1:0),bo:!!(K.ShiftLeft||K.ShiftRight),j}};
+const pin=()=>{const j=jr;jr=0;if(npzOpen)return{th:0,st:0,bo:false,j:0};return{th:(K.KeyW||K.ArrowUp?1:0)-(K.KeyS||K.ArrowDown?1:0),st:(K.KeyD||K.ArrowRight?1:0)-(K.KeyA||K.ArrowLeft?1:0),bo:!!(K.ShiftLeft||K.ShiftRight),j}};
 // Detect an actual touch/coarse-pointer device; desktop users keep keyboard controls only.
 if(touchDevice())document.body.classList.add('touch-device');
 function refreshMobileControls(){
@@ -1046,20 +1101,22 @@ function showroom(){
  const p=cars[0];p.x=1.8*mapSX;p.z=SHOW_Z;p.y=0;p.h=1.25;p.up.set(0,1,0);p.forward.set(Math.sin(p.h),0,Math.cos(p.h));p.vx=p.vy=p.vz=0;p.bo=100;
  B.x=-3.4*mapSX;B.y=BR+.3;B.z=SHOW_Z-4.5*mapSZ;B.vx=B.vy=B.vz=0;B.m.visible=false;
 }
-function kickoff(){placeCars();cars.forEach(c=>c.rt=Math.random()*.45);st='kickoff';kc=3.4}
+function kickoff(){placeCars();cars.forEach(c=>c.rt=Math.random()*.45);st='kickoff';kc=PRACTICE?1:3.4}
 function goal(w){
- sc[w]++;if(cars[me]&&cars[me].team===w){passXP+=40;saveProgress()}st='goal';gt=3.4;shake=1.2;cheer=1.2;sfx('goal');
+ sc[w]++;if(cars[me]&&cars[me].team===w&&!PRACTICE){passXP+=40;saveProgress()}st='goal';gt=PRACTICE?1.6:3.4;shake=1.2;cheer=1.2;sfx('goal');
  flash(w?'ORANGE GOAL!':'BLUE GOAL!',3.1,w?'#ffb066':'#7fc0ff');
  boom(0,5,(w?1:-1)*(PL/2+2),w?0xff8a1f:0x2f8cff,70,36);
  B.m.visible=false;B.vx=B.vy=B.vz=0;
  cars.forEach(c=>c.bs=false);
 }
-function endMatch(){
- if(!endMatch._paid){passXP+=100;if((sc[cars[me].team]||0)>(sc[1-cars[me].team]||0))passXP+=75;saveProgress();endMatch._paid=true;}
- sfx('whistle');st='end';pz=0;$('pz').classList.remove('on');
+function endMatch(early){
+ if(!endMatch._paid){if(!early){passXP+=100;if((sc[cars[me].team]||0)>(sc[1-cars[me].team]||0))passXP+=75;saveProgress()}endMatch._paid=true;}
+ earlyEnd=!!early;
+ sfx('whistle');st='end';pz=0;$('pz').classList.remove('on');netPause(false);
  const mt=cars[me].team,r=(sc[0]-sc[1])*(mt?-1:1);
  $('ot').textContent=r>0?'You win':r<0?(mt?'Blue wins':'Orange wins'):'Draw';
  $('op').textContent=(DM?'Final eliminations (first to 500) ':'Final score ')+sc[0]+' – '+sc[1]+(over?' after overtime.':'.');
+ if(early){$('ot').textContent='Match ended';$('op').textContent='The host ended the match early. Score '+sc[0]+' – '+sc[1]+'. No League Pass XP for ended matches.'}
  $('gl').textContent=net?'Back to lobby':'Play again';
  $('ds').textContent=net?'Return to the lobby to ready up again.':'Press Space for a rematch.';
  $('ov').classList.add('res');
@@ -1073,9 +1130,17 @@ function setupMatch(r,meId){
  me=Math.max(0,cars.findIndex(c=>c.kind=='me'));
 }
 function rosterSP(){const r=[];[0,1].forEach(tm=>{for(let k=0;k<MODE;k++)r.push(tm==TEAM&&k==0?[tm,-2,mySod,myName,myHat]:[tm,-1,Math.random()*64|0,'Bot '+(k+1)])});return r}
-function beginMatch(){closeSubViews();endMatch._paid=false;dmTimeExpired=false;applyArenaSize(MODE);DM=MODE===50;document.querySelector('#hud .sc:first-child em').textContent=DM?'BLUE KILLS':'BLUE';document.querySelector('#hud .sc:last-child em').textContent=DM?'ORANGE KILLS':'ORANGE';sc=[0,0];over=false;t=LEN;pz=0;$('pz').classList.remove('on');$('ov').classList.remove('res');$('ov').style.display='none';profTeam(cars[me].team);kickoff();B.m.visible=!DM;if(DM)flash('50v50 DEATHMATCH · FIRST TO 500 KILLS',2.5,'#ffd24a')}
-function start(){setupMatch(rosterSP(),-2);beginMatch()}
+function beginMatch(){closeSubViews();endMatch._paid=false;earlyEnd=false;netPause(false);dmTimeExpired=false;applyArenaSize(MODE);DM=MODE===50&&!PRACTICE;document.querySelector('#hud .sc:first-child em').textContent=DM?'BLUE KILLS':'BLUE';document.querySelector('#hud .sc:last-child em').textContent=DM?'ORANGE KILLS':'ORANGE';sc=[0,0];over=false;t=LEN;pz=0;$('pz').classList.remove('on');$('ov').classList.remove('res');$('ov').style.display='none';profTeam(cars[me].team);kickoff();B.m.visible=!DM;if(DM)flash('50v50 DEATHMATCH · FIRST TO 500 KILLS',2.5,'#ffd24a')}
+function start(){if(PRACTICE)return startPractice();setupMatch(rosterSP(),-2);beginMatch()}
+function startPractice(){
+ if(practiceSavedMode===null)practiceSavedMode=MODE;
+ PRACTICE=true;MODE=practiceMap;
+ setupMatch([[TEAM,-2,mySod,myName,myHat]],-2);beginMatch();
+ flash('PRACTICE · R TO RESET',2.2,'#7fe08a');
+}
 function menu(){
+ PRACTICE=false;if(practiceSavedMode!==null){MODE=practiceSavedMode;practiceSavedMode=null;applyArenaSize(MODE)}
+ netPause(false);
  closeSubViews();mobileControls.classList.remove('active');Object.keys(K).forEach(k=>K[k]=0);
  document.querySelector('#hud .sc:first-child em').textContent='BLUE';document.querySelector('#hud .sc:last-child em').textContent='ORANGE';DM=MODE===50;
  pz=0;$('pz').classList.remove('on');
@@ -1123,6 +1188,7 @@ function tick(dt){
  if(net==1&&!netHost)return;padsStep(dt);
  if(st=='kickoff'){kc-=dt;if(kc<=0){st='play';flash('GO!',.8);sfx('go')}return}
  if(st=='play'){
+  if(PRACTICE&&cars[me]&&cars[me].dead<=0)cars[me].bo=100;
   roles();
   cars.forEach(c=>{
    if(c.dead>0){c.dead-=dt;if(c.dead<=0)respawn(c);return}
@@ -1139,7 +1205,7 @@ function tick(dt){
     if(t===0&&!dmTimeExpired){dmTimeExpired=true;flash('TIME UP · FIRST TO 500 KILLS',2.6,'#ffd24a')}
    }
   }else if(!over){
-   t-=dt;
+   if(!PRACTICE)t-=dt;
    if(t<=0){t=0;if(sc[0]===sc[1]){over=true;flash('OVERTIME',2.2,'#ffd24a');sfx('whistle')}else endMatch()}
   }else t+=dt;
   if(st=='play'&&!DM&&Math.abs(B.z)>PL/2+BR)goal(B.z>0?0:1);
@@ -1189,7 +1255,8 @@ function setMenuCar(){POOL.flat().forEach(c=>c.m.visible=false);cars=[POOL[TEAM]
 $('sl').onclick=()=>{const n=LS[(LS.findIndex(a=>a[0]==LEN)+1)%3];LEN=n[0];t=LEN;lb('sl',n[1])};
 $('sd').onclick=()=>{DF=(DF+1)%3;lb('sd',DS[DF])};
 $('cm').onclick=()=>{ballCam=!ballCam;lb('cm',ballCam?CS[0]:CS[1])};
-const sv=()=>{try{localStorage.sodl=JSON.stringify({l:LEN,d:DF,c:ballCam,m:muted?1:0,k:mySod,hat:myHat,n:MODE,tm:TEAM,name:myName,px:passXP,week:passWeek,car:carModel,decal:carDecal})}catch(e){}};
+const APP_VERSION=(document.querySelector('meta[name="sod-version"]')||{}).content||'0.0.0',CAM_MIG=2;
+const sv=()=>{try{localStorage.sodl=JSON.stringify({cv:CAM_MIG,ver:APP_VERSION,l:LEN,pm:practiceMap,d:DF,c:ballCam,m:muted?1:0,k:mySod,hat:myHat,n:(practiceSavedMode!==null?practiceSavedMode:MODE),tm:TEAM,name:myName,px:passXP,week:passWeek,car:carModel,decal:carDecal})}catch(e){}};
 $('sn').onclick=()=>{muted=!muted;lb('sn',muted?'Off':'On')};
 $('md').onclick=()=>{
  const opts=[1,2,3,4,50];
@@ -1200,10 +1267,11 @@ $('tb').onclick=()=>{TEAM=1-TEAM;lb('tb',TNM[TEAM]);if(st=='menu')setMenuCar()};
 ['sl','sd','cm','sn','md','tb'].forEach(id=>{const f=$(id).onclick;$(id).onclick=()=>{f();sv()}});
 try{const o=JSON.parse(localStorage.sodl||'{}'),m=LS.find(a=>a[0]==o.l);
  if(o.m)muted=true;passXP=Math.max(0,o.px|0);passWeek=typeof o.week==='string'?o.week:'';const liveWeek=currentPassWeek();if(passWeek!==liveWeek){passXP=0;passWeek=liveWeek;}carModel=clamp(o.car|0,0,CAR_MODELS.length-1);carDecal=clamp(o.decal|0,0,CAR_DECALS.length-1);if(o.k>=0&&o.k<64)mySod=o.k|0;if(o.hat>=0&&o.hat<HAT_NAMES.length)myHat=o.hat|0;
- if([1,2,3,4,50].includes(o.n))MODE=o.n|0;DM=MODE===50;if(typeof o.name=='string'&&o.name.trim())myName=o.name.trim().slice(0,16);if(o.tm===0||o.tm===1)TEAM=o.tm;
+ if([1,3,4,50].includes(o.pm))practiceMap=o.pm;if([1,2,3,4,50].includes(o.n))MODE=o.n|0;DM=MODE===50;if(typeof o.name=='string'&&o.name.trim())myName=o.name.trim().slice(0,16);if(o.tm===0||o.tm===1)TEAM=o.tm;
  if(m){LEN=m[0];t=LEN;lb('sl',m[1])}
  if(o.d>=0&&o.d<3){DF=o.d;lb('sd',DS[DF])}
- if(typeof o.c=='boolean'){ballCam=o.c;lb('cm',ballCam?CS[0]:CS[1])}}catch(e){}
+ if(o.cv===CAM_MIG&&typeof o.c=='boolean')ballCam=o.c;else ballCam=false;lb('cm',ballCam?CS[0]:CS[1])}catch(e){}
+sv();
 lb('sn',muted?'Off':'On');lb('tb',TNM[TEAM]);applyArenaSize(MODE);if($('lname'))$('lname').value=myName;setMenuCar();
 function saveProgress(){if(passWeek!==currentPassWeek()){passXP=0;passWeek=currentPassWeek();}sv();renderPass();}
 function passTier(){return Math.min(30,Math.floor(passXP/250)+1)}
@@ -1236,14 +1304,14 @@ function openPass(){if(passWeek!==currentPassWeek()){passXP=0;passWeek=currentPa
 $('lockerOpen').onclick=openLocker;$('passOpen').onclick=openPass;
 $('lockerClose').onclick=backToMainMenu;$('passClose').onclick=backToMainMenu;
 $('lockerPass').onclick=()=>{$('lockerPanel').classList.remove('open');openPass()};$('passToLocker').onclick=()=>{$('passPanel').classList.remove('open');openLocker()};
-function cycleCosmetic(kind,dir){if(kind==='sod'){mySod=(mySod+dir+64)%64;setSod(cars[st==='menu'?0:me],mySod)}if(kind==='hat'){
+function cycleCosmetic(kind,dir){if(kind==='sod'){mySod=(mySod+dir+64)%64;unlockedSods.add(mySod);setSod(cars[st==='menu'?0:me],mySod)}if(kind==='hat'){
  let n=myHat;
  for(let tries=0;tries<HAT_NAMES.length;tries++){
   n=(n+dir+HAT_NAMES.length)%HAT_NAMES.length;
   if(hatUnlocked(n))break;
  }
  myHat=n;setHat(cars[st==='menu'?0:me],myHat)
-}if(kind==='car'){let n=carModel;for(let tries=0;tries<CAR_MODELS.length;tries++){n=(n+dir+CAR_MODELS.length)%CAR_MODELS.length;if(passTier()>=CAR_UNLOCK_TIER[n])break}carModel=n;const scale=[1,1.06,.96,1.14,1.02,1.1][carModel];cars[st==='menu'?0:me].m.scale.set(scale,1,scale)}if(kind==='decal'){let n=carDecal;for(let tries=0;tries<CAR_DECALS.length;tries++){n=(n+dir+CAR_DECALS.length)%CAR_DECALS.length;if(passTier()>=DECAL_UNLOCK_TIER[n])break}carDecal=n;const cols=[0xffffff,0x45d7ff,0x222222,0xff5b24,0xb56cff,0xffd24a];cars[st==='menu'?0:me].m.userData.decalStripe.material.color.setHex(cols[carDecal]);}sv();renderLocker();}
+}if(kind==='car'){let n=carModel;for(let tries=0;tries<CAR_MODELS.length;tries++){n=(n+dir+CAR_MODELS.length)%CAR_MODELS.length;if(passTier()>=CAR_UNLOCK_TIER[n])break}carModel=n;const scale=[1,1.06,.96,1.14,1.02,1.1][carModel];cars[st==='menu'?0:me].m.scale.set(scale,1,scale)}if(kind==='decal'){let n=carDecal;for(let tries=0;tries<CAR_DECALS.length;tries++){n=(n+dir+CAR_DECALS.length)%CAR_DECALS.length;if(passTier()>=DECAL_UNLOCK_TIER[n])break}carDecal=n;const cols=[0xffffff,0x45d7ff,0x222222,0xff5b24,0xb56cff,0xffd24a];cars[st==='menu'?0:me].m.userData.decalStripe.material.color.setHex(cols[carDecal]);}sv();saveCareerLocal();renderLocker();}
 [['sodPrev','sod',-1],['sodNext','sod',1],['hatPrev','hat',-1],['hatNext','hat',1],['carPrev','car',-1],['carNext','car',1],['decalPrev','decal',-1],['decalNext','decal',1]].forEach(([id,k,d])=>$(id).onclick=()=>cycleCosmetic(k,d));
 renderPass();
 $('settingsToggle').onclick=()=>{
@@ -1312,7 +1380,7 @@ function renderLobby(){
   for(let k=hs.length;k<n;k++)rows.push('<div class="bt">Bot</div>');
   $('t'+tm).innerHTML=rows.join('');
   const jb=$('j'+tm);jb.disabled=!!(mine&&mine[1]==tm)||hs.length>=n;jb.style.opacity=jb.disabled?.45:1});
- $('lm').textContent='Mode: '+(n===50?MN[4]:MN[n-1])+' · '+((MAP_PROFILES[n]||MAP_PROFILES[50]).name);$('lm').disabled=!host;$('lm').style.opacity=host?1:.6;
+ $('lm').value=String(n);$('lm').disabled=!host;
  $('lr').textContent=host?'Start match':(mine&&mine[2]?'Cancel ready':'Ready');
  const hum=r.length,bots=2*n-hum;$('lp').textContent=hum+' player'+(hum>1?'s':'')+' \u00b7 '+bots+' bot'+(bots==1?'':'s')+' fill the rest';
 }
@@ -1329,7 +1397,7 @@ function conn(code,mk){curCode=code;
   else if(m.t=='room'){room=m;MODE=m.m;DM=MODE===50;applyArenaSize(MODE);myId=m.you;netHost=myId==0;
    if(net==1&&netHost)cars.forEach(c=>{if(c.kind=='net'&&!m.r.some(a=>a[0]==c.pid)){c.kind='bot';c.pid=-1}});
    renderLobby()}
-  else if(m.t=='err')lerr(m.m);
+  else if(m.t=='err'){lerr(m.m);if(room){applyArenaSize(room.m);renderLobby()}}
   else if(m.t=='closed'){leave();toLobby();lerr('The host left the party.')}
   else if(m.t=='start')begin(m.m,m.r);
   else if(m.t=='in'){const c=cars.find(c=>c.kind=='net'&&c.pid==m.id);if(c){c.in.th=m.th;c.in.st=m.st;c.in.bo=m.bo;if(m.j)c.in.j=1}}
@@ -1338,7 +1406,7 @@ function conn(code,mk){curCode=code;
 function begin(mm,r){MODE=mm;DM=MODE===50;net=1;tgt=null;netHost=myId==0;lob.classList.remove('on');lerr('');setupMatch(r,myId);beginMatch()}
 function netStep(ts,dt){
  if(net!=1||!ws||ws.readyState!=1)return;
- if(netHost){if(ts-ssend>33){ssend=ts;ws.send(JSON.stringify({t:'s',c:cars.map(c=>[c.x,c.y,c.z,c.h,c.vx,c.vy,c.vz,c.bo,c.bs?1:0,c.dead>0?1:0,c.flipT,c.flipDir,c.surfacePath||0,c.up.x,c.up.y,c.up.z,c.forward.x,c.forward.y,c.forward.z].map(r2)),b:[B.x,B.y,B.z,B.vx,B.vy,B.vz].map(r2),sc,tm:r2(t),o:over?1:0,kc:r2(kc),st,pd:pads.map(p=>p.t<=0?1:0).join('')}))}return}
+ if(netHost){if(ts-ssend>33){ssend=ts;ws.send(JSON.stringify({t:'s',c:cars.map(c=>[c.x,c.y,c.z,c.h,c.vx,c.vy,c.vz,c.bo,c.bs?1:0,c.dead>0?1:0,c.flipT,c.flipDir,c.surfacePath||0,c.up.x,c.up.y,c.up.z,c.forward.x,c.forward.y,c.forward.z].map(r2)),b:[B.x,B.y,B.z,B.vx,B.vy,B.vz].map(r2),sc,tm:r2(t),o:over?1:0,ea:earlyEnd?1:0,kc:r2(kc),st,pd:pads.map(p=>p.t<=0?1:0).join('')}))}return}
  if(ts-lsend>25){lsend=ts;const i=pin();if(i.j)sfx('jump');ws.send(JSON.stringify({t:'in',th:i.th,st:i.st,bo:i.bo?1:0,j:i.j}))}
  if(!tgt)return;const m=tgt,f=.4,old=sc;
  cars.forEach((c,i)=>{const a=m.c[i];if(!a)return;const dead=a[9]?1:0,wasDead=c.dead>0,k=(wasDead||Math.hypot(a[0]-c.x,a[2]-c.z)>12)?1:f;
@@ -1349,13 +1417,13 @@ function netStep(ts,dt){
  if(m.st=='play'){const dv=Math.hypot(m.b[3]-B.vx,m.b[4]-B.vy,m.b[5]-B.vz);if(dv>14)sfx('hit',Math.min(1,dv/45))}
  const bk=Math.hypot(m.b[0]-B.x,m.b[2]-B.z)>12?1:f;
  B.x+=(m.b[0]-B.x)*bk;B.y+=(m.b[1]-B.y)*bk;B.z+=(m.b[2]-B.z)*bk;B.vx=m.b[3];B.vy=m.b[4];B.vz=m.b[5];
- const rs=Math.hypot(B.vx,B.vz);if(rs>.2)B.m.rotateOnWorldAxis(new THREE.Vector3(B.vz,0,-B.vx).normalize(),rs*dt/BR);
+ const rs=Math.hypot(B.vx,B.vz);if(rs>.2){const ty=Math.atan2(B.vx,B.vz);let dy=ty-B.yaw;dy=Math.atan2(Math.sin(dy),Math.cos(dy));B.yaw+=dy*Math.min(1,dt*12);B.roll+=rs*dt/(BR*.92);B.m.rotation.y=B.yaw;B.m.rotation.x=B.roll}
  pads.forEach((p,i)=>{const v=m.pd[i]=='1';if(p.m.visible&&!v){boom(p.x,.5,p.z,0xffc94a,p.amt>50?18:5,p.amt>50?18:8);if(Math.hypot(cars[me].x-p.x,cars[me].z-p.z)<6)sfx('pad')}p.m.visible=p.g.visible=v});
  sc=m.sc;t=m.tm;kc=m.kc;if(m.o&&!over){flash('OVERTIME',2.2,'#ffd24a');sfx('whistle')}over=!!m.o;B.m.visible=!DM&&m.st!='goal';
  if(m.st!=st){
   if(m.st=='goal'){const w=m.sc[1]>old[1]?1:0;flash(w?'ORANGE GOAL!':'BLUE GOAL!',3.1,w?'#ffb066':'#7fc0ff');boom(0,5,(w?1:-1)*(PL/2+2),w?0xff8a1f:0x2f8cff,70,36);shake=1.2;cheer=1.2;sfx('goal')}
   else if(m.st=='play'&&st=='kickoff'){flash('GO!',.8);sfx('go')}
-  st=m.st;if(st=='end')endMatch()}}
+  st=m.st;if(st=='end')endMatch(!!m.ea)}}
 $('lname').value=myName;$('lname').onchange=()=>{myName=$('lname').value.trim().slice(0,16)||'Player';$('lname').value=myName;sv();if(ws&&ws.readyState==1)ws.send(JSON.stringify({t:'name',v:myName}))};
 $('on').onclick=()=>{if(net==1)return toLobby();lerr('');showSubView();$('navPanel').style.display='none';lob.classList.add('on');$s('l0',!ws);$s('l1',!!ws);renderLobby()};
 $('lc').onclick=()=>conn([...Array(4)].map(()=>'ABCDEFGHJKMNPQRSTUVWXYZ'[Math.random()*23|0]).join(''),1);
@@ -1363,7 +1431,7 @@ $('lg').onclick=()=>{const c=$('lj').value.trim().toUpperCase();c.length>=4?conn
 $('lr').onclick=()=>{if(!ws||ws.readyState!=1||!room)return;
  if(myId==0){const w=room.r.filter(a=>a[0]!=0&&!a[2]).length;if(w)return lerr(w+' player'+(w>1?'s':'')+' not ready yet.');lerr('');ws.send(JSON.stringify({t:'go',r:buildRoster()}))}
  else{const a=room.r.find(a=>a[0]==myId);ws.send(JSON.stringify({t:'ready',v:a&&a[2]?0:1}))}};
-$('lm').onclick=()=>{if(ws&&room&&myId==0){const a=[1,2,3,4,50],i=a.indexOf(room.m),v=a[(i+1)%a.length];applyArenaSize(v);ws.send(JSON.stringify({t:'mode',v}))}};
+$('lm').onchange=()=>{const v=Number($('lm').value);if(ws&&room&&myId==0&&[1,2,3,4,50].includes(v)){applyArenaSize(v);ws.send(JSON.stringify({t:'mode',v}))}else renderLobby()};
 $('j0').onclick=()=>{if(ws)ws.send(JSON.stringify({t:'team',v:0}))};
 $('j1').onclick=()=>{if(ws)ws.send(JSON.stringify({t:'team',v:1}))};
 $('lk').onclick=()=>{const u=location.href.split(/[?#]/)[0]+'?room='+curCode;navigator.clipboard?navigator.clipboard.writeText(u).then(()=>lerr('Invite link copied.'),()=>lerr(u)):lerr(u)};
@@ -1446,6 +1514,7 @@ const CAREER_KEY='sodleague_career_v1';
 let careerXP=0,careerCredits=0,careerClaimed=1;
 let achievementIds=new Set();
 let accountToken=localStorage.getItem('sod_account_token')||'',accountUser=null;
+let unlockedSods=new Set([0]),myBio='',myPfp=null;
 let activeMenuView='home',menuCloseTimer=0,menuTransitionId=0,boardCycle=0;
 const ACHIEVEMENTS=[
  ['account_created','League Member','Create a Sod League account.'],
@@ -1463,26 +1532,129 @@ const CAREER_REWARDS=Array.from({length:87},(_,i)=>{const level=i+1,credits=leve
 function careerNeed(level){return 220+level*38}
 function careerLevel(){let xp=Math.max(0,careerXP),level=1;while(level<87&&xp>=careerNeed(level)){xp-=careerNeed(level);level++}return level}
 function careerProgress(){const level=careerLevel();if(level>=87)return {level,into:0,need:1,left:0};let used=0;for(let n=1;n<level;n++)used+=careerNeed(n);const into=careerXP-used,need=careerNeed(level);return {level,into,need,left:Math.max(0,need-into)}}
-function saveCareerLocal(){try{localStorage.setItem(CAREER_KEY,JSON.stringify({careerXP,careerCredits,careerClaimed,achievements:[...achievementIds]}))}catch(e){};try{sv()}catch(e){};updateProfileBadge()}
-function loadCareerLocal(){try{const d=JSON.parse(localStorage.getItem(CAREER_KEY)||'{}');careerXP=Math.max(0,Number(d.careerXP)||0);careerCredits=Math.max(0,Number(d.careerCredits)||0);careerClaimed=Math.max(1,Math.min(87,Number(d.careerClaimed)||0));achievementIds=new Set(Array.isArray(d.achievements)?d.achievements.filter(x=>typeof x==='string'):[])}catch(e){}}
+function saveCareerLocal(){try{localStorage.setItem(CAREER_KEY,JSON.stringify({careerXP,careerCredits,careerClaimed,achievements:[...achievementIds],sods:[...unlockedSods]}))}catch(e){};try{sv()}catch(e){};updateProfileBadge()}
+function loadCareerLocal(){try{const d=JSON.parse(localStorage.getItem(CAREER_KEY)||'{}');careerXP=Math.max(0,Number(d.careerXP)||0);careerCredits=Math.max(0,Number(d.careerCredits)||0);careerClaimed=Math.max(1,Math.min(87,Number(d.careerClaimed)||0));achievementIds=new Set(Array.isArray(d.achievements)?d.achievements.filter(x=>typeof x==='string'):[]);if(Array.isArray(d.sods))d.sods.forEach(s=>{if(Number.isInteger(s)&&s>=0&&s<64)unlockedSods.add(s)})}catch(e){}}
 function unlockAchievement(id){if(!id||achievementIds.has(id))return;achievementIds.add(id);saveCareerLocal();if(accountToken)api('/api/achievement',{method:'POST',body:{id}}).catch(()=>{});}
 function syncCareerRewards(){const level=careerLevel();let levelled=[];while(careerClaimed<level){careerClaimed++;const r=CAREER_REWARDS[careerClaimed-1];careerCredits+=r.credits;levelled.push(careerClaimed)}if(levelled.length){levelled.forEach(n=>{if(n===10)unlockAchievement('level_10');if(n===25)unlockAchievement('level_25');if(n===50)unlockAchievement('level_50');if(n===87)unlockAchievement('level_87')});flash('CAREER LEVEL UP!  LEVEL '+levelled[levelled.length-1],2.7,'#ffd36a')}saveCareerLocal();return level}
 function awardCareerXP(amount){const before=careerLevel();careerXP=Math.min(999999999,careerXP+Math.max(0,amount|0));const after=syncCareerRewards();syncCloudSave();return after}
-function updateProfileBadge(){const name=$('profileName'),lvl=$('profileLevel');if(name)name.textContent=accountUser?.username||myName||'Sod Rookie';if(lvl)lvl.textContent='LVL '+careerLevel()+' · '+TNM[TEAM].toUpperCase()}
+function updateProfileBadge(){const name=$('profileName'),lvl=$('profileLevel'),av=document.querySelector('#profileBadge .av');if(name)name.textContent=accountUser?.username||myName||'Sod Rookie';if(lvl)lvl.textContent='LVL '+careerLevel()+' · '+TNM[TEAM].toUpperCase();if(av)av.innerHTML=myPfp?`<img src="${myPfp}" alt="">`:''}
+function pfpImg(pfp){return pfp?`<img src="${pfp}" alt="">`:''}
 function careerPanel(){const p=careerProgress();openNavPanel('CAREER · LEVEL '+p.level,`<div class="career-summary"><div><small>CAREER LEVEL</small><strong>${p.level}<i> / 87</i></strong></div><div><small>LEAGUE CREDITS</small><strong>◆ ${careerCredits.toLocaleString()}</strong></div></div><div class="career-track"><div><b>${careerXP.toLocaleString()} CAREER XP</b><span>${p.level===87?'MAX LEVEL':p.left+' XP TO LEVEL '+(p.level+1)}</span></div><div class="progress-rail"><i style="width:${Math.min(100,p.into/p.need*100)}%"></i></div></div><h3 class="career-section-title">LEVEL REWARDS · ALL 87</h3><div class="career-rewards">${CAREER_REWARDS.map(r=>`<article class="career-reward ${r.level<=careerClaimed?'earned':''}"><b>LEVEL ${r.level}</b><span>${r.reward}</span><em>${r.level<=careerClaimed?'UNLOCKED':'LOCKED'}</em></article>`).join('')}</div>`)}
 function achievementsPanel(){openNavPanel('ACHIEVEMENTS',`<div class="achievement-count">${achievementIds.size} / ${ACHIEVEMENTS.length} UNLOCKED</div><div class="achievement-list">${ACHIEVEMENTS.map(a=>`<article class="achievement ${achievementIds.has(a[0])?'earned':''}"><b>${achievementIds.has(a[0])?'★':'◇'}</b><div><strong>${a[1]}</strong><small>${a[2]}</small></div><em>${achievementIds.has(a[0])?'UNLOCKED':'LOCKED'}</em></article>`).join('')}</div>`)}
 function safeText(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 const ACCOUNT_API_BASE='https://sod-league.baileystudios2021.workers.dev';
 async function api(path,{method='GET',body}={}){const headers={};if(accountToken)headers.authorization='Bearer '+accountToken;if(body!==undefined)headers['content-type']='application/json';let r;try{r=await fetch(ACCOUNT_API_BASE+path,{method,headers,body:body===undefined?undefined:JSON.stringify(body),mode:'cors',cache:'no-store'})}catch(e){throw Error('Cannot reach the Sod League account server. Check the Worker URL, deployment and allowed website origin.')}const d=await r.json().catch(()=>({error:'Account server returned an invalid response'}));if(!r.ok)throw Error(d.error||('Account server error ('+r.status+')'));return d}
-function localSavePayload(){return {careerXP,careerCredits,careerClaimed,achievements:[...achievementIds],name:myName,mode:MODE,team:TEAM,sod:mySod,hat:myHat,car:carModel,decal:carDecal,passXP,passWeek,matchLength:LEN,difficulty:DF,ballCam,muted}}
-function applyCloudSave(data){if(!data||typeof data!=='object')return;careerXP=Math.max(careerXP,Number(data.careerXP)||0);careerCredits=Math.max(careerCredits,Number(data.careerCredits)||0);careerClaimed=Math.max(1,careerClaimed,Math.min(87,Number(data.careerClaimed)||0));if(Array.isArray(data.achievements))data.achievements.forEach(x=>{if(typeof x==='string')achievementIds.add(x)});if(typeof data.name==='string')myName=data.name.slice(0,16);if([1,2,3,4,50].includes(data.mode))MODE=data.mode;if(data.team===0||data.team===1)TEAM=data.team;if(Number.isInteger(data.sod)&&data.sod>=0&&data.sod<64)mySod=data.sod;if(Number.isInteger(data.hat)&&data.hat>=0&&data.hat<HAT_NAMES.length)myHat=data.hat;if(Number.isInteger(data.car)&&data.car>=0&&data.car<CAR_MODELS.length)carModel=data.car;if(Number.isInteger(data.decal)&&data.decal>=0&&data.decal<CAR_DECALS.length)carDecal=data.decal;if(Number.isFinite(data.passXP))passXP=Math.max(passXP,data.passXP);if(typeof data.passWeek==='string'&&data.passWeek===currentPassWeek())passWeek=data.passWeek;saveCareerLocal();applyArenaSize(MODE);setMenuCar();paintAccountBillboards()}
+function localSavePayload(){return {careerXP,careerCredits,careerClaimed,achievements:[...achievementIds],sods:[...unlockedSods],name:myName,mode:MODE,team:TEAM,sod:mySod,hat:myHat,car:carModel,decal:carDecal,passXP,passWeek,matchLength:LEN,difficulty:DF,ballCam,muted}}
+function applyCloudSave(data){if(!data||typeof data!=='object')return;careerXP=Math.max(careerXP,Number(data.careerXP)||0);careerCredits=Math.max(careerCredits,Number(data.careerCredits)||0);careerClaimed=Math.max(1,careerClaimed,Math.min(87,Number(data.careerClaimed)||0));if(Array.isArray(data.achievements))data.achievements.forEach(x=>{if(typeof x==='string')achievementIds.add(x)});if(Array.isArray(data.sods))data.sods.forEach(s=>{if(Number.isInteger(s)&&s>=0&&s<64)unlockedSods.add(s)});if(typeof data.name==='string')myName=data.name.slice(0,16);if([1,2,3,4,50].includes(data.mode))MODE=data.mode;if(data.team===0||data.team===1)TEAM=data.team;if(Number.isInteger(data.sod)&&data.sod>=0&&data.sod<64)mySod=data.sod;if(Number.isInteger(data.hat)&&data.hat>=0&&data.hat<HAT_NAMES.length)myHat=data.hat;if(Number.isInteger(data.car)&&data.car>=0&&data.car<CAR_MODELS.length)carModel=data.car;if(Number.isInteger(data.decal)&&data.decal>=0&&data.decal<CAR_DECALS.length)carDecal=data.decal;if(Number.isFinite(data.passXP))passXP=Math.max(passXP,data.passXP);if(typeof data.passWeek==='string'&&data.passWeek===currentPassWeek())passWeek=data.passWeek;unlockedSods.add(mySod);saveCareerLocal();applyArenaSize(MODE);setMenuCar();paintAccountBillboards()}
 async function syncCloudSave(){if(!accountToken)return;try{await api('/api/save',{method:'PUT',body:{save:localSavePayload()}})}catch(e){console.warn('Sod League cloud save:',e.message)}}
-async function refreshAccount(){if(!accountToken){paintAccountBillboards();updateProfileBadge();return}try{const meData=await api('/api/me');accountUser=meData.user;if(Array.isArray(meData.achievements))meData.achievements.forEach(x=>achievementIds.add(x));const saved=await api('/api/save');if(saved.save)applyCloudSave(saved.save);unlockAchievement('account_created')}catch(e){console.warn('Sod League account restore:',e.message);if(/sign in again|not signed in/i.test(e.message)){accountToken='';accountUser=null;localStorage.removeItem('sod_account_token')}}paintAccountBillboards();updateProfileBadge()}
-function profilePanel(){const logged=!!accountToken;openNavPanel('SOD LEAGUE ACCOUNT',logged?`<div class="account-status"><small>CONNECTED ACCOUNT</small><strong>${safeText(accountUser?.username||'Loading account…')}</strong><p>Your profile and career can be synced across devices. If sync fails, your local progress remains saved.</p><button class="nav-choice" id="careerView"><strong>CAREER LEVEL</strong><span>LEVEL ${careerLevel()} / 87</span></button><button class="nav-choice" id="achievementView"><strong>ACHIEVEMENTS</strong><span>${achievementIds.size} / ${ACHIEVEMENTS.length}</span></button><button class="nav-choice" id="accountSync">SYNC NOW <span>CLOUD SAVE</span></button><button class="nav-choice" id="accountLogout">SIGN OUT <span>KEEP LOCAL SAVE</span></button></div>`:`<div class="account-form"><p>Create a free account to save your career level, credits, achievements and cosmetics, then access them on another device.</p><label>Username<input id="accountUsernameInput" maxlength="16" autocomplete="username" placeholder="3–16 letters, numbers or _"></label><label>Password<input id="accountPasswordInput" type="password" minlength="8" maxlength="128" autocomplete="current-password" placeholder="At least 8 characters"></label><div class="account-actions"><button class="nav-choice active" id="accountRegister">CREATE ACCOUNT</button><button class="nav-choice" id="accountLogin">LOG IN</button></div><small id="accountMessage">No email required. Your password is never stored in the game.</small></div><button class="nav-choice" id="careerView"><strong>CAREER LEVEL</strong><span>LEVEL ${careerLevel()} / 87</span></button><button class="nav-choice" id="achievementView"><strong>ACHIEVEMENTS</strong><span>${achievementIds.size} / ${ACHIEVEMENTS.length}</span></button>`);
+async function refreshAccount(){if(!accountToken){paintAccountBillboards();updateProfileBadge();return}try{const meData=await api('/api/me');accountUser=meData.user;if(Array.isArray(meData.achievements))meData.achievements.forEach(x=>achievementIds.add(x));const saved=await api('/api/save');if(saved.save)applyCloudSave(saved.save);unlockAchievement('account_created');try{const p=await api('/api/profile');myBio=p.bio||'';myPfp=p.pfp||null}catch(e){}}catch(e){console.warn('Sod League account restore:',e.message);if(/sign in again|not signed in/i.test(e.message)){accountToken='';accountUser=null;localStorage.removeItem('sod_account_token')}}paintAccountBillboards();updateProfileBadge()}
+function sodSwatch(i){return 'hsl('+((i*47)%360)+'deg,55%,38%)'}
+function myProfileHtml(){
+ const sodsHtml=Array.from({length:64},(_,i)=>{const have=unlockedSods.has(i);return `<div class="sod-chip ${have?'':'locked'}" style="background:${sodSwatch(i)}" title="${safeText(SOD.names[i])}">${have?'★':'?'}<b>${i+1}</b></div>`}).join('');
+ return `<div class="profile-head"><div class="pfp-wrap" id="pfpWrap">${pfpImg(myPfp)}<div class="pfp-edit">CHANGE</div></div><div><strong style="display:block;font:900 16px system-ui;color:#fff">${safeText(accountUser?.username||myName||'Sod Rookie')}</strong><em style="color:#79bcff;font:800 10px system-ui;letter-spacing:.1em">LEVEL ${careerLevel()} · ${TNM[TEAM].toUpperCase()}</em></div></div>
+<input type="file" id="pfpFile" accept="image/png,image/jpeg,image/webp,image/gif" hidden>
+<div class="bio-box"><label style="display:block;color:#9fcaff;font:900 10px system-ui;letter-spacing:.1em;margin-bottom:6px">BIO</label><textarea id="bioInput" maxlength="200" placeholder="Say something about yourself…">${safeText(myBio)}</textarea><button class="nav-choice" id="bioSave" style="margin-top:8px">SAVE PROFILE</button><small id="profileMsg" style="display:block;margin-top:6px;color:#9aacc5;font:600 11px system-ui"></small></div>
+<h3 class="friend-section-title">SODS COLLECTED · ${unlockedSods.size} / 64</h3>
+<div class="sods-grid">${sodsHtml}</div>
+<button class="nav-choice" id="friendsView"><strong>FRIENDS</strong><span>VIEW &amp; ADD</span></button>
+<button class="nav-choice" id="careerView"><strong>CAREER LEVEL</strong><span>LEVEL ${careerLevel()} / 87</span></button>
+<button class="nav-choice" id="achievementView"><strong>ACHIEVEMENTS</strong><span>${achievementIds.size} / ${ACHIEVEMENTS.length}</span></button>
+<button class="nav-choice" id="accountSync">SYNC NOW <span>CLOUD SAVE</span></button>
+<button class="nav-choice" id="accountLogout">SIGN OUT <span>KEEP LOCAL SAVE</span></button>`
+}
+function profilePanel(){const logged=!!accountToken;openNavPanel('SOD LEAGUE ACCOUNT',logged?myProfileHtml():`<div class="account-form"><p>Create a free account to save your career level, credits, achievements and cosmetics, then access them on another device.</p><label>Username<input id="accountUsernameInput" maxlength="16" autocomplete="username" placeholder="3–16 letters, numbers or _"></label><label>Password<input id="accountPasswordInput" type="password" minlength="8" maxlength="128" autocomplete="current-password" placeholder="At least 8 characters"></label><div class="account-actions"><button class="nav-choice active" id="accountRegister">CREATE ACCOUNT</button><button class="nav-choice" id="accountLogin">LOG IN</button></div><small id="accountMessage">No email required. Your password is never stored in the game. Friends and custom profiles need an account.</small></div><button class="nav-choice" id="careerView"><strong>CAREER LEVEL</strong><span>LEVEL ${careerLevel()} / 87</span></button><button class="nav-choice" id="achievementView"><strong>ACHIEVEMENTS</strong><span>${achievementIds.size} / ${ACHIEVEMENTS.length}</span></button>`);
  $('careerView').onclick=careerPanel;$('achievementView').onclick=achievementsPanel;
- if(logged){$('accountSync').onclick=async()=>{await syncCloudSave();$('accountSync').querySelector('span').textContent='SAVED'};$('accountLogout').onclick=()=>{api('/api/logout',{method:'POST'}).catch(()=>{});accountToken='';accountUser=null;localStorage.removeItem('sod_account_token');paintAccountBillboards();profilePanel()};return}
+ if(logged){
+  $('friendsView').onclick=friendsPanel;
+  $('accountSync').onclick=async()=>{await syncCloudSave();$('accountSync').querySelector('span').textContent='SAVED'};
+  $('accountLogout').onclick=()=>{api('/api/logout',{method:'POST'}).catch(()=>{});accountToken='';accountUser=null;myBio='';myPfp=null;localStorage.removeItem('sod_account_token');paintAccountBillboards();profilePanel()};
+  $('pfpWrap').onclick=()=>$('pfpFile').click();
+  $('pfpFile').onchange=async()=>{
+   const f=$('pfpFile').files[0];if(!f)return;
+   if(!/^image\/(png|jpe?g|webp|gif)$/.test(f.type)){$('profileMsg').textContent='Please choose a PNG, JPEG, WEBP or GIF image.';return}
+   if(f.size>2*1024*1024){$('profileMsg').textContent='Image must be smaller than 2MB.';return}
+   $('profileMsg').textContent='Uploading…';
+   let dataUrl;try{dataUrl=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=()=>rej(new Error('Could not read that file.'));r.readAsDataURL(f)})}catch(e){$('profileMsg').textContent=e.message;return}
+   try{const d=await api('/api/profile',{method:'PUT',body:{bio:myBio,pfp:dataUrl}});myPfp=d.pfp||null;updateProfileBadge();profilePanel()}
+   catch(e){$('profileMsg').textContent=e.message||'Could not update profile picture.'}
+  };
+  $('bioSave').onclick=async()=>{
+   const bio=$('bioInput').value.trim().slice(0,200);$('profileMsg').textContent='Saving…';
+   try{const d=await api('/api/profile',{method:'PUT',body:{bio}});myBio=d.bio||'';$('profileMsg').textContent='Profile saved.'}
+   catch(e){$('profileMsg').textContent=e.message||'Could not save profile.'}
+  };
+  return;
+ }
  const submit=async mode=>{const username=$('accountUsernameInput').value.trim(),password=$('accountPasswordInput').value,msg=$('accountMessage');if(!/^[A-Za-z0-9_]{3,16}$/.test(username)||password.length<8||password.length>128){msg.textContent='Use a 3–16 character username and an 8–128 character password.';return}msg.textContent=mode==='register'?'Creating your account…':'Signing in…';try{const d=await api('/api/'+mode,{method:'POST',body:{username,password}});accountToken=d.token;accountUser=d.user;localStorage.setItem('sod_account_token',accountToken);if(d.save)applyCloudSave(d.save);unlockAchievement('account_created');await syncCloudSave();paintAccountBillboards();profilePanel()}catch(e){msg.textContent=e.message||'Could not connect. Check that the Cloudflare account service is deployed.'}};
  $('accountRegister').onclick=()=>submit('register');$('accountLogin').onclick=()=>submit('login')
+}
+function friendRowHtml(username,kind){
+ let actions='';
+ if(kind==='friend')actions=`<button data-act="view" data-u="${safeText(username)}">VIEW</button><button data-act="remove" data-u="${safeText(username)}">REMOVE</button>`;
+ else if(kind==='incoming')actions=`<button data-act="accept" data-u="${safeText(username)}">ACCEPT</button><button data-act="decline" data-u="${safeText(username)}">DECLINE</button>`;
+ else actions=`<button data-act="cancel" data-u="${safeText(username)}">CANCEL</button>`;
+ return `<div class="friend-row"><div class="pfp-wrap"></div><div><strong>${safeText(username)}</strong><small>${kind==='incoming'?'Wants to be friends':kind==='outgoing'?'Request sent':'Friend'}</small></div><div class="fr-actions">${actions}</div></div>`;
+}
+async function friendsPanel(){
+ openNavPanel('FRIENDS','<div class="friend-search"><input id="friendSearchInput" maxlength="16" placeholder="Search by username…"><button class="nav-choice" id="friendSearchBtn">SEARCH</button></div><div id="friendSearchResults"></div><h3 class="friend-section-title">REQUESTS</h3><div id="friendRequests"><p class="friend-empty">Loading…</p></div><h3 class="friend-section-title">YOUR FRIENDS</h3><div id="friendList"><p class="friend-empty">Loading…</p></div>');
+ if(!accountToken){$('friendRequests').innerHTML='';$('friendList').innerHTML='<p class="friend-empty">Create a free account to add friends.</p>';return}
+ const doSearch=async()=>{
+  const q=$('friendSearchInput').value.trim();
+  if(!q){$('friendSearchResults').innerHTML='';return}
+  $('friendSearchResults').innerHTML='<p class="friend-empty">Searching…</p>';
+  try{
+   const d=await api('/api/users/search?q='+encodeURIComponent(q.toLowerCase()));
+   $('friendSearchResults').innerHTML=(d.results||[]).length?d.results.map(r=>{
+    const label=r.status==='friends'?'FRIENDS':r.status==='pending_out'?'REQUESTED':r.status==='pending_in'?'SEE REQUESTS':'ADD FRIEND';
+    const disabled=(r.status==='friends'||r.status==='pending_out'||r.status==='pending_in')?'disabled':'';
+    return `<div class="friend-row"><div class="pfp-wrap"></div><div><strong>${safeText(r.username)}</strong></div><div class="fr-actions"><button data-act="add" data-u="${safeText(r.username)}" ${disabled}>${label}</button></div></div>`;
+   }).join(''):'<p class="friend-empty">No players found.</p>';
+   $('friendSearchResults').querySelectorAll('[data-act="add"]:not([disabled])').forEach(b=>b.onclick=async()=>{
+    b.disabled=true;
+    try{await api('/api/friends/request',{method:'POST',body:{username:b.dataset.u}});flash('FRIEND REQUEST SENT',1.6,'#ffd36a');friendsPanel()}
+    catch(e){flash(e.message,2,'#ff5b5b');b.disabled=false}
+   });
+  }catch(e){$('friendSearchResults').innerHTML='<p class="friend-empty">'+safeText(e.message)+'</p>'}
+ };
+ $('friendSearchBtn').onclick=doSearch;
+ $('friendSearchInput').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();doSearch()}};
+ try{
+  const d=await api('/api/friends');
+  const reqHtml=(d.incoming||[]).map(u=>friendRowHtml(u,'incoming')).join('')+(d.outgoing||[]).map(u=>friendRowHtml(u,'outgoing')).join('');
+  $('friendRequests').innerHTML=reqHtml||'<p class="friend-empty">No pending requests.</p>';
+  $('friendList').innerHTML=(d.friends||[]).length?d.friends.map(f=>friendRowHtml(f.username,'friend')).join(''):'<p class="friend-empty">No friends yet — search above to add some.</p>';
+  $('friendRequests').querySelectorAll('button').forEach(b=>b.onclick=async()=>{
+   const act=b.dataset.act,u=b.dataset.u;
+   try{
+    if(act==='accept')await api('/api/friends/accept',{method:'POST',body:{username:u}});
+    else if(act==='decline')await api('/api/friends/decline',{method:'POST',body:{username:u}});
+    else if(act==='cancel')await api('/api/friends/cancel',{method:'POST',body:{username:u}});
+    friendsPanel();
+   }catch(e){flash(e.message,2,'#ff5b5b')}
+  });
+  $('friendList').querySelectorAll('button').forEach(b=>b.onclick=async()=>{
+   const act=b.dataset.act,u=b.dataset.u;
+   if(act==='view')return viewProfile(u);
+   if(act==='remove'){try{await api('/api/friends/remove',{method:'POST',body:{username:u}});friendsPanel()}catch(e){flash(e.message,2,'#ff5b5b')}}
+  });
+ }catch(e){$('friendRequests').innerHTML='';$('friendList').innerHTML='<p class="friend-empty">'+safeText(e.message)+'</p>'}
+}
+async function viewProfile(username){
+ openNavPanel('PROFILE','<p class="friend-empty">Loading…</p>');
+ try{
+  const d=await api('/api/profile?username='+encodeURIComponent(username));
+  const relLabel=d.relation==='friends'?'FRIENDS':d.relation==='pending_out'?'REQUEST SENT':d.relation==='pending_in'?'WANTS TO BE FRIENDS':d.relation==='self'?'THIS IS YOU':'NOT FRIENDS';
+  openNavPanel('PROFILE · '+d.username.toUpperCase(),`<div class="profile-head"><div class="pfp-wrap">${pfpImg(d.pfp)}</div><div><strong style="display:block;font:900 16px system-ui;color:#fff">${safeText(d.username)}</strong><em style="color:#79bcff;font:800 10px system-ui;letter-spacing:.1em">LEVEL ${d.level} · ${relLabel}</em></div></div>
+${d.bio?`<p style="color:#b9c9df;font:600 13px/1.5 system-ui;margin:12px 0">${safeText(d.bio)}</p>`:''}
+<h3 class="friend-section-title">SODS COLLECTED · ${d.sodCount} / 64</h3>
+<p class="friend-empty">Equipped: ${safeText(SOD.names[d.equippedSod]||'Classic')} · ${d.achievementCount} achievements earned</p>
+${d.relation==='none'?'<button class="nav-choice" id="addFriendBtn">ADD FRIEND</button>':''}
+${d.relation==='pending_in'?'<button class="nav-choice" id="acceptFriendBtn">ACCEPT REQUEST</button>':''}
+${d.relation==='friends'?'<button class="nav-choice" id="removeFriendBtn">REMOVE FRIEND</button>':''}`);
+  if($('addFriendBtn'))$('addFriendBtn').onclick=async()=>{try{await api('/api/friends/request',{method:'POST',body:{username}});flash('FRIEND REQUEST SENT',1.6,'#ffd36a');viewProfile(username)}catch(e){flash(e.message,2,'#ff5b5b')}};
+  if($('acceptFriendBtn'))$('acceptFriendBtn').onclick=async()=>{try{await api('/api/friends/accept',{method:'POST',body:{username}});flash('FRIEND ADDED',1.6,'#ffd36a');viewProfile(username)}catch(e){flash(e.message,2,'#ff5b5b')}};
+  if($('removeFriendBtn'))$('removeFriendBtn').onclick=async()=>{try{await api('/api/friends/remove',{method:'POST',body:{username}});friendsPanel()}catch(e){flash(e.message,2,'#ff5b5b')}};
+ }catch(e){openNavPanel('PROFILE','<p class="friend-empty">'+safeText(e.message)+'</p>')}
 }
 
 // One stateful menu controller: one panel at a time, one close timer, no competing CSS displays.
@@ -1494,7 +1666,7 @@ function backToMainMenu(){const id=++menuTransitionId;clearTimeout(menuCloseTime
 function openLocker(){showSubView();$('navPanel').style.display='none';$('passPanel').classList.remove('open');$('lockerPanel').classList.add('open');renderLocker()}
 function openPass(){if(passWeek!==currentPassWeek()){passXP=0;passWeek=currentPassWeek();sv()}showSubView();$('navPanel').style.display='none';$('lockerPanel').classList.remove('open');$('passPanel').classList.add('open');renderPass()}
 $('navBack').onclick=backToMainMenu;$('lockerClose').onclick=backToMainMenu;$('passClose').onclick=backToMainMenu;
-$('lockerOpen').onclick=openLocker;$('passOpen').onclick=openPass;$('profileOpen').onclick=profilePanel;
+$('lockerOpen').onclick=openLocker;$('passOpen').onclick=openPass;$('profileOpen').onclick=profilePanel;$('profileBadge').onclick=profilePanel;
 $('lockerPass').onclick=openPass;$('passToLocker').onclick=openLocker;
 $('md').onclick=()=>{const modes=[{v:1,n:'1V1 SOCCER',s:'COMPACT'},{v:2,n:'2V2 SOCCER',s:'COMPACT'},{v:3,n:'3V3 SOCCER',s:'MEDIUM'},{v:4,n:'4V4 SOCCER',s:'LARGE'},{v:50,n:'50V50 DEATHMATCH',s:'HUGE'}];openNavPanel('SELECT MODE',modes.map(o=>`<button class="nav-choice mode-choice ${MODE===o.v?'active':''}" data-mode="${o.v}" aria-pressed="${MODE===o.v}"><strong>${o.n}</strong><span>${o.s}</span></button>`).join('')+'<p class="nav-note">Select a mode to update the arena and match rules.</p>');$('navBody').querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{const v=Number(b.dataset.mode);if(![1,2,3,4,50].includes(v))return;MODE=v;DM=v===50;applyArenaSize(v);setMenuCar();sv();$('md').querySelector('b').textContent=(MN[v===50?4:v-1]||'1v1')+' · '+MAP_PROFILES[v].name;$('navBody').querySelectorAll('[data-mode]').forEach(x=>{x.classList.toggle('active',x===b);x.setAttribute('aria-pressed',x===b?'true':'false')});setTimeout(backToMainMenu,140)})};
 $('settingsToggle').onclick=()=>openNavPanel('SETTINGS',`<button class="nav-choice" id="navTeam">TEAM <span>${TNM[TEAM]}</span></button><button class="nav-choice" id="navLength">MATCH LENGTH <span>${LS.find(a=>a[0]===LEN)?.[1]||'5 min'}</span></button><button class="nav-choice" id="navSkill">BOT SKILL <span>${DS[DF]}</span></button><button class="nav-choice" id="navCamera">CAMERA <span>${ballCam?'BALL CAM':'CAR CAM'}</span></button><button class="nav-choice" id="navSound">SOUND <span>${muted?'OFF':'ON'}</span></button>`);
@@ -1507,8 +1679,59 @@ $('tb').addEventListener('click',()=>{updateProfileBadge();saveCareerLocal()});
 const originalGoal=goal;goal=function(team){if(cars[me]&&cars[me].team===team){awardCareerXP(80);unlockAchievement('first_goal')}return originalGoal(team)};
 const originalEndMatch=endMatch;endMatch=function(){if(!endMatch._careerPaid){awardCareerXP(120);unlockAchievement('first_match');if((sc[cars[me]?.team]||0)>(sc[1-(cars[me]?.team||0)]||0)){awardCareerXP(80);unlockAchievement('first_win')}endMatch._careerPaid=true}return originalEndMatch()};
 const originalDemolish=demolish;demolish=function(v,by){if(by===cars[me]){awardCareerXP(35);unlockAchievement('first_elimination')}return originalDemolish(v,by)};
-const originalBeginMatch=beginMatch;beginMatch=function(){if(MODE===50)unlockAchievement('deathmatch');endMatch._careerPaid=false;return originalBeginMatch()};
+const originalBeginMatch=beginMatch;beginMatch=function(){if(MODE===50&&!PRACTICE)unlockAchievement('deathmatch');endMatch._careerPaid=false;return originalBeginMatch()};
 loadCareerLocal();syncCareerRewards();updateProfileBadge();paintAccountBillboards();refreshAccount();
 setInterval(()=>{accountBoardIndex=(accountBoardIndex+1)%3;paintAccountBillboards()},8500);
 
+
+// ===== Practice button, online pause menu, on-screen pause button =====
+function netPause(v){
+ npzOpen=!!v;$('npz').classList.toggle('on',npzOpen);
+ if(npzOpen){Object.keys(K).forEach(k=>K[k]=0);$('npzEnd').style.display=(net==1&&netHost)?'block':'none';$('npzLeave').textContent=(net==1&&netHost)?'Leave and close party':'Leave match';$('npzLeave').dataset.armed=''}
+}
+const PRACTICE_MAPS=[{v:1,n:'COMPACT',s:'Tight 1v1 arena'},{v:3,n:'MEDIUM',s:'Mid-size 3v3 arena'},{v:4,n:'LARGE',s:'Big 4v4 arena'},{v:50,n:'HUGE',s:'Full 50v50 arena'}];
+function practicePanel(){
+ openNavPanel('PRACTICE',PRACTICE_MAPS.map(o=>`<button class="nav-choice mode-choice ${practiceMap===o.v?'active':''}" data-pmap="${o.v}" aria-pressed="${practiceMap===o.v}"><strong>${o.n}</strong><span>${o.s}</span></button>`).join('')+'<button class="nav-choice" id="practiceGo"><strong>START PRACTICE</strong><span>GO</span></button><p class="nav-note">Choose a map size. Practice has no bots or timer, and your boost never runs out. Press R in practice to reset.</p>');
+ $('navBody').querySelectorAll('[data-pmap]').forEach(b=>b.onclick=()=>{practiceMap=Number(b.dataset.pmap);sv();$('navBody').querySelectorAll('[data-pmap]').forEach(x=>{const on=x===b;x.classList.toggle('active',on);x.setAttribute('aria-pressed',on?'true':'false')})});
+ $('practiceGo').onclick=()=>{if(!net)startPractice()};
+}
+$('pr').onclick=()=>{if(!net)practicePanel()};
+$('npzResume').onclick=()=>netPause(false);
+$('npzEnd').onclick=()=>{if(net==1&&netHost&&(st=='play'||st=='goal'||st=='kickoff')){netPause(false);endMatch(true)}};
+$('npzLeave').onclick=()=>{
+ const b=$('npzLeave');
+ if(net==1&&netHost&&b.dataset.armed!=='1'){b.dataset.armed='1';b.textContent='Tap again: this closes the party for everyone';return}
+ netPause(false);leave();menu();
+};
+$('pmBtn').onclick=()=>{if(net==1)netPause(!npzOpen);else if(!net&&(st=='play'||st=='goal'||st=='kickoff'))pause(!pz)};
+(function(){const b=$('pmBtn');let last='';setInterval(()=>{const v=(st=='play'||st=='goal'||st=='kickoff')?'flex':'none';if(v!==last){b.style.display=v;last=v}},200)})();
+
+// ===== Version lock: if a newer build is published, block play until the player reloads =====
+(function(){
+ const cmp=(a,b)=>{const x=String(a).split('.').map(Number),y=String(b).split('.').map(Number);for(let i=0;i<Math.max(x.length,y.length);i++){const d=(x[i]||0)-(y[i]||0);if(d)return d>0?1:-1}return 0};
+ let locked=false;
+ const tag=document.createElement('div');tag.textContent='v'+APP_VERSION;tag.style.cssText='position:fixed;left:8px;bottom:6px;z-index:5;font:600 11px system-ui,sans-serif;color:#ffffff88;pointer-events:none;letter-spacing:.04em';document.body.appendChild(tag);
+ function lockGame(newVer){
+  if(locked)return;locked=true;
+  try{if(ws)ws.close()}catch(e){}
+  try{if(document.pointerLockElement)document.exitPointerLock()}catch(e){}
+  const o=document.createElement('div');o.id='updateLock';
+  o.style.cssText='position:fixed;inset:0;z-index:2147483647;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(5,7,12,.97);color:#f5f8ff;font-family:system-ui,sans-serif;text-align:center;touch-action:none';
+  o.innerHTML='<div style="max-width:460px"><div style="font:italic 900 clamp(26px,5vw,40px)/1.1 system-ui;letter-spacing:.03em;margin-bottom:14px">UPDATE REQUIRED</div><p style="margin:0 0 18px;font-size:16px;line-height:1.5;color:#cfd8e8">A new version of Sod League is out (v'+newVer+'). You are on v'+APP_VERSION+'. Please update to keep playing.</p><div style="text-align:left;background:#ffffff10;border:1px solid #ffffff22;border-radius:12px;padding:14px 16px;font-size:15px;line-height:1.6"><b>PC:</b> press <b>Ctrl + F5</b><br><b>Mobile, tablet or Meta Quest:</b> restart your device (or fully close and reopen the browser)</div></div>';
+  ['pointerdown','touchstart','mousedown','click','wheel','contextmenu'].forEach(t=>o.addEventListener(t,e=>e.stopPropagation()));
+  document.body.appendChild(o);
+ }
+ // Swallow game input while locked, but still allow reload shortcuts.
+ ['keydown','keyup','keypress'].forEach(t=>window.addEventListener(t,e=>{if(!locked)return;if(e.code==='F5'||((e.ctrlKey||e.metaKey)&&e.code==='KeyR'))return;e.stopImmediatePropagation();e.preventDefault()},true));
+ async function check(){
+  if(locked||!navigator.onLine)return;
+  try{
+   const r=await fetch(location.pathname+'?vcheck='+Date.now(),{cache:'no-store'});if(!r.ok)return;
+   const m=(await r.text()).match(/<meta\s+name="sod-version"\s+content="([^"]+)"/);
+   if(m&&cmp(m[1],APP_VERSION)>0)lockGame(m[1]);
+  }catch(e){}
+ }
+ setTimeout(check,2500);setInterval(check,60000);
+ document.addEventListener('visibilitychange',()=>{if(!document.hidden)check()});window.addEventListener('focus',check);window.addEventListener('online',check);
+})();
 </script></body></html>
