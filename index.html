@@ -77,7 +77,7 @@ body.m canvas{filter:brightness(.86) saturate(.96)}
 @media (max-height:620px){.nlead{display:none}}
 #lob{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(6,9,20,.6);backdrop-filter:blur(4px)}#lob.on{display:flex}
 #lob>div{display:grid;gap:10px;width:min(92vw,420px);max-height:96vh;overflow:auto;padding:22px;background:var(--pn);border-radius:16px;text-align:center}#lob h2{margin:0 0 4px;font-size:36px}#lob p{margin:0;font-size:15px}
-#lob input{font:inherit;text-transform:uppercase;text-align:center;padding:10px;border-radius:10px;border:2px solid var(--bl);background:#0e1630;color:#fff;letter-spacing:.2em}#le{color:#ffd24a;min-height:1.2em}
+#lob input{font:inherit;text-transform:uppercase;text-align:center;padding:10px;border-radius:10px;border:2px solid var(--bl);background:#0e1630;color:#fff;letter-spacing:.2em}#lob #lname{text-transform:none;letter-spacing:normal;font:600 15px system-ui,sans-serif}#le{color:#ffd24a;min-height:1.2em}
 #lob{z-index:5}#lob button{font:inherit;color:#fff;background:var(--bl);border:0;border-radius:10px;padding:11px 18px;cursor:pointer}#lob h2{font-style:italic}
 #lob button.alt{background:#1a2442}#lob button:disabled{cursor:default}
 #l0,#l1{display:grid;gap:10px}
@@ -88,6 +88,22 @@ body.m canvas{filter:brightness(.86) saturate(.96)}
 .tc .bt{opacity:.45}.tc button{margin-top:4px;padding:8px 10px!important;font-size:13px}
 @media (max-height:760px){.mi i{padding:8px 18px;font-size:15px}#op{margin-bottom:14px}.brand{margin-bottom:8px}}
 @media (max-height:640px){.mi i{padding:6px 16px;font-size:13.5px}.mi{margin-bottom:3px}#op{display:none}}
+
+/* Device-aware touch controls */
+#mobileControls{position:fixed;inset:0;z-index:6;display:none;pointer-events:none;touch-action:none}
+body.touch-device #mobileControls.active{display:block}
+#mobileControls .mc-group{position:absolute;bottom:calc(env(safe-area-inset-bottom,0px) + 22px);display:grid;gap:9px;pointer-events:auto}
+#mobileControls .mc-left{left:18px;grid-template-columns:repeat(3,58px);grid-template-rows:58px 58px}
+#mobileControls .mc-right{right:18px;grid-template-columns:68px 68px;grid-template-rows:68px 58px;align-items:end}
+#mobileControls button{border:1px solid rgba(255,255,255,.38);border-radius:17px;background:rgba(9,17,34,.68);color:#fff;font:900 20px/1 system-ui,sans-serif;text-shadow:0 2px 4px #000;box-shadow:0 5px 18px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.15);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);touch-action:none;user-select:none;-webkit-user-select:none}
+#mobileControls button:active,#mobileControls button.down{background:rgba(47,140,255,.82);transform:scale(.96)}
+#mobileControls .mc-up{grid-column:2;grid-row:1}#mobileControls .mc-leftkey{grid-column:1;grid-row:2}#mobileControls .mc-down{grid-column:2;grid-row:2}#mobileControls .mc-rightkey{grid-column:3;grid-row:2}
+#mobileControls .mc-boost{grid-column:2;grid-row:1;background:rgba(255,138,31,.78);font-size:14px}
+#mobileControls .mc-jump{grid-column:1;grid-row:1 / span 2;border-radius:50%;font-size:13px;background:rgba(47,140,255,.78)}
+#mobileControls .mc-cam{grid-column:2;grid-row:2;font-size:12px;background:rgba(30,40,62,.78)}
+@media (max-width:420px){#mobileControls .mc-left{left:10px;grid-template-columns:repeat(3,50px);grid-template-rows:50px 50px}#mobileControls .mc-right{right:10px;grid-template-columns:60px 60px;grid-template-rows:60px 50px}}
+@media (orientation:landscape) and (max-height:500px){#mobileControls .mc-group{bottom:calc(env(safe-area-inset-bottom,0px) + 8px)}#mobileControls .mc-left{grid-template-columns:repeat(3,48px);grid-template-rows:48px 48px}#mobileControls .mc-right{grid-template-columns:58px 58px;grid-template-rows:58px 48px}}
+
 </style></head><body>
 <div id="hud">
   <div class="sc" style="--t:var(--bl)"><em>BLUE</em><b id="sb">0</b></div>
@@ -98,10 +114,10 @@ body.m canvas{filter:brightness(.86) saturate(.96)}
 <div id="msg"></div>
 <div id="ov"><div id="mn">
   <div class="brand"><span class="ball"></span><b id="ot">Sod League</b></div>
-  <p id="op">Rocket-powered car soccer. 1v1 to 4v4 with bots or friends.</p>
+  <p id="op">Rocket-powered car soccer and 50v50 team deathmatch with bots or friends.</p>
   <button class="mi prime" id="go" data-d="Play against bots. Pick your mode and team below."><i id="gl">Single player</i></button>
   <button class="mi" id="on" data-d="Create a party or join one with a code. Empty slots are filled with bots."><i>Multiplayer</i></button>
-  <button class="mi" id="md" data-d="1v1, 2v2 Skirmish, 3v3 or 4v4 for single player. Bots fill every empty slot."><i>Mode<b>1v1</b></i></button>
+  <button class="mi" id="md" data-d="Choose 1v1 to 4v4 soccer or 50v50 Deathmatch. Bots fill every empty slot."><i>Mode<b>1v1</b></i></button>
   <button class="mi" id="tb" data-d="Pick which team you play for."><i>Team<b>Blue</b></i></button>
   <button class="mi" id="sl" data-d="Choose how long a match lasts."><i>Match length<b>5 min</b></i></button>
   <button class="mi" id="sd" data-d="Choose how tough the bots are."><i>Bot skill<b>Pro</b></i></button>
@@ -113,7 +129,7 @@ body.m canvas{filter:brightness(.86) saturate(.96)}
   <div class="nb"><span></span><b>Sod League</b><em>Championship series</em></div>
   <div class="nk">Get ready</div>
   <h2>Sod League<br>is here.</h2>
-  <p class="nlead">Up to eight cars, one ball, two nets. Rocket-powered soccer with aerials, boost pads and golden-goal overtime.</p>
+  <p class="nlead">Choose rocket-powered car soccer or 50v50 Deathmatch. Play with bots or friends.</p>
   <div class="nsec"><h3>How to play</h3><div class="nkeys"><kbd>W A S D</kbd><kbd>Space</kbd><kbd>Shift</kbd><kbd>C</kbd><kbd>Esc</kbd><kbd>F</kbd><kbd>M</kbd></div><p>Drive with WASD, jump and flip with Space, boost with Shift. Tap C for ball cam, F for fullscreen, M to mute.</p></div>
   <div class="nsec"><h3>How to win</h3><p>Big pads give 100 boost, small pads 12. Demolish rivals at full speed. Tied at full time? Next goal wins.</p></div>
   <div class="nlogos"><span>Blue</span><span>Orange</span><span>Overtime</span></div>
@@ -123,8 +139,22 @@ body.m canvas{filter:brightness(.86) saturate(.96)}
   <div class="wel">Welcome to Sod League!</div>
   <div class="hint">Press <kbd>Space</kbd> to play</div>
 </footer></div>
-<div id="lob"><div><h2>Multiplayer</h2><div id="l0"><button id="lc">Create party</button><input id="lj" maxlength="6" placeholder="CODE"><button id="lg">Join party</button></div>
+<div id="lob"><div><h2>Multiplayer</h2><input id="lname" maxlength="16" placeholder="Your lobby name" autocomplete="nickname"><div id="l0"><button id="lc">Create party</button><input id="lj" maxlength="6" placeholder="CODE"><button id="lg">Join party</button></div>
 <div id="l1" style="display:none"><p id="lcode"></p><button id="lm" class="alt">Mode: 1v1</button><div id="lt"><div class="tc b"><b>BLUE</b><div id="t0"></div><button id="j0" class="alt">Join Blue</button></div><div class="tc o"><b>ORANGE</b><div id="t1"></div><button id="j1" class="alt">Join Orange</button></div></div><p id="lp"></p><button id="lr">Ready</button><button id="lk" class="alt">Copy invite link</button></div><p id="le"></p><button id="lx" class="alt">Back</button></div></div>
+
+<div id="mobileControls" aria-label="Touch driving controls">
+ <div class="mc-group mc-left">
+  <button class="mc-up" data-key="KeyW" aria-label="Accelerate">▲</button>
+  <button class="mc-leftkey" data-key="KeyA" aria-label="Steer left">◀</button>
+  <button class="mc-down" data-key="KeyS" aria-label="Reverse">▼</button>
+  <button class="mc-rightkey" data-key="KeyD" aria-label="Steer right">▶</button>
+ </div>
+ <div class="mc-group mc-right">
+  <button class="mc-jump" data-action="jump" aria-label="Jump">JUMP</button>
+  <button class="mc-boost" data-key="ShiftLeft" aria-label="Boost">BOOST</button>
+  <button class="mc-cam" data-action="cam" aria-label="Change camera">CAM</button>
+ </div>
+</div>
 <div id="pz"><div><h2>Paused</h2><button id="rs">Resume</button><button id="rt">Restart match</button><button id="mm">Main menu</button></div></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
@@ -272,8 +302,14 @@ function mkCS(team,slot){const c={m:mkCar(team?0xff8a1f:0x2f8cff),team,dz:team?-
   mt=new THREE.MeshBasicMaterial({map:ctx,transparent:true,alphaTest:.5,side:THREE.DoubleSide}),
   ol=new THREE.MeshBasicMaterial({map:ctx,color:0x0b1020,transparent:true,alphaTest:.5,side:THREE.DoubleSide}),
   a=new THREE.Mesh(gm,mt),b=new THREE.Mesh(gm,ol);
- b.scale.set(1.13,1.09,1);b.position.z=-.04;a.renderOrder=2;b.renderOrder=1;g.add(b,a);g.position.set(0,3.2,-.3);c.m.add(g);c.sg=gm;c.sb=g;setSod(c,0);return c}
-const POOL=[0,1].map(t=>[0,1,2,3].map(i=>mkCS(t,i)));POOL.flat().forEach(c=>c.m.visible=false);let cars=[POOL[0][0]];
+ b.scale.set(1.13,1.09,1);b.position.z=-.04;a.renderOrder=2;b.renderOrder=1;g.add(b,a);g.position.set(0,3.2,-.3);c.m.add(g);c.sg=gm;c.sb=g;
+ const nc=document.createElement('canvas');nc.width=256;nc.height=64;const nx=nc.getContext('2d');
+ const nt=new THREE.CanvasTexture(nc);nt.minFilter=THREE.LinearFilter;
+ const ng=new THREE.Group(),nm=new THREE.Mesh(new THREE.PlaneGeometry(5.8,1.45),new THREE.MeshBasicMaterial({map:nt,transparent:true,depthWrite:false,side:THREE.DoubleSide}));
+ nm.position.z=.02;ng.add(nm);ng.position.set(0,5.35,0);c.m.add(ng);c.nameCanvas=nc;c.nameCtx=nx;c.nameTex=nt;c.nameTag=ng;c.displayName='Bot';
+ setCarName(c,'Bot');setSod(c,0);return c}
+function setCarName(c,name){name=String(name||'Player').replace(/[<>]/g,'').trim().slice(0,16)||'Player';c.displayName=name;const x=c.nameCtx;x.clearRect(0,0,256,64);x.fillStyle='rgba(5,10,24,.82)';x.beginPath();x.roundRect(5,5,246,54,12);x.fill();x.strokeStyle=c.team?'#ff9a36':'#65b4ff';x.lineWidth=4;x.stroke();x.font='bold 27px Arial';x.textAlign='center';x.textBaseline='middle';x.fillStyle='#fff';x.shadowColor='#000';x.shadowBlur=4;x.fillText(name,128,33,226);c.nameTex.needsUpdate=true}
+const POOL=[0,1].map(t=>Array.from({length:50},(_,i)=>mkCS(t,i)));POOL.flat().forEach(c=>c.m.visible=false);let cars=[POOL[0][0]];
 // ---------- ball ----------
 const bc=document.createElement('canvas');bc.width=256;bc.height=128;
 {const x=bc.getContext('2d');x.fillStyle='#f4f7ff';x.fillRect(0,0,256,128);x.fillStyle='#1b2540';for(let i=0;i<18;i++){x.beginPath();x.arc((i%6)*43+((i/6|0)%2)*21+10,20+(i/6|0)*44,12,0,7);x.fill()}}
@@ -290,7 +326,7 @@ function mkPad(x,z,amt,cool,r,color){
 [[.9,-.73],[.9,.73],[-.9,-.73],[-.9,.73],[.75,0],[-.75,0]].forEach(p=>mkPad(p[0]*X,p[1]*Z,100,9,2.5,0xffc94a));
 [[-.33,-.9],[.33,-.9],[-.6,-.53],[.6,-.53],[-.225,-.2],[.225,-.2],[-.225,.2],[.225,.2],[-.6,.53],[.6,.53],[-.33,.9],[.33,.9],[0,-.33],[0,.33],[-.55,-.7],[.55,-.7],[-.55,.7],[.55,.7]].forEach(p=>mkPad(p[0]*X,p[1]*Z,12,3.5,1.1,0xffb020))}
 // ---------- state ----------
-const K={};let jr=0,ballCam=true,st='menu',t=300,gt=0,sc=[0,0],LEN=300,DF=1,pz=0,over=false,kc=0,msgT=0,shake=0,me=0,net=0,cheer=0,ws=null,tgt=null,lsend=0,ssend=0,muted=false,mySod=0,lastN=0,MODE=1,TEAM=0,netHost=false,myId=0,room=null;
+const K={};let jr=0,ballCam=true,st='menu',t=300,gt=0,sc=[0,0],LEN=300,DF=1,pz=0,over=false,kc=0,msgT=0,shake=0,me=0,net=0,cheer=0,ws=null,tgt=null,lsend=0,ssend=0,muted=false,mySod=0,lastN=0,MODE=1,TEAM=0,netHost=false,myId=0,room=null,myName='Player',DM=false;
 addEventListener('keydown',e=>{
  if(e.repeat){K[e.code]=1}else K[e.code]=1;
  if(e.code=='Space'&&!e.repeat)jr=1;
@@ -302,16 +338,34 @@ addEventListener('keydown',e=>{
 });
 addEventListener('keyup',e=>{K[e.code]=0});
 const pin=()=>{const j=jr;jr=0;return{th:(K.KeyW||K.ArrowUp?1:0)-(K.KeyS||K.ArrowDown?1:0),st:(K.KeyD||K.ArrowRight?1:0)-(K.KeyA||K.ArrowLeft?1:0),bo:!!(K.ShiftLeft||K.ShiftRight),j}};
+// Detect an actual touch/coarse-pointer device; desktop users keep keyboard controls only.
+const touchDevice=()=>('ontouchstart' in window)||(navigator.maxTouchPoints>0)||!!(window.matchMedia&&matchMedia('(pointer: coarse)').matches);
+const mobileControls=$('mobileControls');
+if(touchDevice())document.body.classList.add('touch-device');
+function refreshMobileControls(){
+ const active=touchDevice()&&['play','kickoff','goal'].includes(st)&&!pz;
+ mobileControls.classList.toggle('active',active);
+}
+mobileControls.querySelectorAll('button').forEach(btn=>{
+ const key=btn.dataset.key,action=btn.dataset.action;
+ const down=e=>{e.preventDefault();btn.classList.add('down');try{btn.setPointerCapture(e.pointerId)}catch(_){}
+  if(key)K[key]=1;
+  if(action==='jump')jr=1;
+  if(action==='cam'){ballCam=!ballCam;flash(ballCam?'BALL CAM':'CAR CAM',.8);$('cm').querySelector('b').textContent=ballCam?'Ball cam':'Car cam';sv()}
+ };
+ const up=e=>{if(e)e.preventDefault();btn.classList.remove('down');if(key)K[key]=0};
+ btn.addEventListener('pointerdown',down,{passive:false});
+ ['pointerup','pointercancel','lostpointercapture'].forEach(ev=>btn.addEventListener(ev,up,{passive:false}));
+});
+
 // ---------- ai ----------
-function roles(){[0,1].forEach(tm=>{cars.filter(c=>c.team==tm&&c.dead<=0).map(c=>[Math.hypot(B.x-c.x,B.z-c.z)+((c.z-B.z)*c.dz>2?25:0),c]).sort((p,q)=>p[0]-q[0]).forEach((p,i)=>p[1].rk=i)})}
+function roles(){[0,1].forEach(tm=>{const foes=DM?cars.filter(o=>o.team!==tm&&o.dead<=0):[];cars.filter(c=>c.team==tm&&c.dead<=0).map(c=>{let d;if(DM){c.target=null;for(const o of foes){const q=Math.hypot(o.x-c.x,o.z-c.z);if(!c.target||q<d){d=q;c.target=o}}if(!c.target)d=999}else d=Math.hypot(B.x-c.x,B.z-c.z)+((c.z-B.z)*c.dz>2?25:0);return[d,c]}).sort((p,q)=>p[0]-q[0]).forEach((p,i)=>p[1].rk=i)})}
 function ai(c){
  if(c.dead>0)return{th:0,st:0,bo:false,j:0};
- const g=c.dz,hd=Math.hypot(B.x-c.x,B.z-c.z),air=c.y>0,chase=c.rk==0||hd<12;
+ const g=c.dz,foe=DM?c.target:null,target=foe||B,hd=Math.hypot(target.x-c.x,target.z-c.z),air=c.y>0,chase=DM?!!foe:(c.rk==0||hd<12);
  let tx,tz;
  if(chase){
-  const aimX=(B.x>0?-1:1)*GW*.3,gx=aimX-B.x,gz=g*L/2-B.z,gl=Math.hypot(gx,gz)||1,behind=(c.z-B.z)*g<-2,off=(behind?5:3.6)*[1.15,1,1][DF];
-  tx=B.x-gx/gl*off;tz=B.z-gz/gl*off;
-  if(behind&&hd<10){tx=B.x+(B.x-c.x)*.4;tz=B.z+(B.z-c.z)*.4}
+  if(DM){tx=target.x;tz=target.z}else{const aimX=(B.x>0?-1:1)*GW*.3,gx=aimX-B.x,gz=g*L/2-B.z,gl=Math.hypot(gx,gz)||1,behind=(c.z-B.z)*g<-2,off=(behind?5:3.6)*[1.15,1,1][DF];tx=B.x-gx/gl*off;tz=B.z-gz/gl*off;if(behind&&hd<10){tx=B.x+(B.x-c.x)*.4;tz=B.z+(B.z-c.z)*.4}}
  }else if(c.rk==1){tx=B.x*.5+(c.slot%2?14:-14);tz=B.z-g*24}
  else{tx=clamp(B.x*.3,-GW*.4,GW*.4)+(c.rk%2?9:-9);tz=-g*(L/2-24-(c.rk-2)*9)}
  let pad=false;
@@ -473,7 +527,7 @@ function fxs(dt){
 // ---------- messages ----------
 function flash(txt,life,liveColor){$('msg').textContent=txt;msgT=life||1;$('msg').style.color=liveColor||''}
 // ---------- match flow ----------
-function slotPos(t,k){const h=t?1:-1,s=((k+t)&1)?1:-1,r=k>>1;return{x:s*(GW/2+9+r*14),z:h*(L/2-30-r*7)}}
+function slotPos(t,k){const h=t?1:-1;if(MODE===50){const col=k%10,row=(k/10|0);return{x:(col-4.5)*8.4,z:h*(12+row*10)}}const s=((k+t)&1)?1:-1,r=k>>1;return{x:s*(GW/2+9+r*14),z:h*(L/2-30-r*7)}}
 function placeCars(){
  cars.forEach(c=>{const p=slotPos(c.team,c.slot);c.x=p.x;c.z=p.z;c.y=0;c.h=Math.atan2(-p.x,-p.z);c.vx=c.vy=c.vz=0;c.bo=33;c.j=0;c.bs=false;c.dead=0;c.flipT=0;c.m.visible=true});
  Object.assign(B,{x:0,y:BR+.4,z:0,vx:0,vy:0,vz:0});B.m.visible=true;
@@ -496,7 +550,7 @@ function endMatch(){
  sfx('whistle');st='end';pz=0;$('pz').classList.remove('on');
  const mt=cars[me].team,r=(sc[0]-sc[1])*(mt?-1:1);
  $('ot').textContent=r>0?'You win':r<0?(mt?'Blue wins':'Orange wins'):'Draw';
- $('op').textContent='Final score '+sc[0]+' – '+sc[1]+(over?' after golden-goal overtime.':'.');
+ $('op').textContent=(DM?'Final eliminations ':'Final score ')+sc[0]+' – '+sc[1]+(over?' after overtime.':'.');
  $('gl').textContent=net?'Back to lobby':'Play again';
  $('ds').textContent=net?'Return to the lobby to ready up again.':'Press Space for a rematch.';
  $('ov').classList.add('res');
@@ -506,19 +560,21 @@ function endMatch(){
 function setupMatch(r,meId){
  POOL.flat().forEach(c=>c.m.visible=false);
  const n=[0,0];
- cars=r.map(a=>{const c=POOL[a[0]][n[a[0]]++];c.slot=n[a[0]]-1;c.pid=a[1];c.kind=a[1]==meId?'me':a[1]>=0?'net':'bot';c.in={th:0,st:0,bo:0,j:0};c.rk=0;setSod(c,a[2]|0);return c});
+ cars=r.slice(0,100).map(a=>{const c=POOL[a[0]][n[a[0]]++];c.slot=n[a[0]]-1;c.pid=a[1];c.kind=a[1]==meId?'me':a[1]>=0?'net':'bot';c.in={th:0,st:0,bo:0,j:0};c.rk=0;setSod(c,a[2]|0);setCarName(c,a[3]||(a[1]>=0?'Player '+(a[1]+1):'Bot '+(c.slot+1)));return c});
  me=Math.max(0,cars.findIndex(c=>c.kind=='me'));
 }
-function rosterSP(){const r=[];[0,1].forEach(tm=>{for(let k=0;k<MODE;k++)r.push(tm==TEAM&&k==0?[tm,-2,mySod]:[tm,-1,Math.random()*64|0])});return r}
-function beginMatch(){sc=[0,0];over=false;t=LEN;pz=0;$('pz').classList.remove('on');$('ov').classList.remove('res');$('ov').style.display='none';profTeam(cars[me].team);kickoff()}
+function rosterSP(){const r=[];[0,1].forEach(tm=>{for(let k=0;k<MODE;k++)r.push(tm==TEAM&&k==0?[tm,-2,mySod,myName]:[tm,-1,Math.random()*64|0,'Bot '+(k+1)])});return r}
+function beginMatch(){DM=MODE===50;document.querySelector('#hud .sc:first-child em').textContent=DM?'BLUE KILLS':'BLUE';document.querySelector('#hud .sc:last-child em').textContent=DM?'ORANGE KILLS':'ORANGE';sc=[0,0];over=false;t=LEN;pz=0;$('pz').classList.remove('on');$('ov').classList.remove('res');$('ov').style.display='none';profTeam(cars[me].team);kickoff();B.m.visible=!DM;if(DM)flash('50v50 DEATHMATCH',2,'#ffd24a')}
 function start(){setupMatch(rosterSP(),-2);beginMatch()}
 function menu(){
+ mobileControls.classList.remove('active');Object.keys(K).forEach(k=>K[k]=0);
+ document.querySelector('#hud .sc:first-child em').textContent='BLUE';document.querySelector('#hud .sc:last-child em').textContent='ORANGE';DM=MODE===50;
  pz=0;$('pz').classList.remove('on');
  sc=[0,0];over=false;t=LEN;setMenuCar();st='menu';
  $('ov').classList.remove('res');
  $('ov').style.display='flex';
  $('ot').textContent='Sod League';
- $('op').textContent='Rocket-powered car soccer. 1v1 to 4v4 with bots or friends.';
+ $('op').textContent='Rocket-powered car soccer and 50v50 team deathmatch with bots or friends.';
  $('gl').textContent='Single player';
  $('ds').textContent='Play against bots. Pick your mode and team below.';
  $('msg').textContent='';
@@ -526,13 +582,14 @@ function menu(){
 function demolish(v,by){
  if(v.dead>0)return;
  v.dead=2.8;v.vx=v.vy=v.vz=0;v.bs=false;v.m.visible=false;
+ if(DM&&by&&by.team!==v.team){sc[by.team]++;if(sc[by.team]>=50)endMatch()}
  boom(v.x,1,v.z,0xffcc66,34,24);shake=Math.max(shake,Math.hypot(v.x-cars[me].x,v.z-cars[me].z)<45?1:.3);sfx('boomx');
- if(by===cars[me])flash('DEMOLITION!',1.3,'#ffd24a');
- else if(v===cars[me])flash('DEMOLISHED!',1.3,'#ff6a6a');
+ if(by===cars[me])flash(DM?'ELIMINATION!':'DEMOLITION!',1.3,'#ffd24a');
+ else if(v===cars[me])flash(DM?'ELIMINATED!':'DEMOLISHED!',1.3,'#ff6a6a');
 }
 function respawn(c){
  let best=null;
- for(let j=0;j<4&&!best;j++){const p=slotPos(c.team,(c.slot+j)%4);
+ for(let j=0;j<Math.min(MODE,50)&&!best;j++){const p=slotPos(c.team,(c.slot+j)%MODE);
   if(Math.hypot(p.x-B.x,p.z-B.z)>26&&!cars.some(o=>o!==c&&o.dead<=0&&Math.hypot(o.x-p.x,o.z-p.z)<8))best=p}
  if(!best)best=slotPos(c.team,c.slot);
  c.x=best.x;c.z=best.z;c.y=0;c.h=Math.atan2(-best.x,-best.z);
@@ -553,14 +610,14 @@ function tick(dt){
    if(c.dead>0){c.dead-=dt;if(c.dead<=0)respawn(c);return}
    if(c.rt>0)c.rt-=dt;drive(c,c.kind=='me'?pin():c.kind=='net'?takeIn(c):c.rt>0?{th:0,st:0,bo:false,j:0}:ai(c),dt);
   });
-  bump();stepBall(dt);cars.slice().sort(()=>Math.random()-.5).forEach(hit);
+  bump();if(!DM){stepBall(dt);cars.slice().sort(()=>Math.random()-.5).forEach(hit)}
  }else cars.forEach(c=>{if(c.dead>0&&(c.dead-=dt)<=0)respawn(c)});
  if(st=='play'){
   if(!over){
    t-=dt;
    if(t<=0){t=0;if(sc[0]===sc[1]){over=true;flash('OVERTIME',2.2,'#ffd24a');sfx('whistle')}else endMatch()}
   }else t+=dt;
-  if(st=='play'&&Math.abs(B.z)>L/2+BR)goal(B.z>0?0:1);
+  if(st=='play'&&!DM&&Math.abs(B.z)>L/2+BR)goal(B.z>0?0:1);
  }else if(st=='goal'){
   gt-=dt;
   if(gt<=0){if(over)endMatch();else kickoff()}
@@ -590,30 +647,30 @@ function cam(dt){
 }
 // ---------- input for menu ----------
 $('go').onclick=()=>net==1?toLobby():!net&&start();
-const LS=[[180,'3 min'],[300,'5 min'],[600,'10 min']],DS=['Rookie','Pro','Champion'],CS=['Ball cam','Car cam'],MN=['1v1','2v2 Skirmish','3v3','4v4'],TNM=['Blue','Orange'];
+const LS=[[180,'3 min'],[300,'5 min'],[600,'10 min']],DS=['Rookie','Pro','Champion'],CS=['Ball cam','Car cam'],MN=['1v1','2v2 Skirmish','3v3','4v4','50v50 Deathmatch'],TNM=['Blue','Orange'];
 const lb=(id,v)=>{$(id).querySelector('b').textContent=v};
 function profTeam(t){document.querySelector('.prof em').textContent='Lvl 1 \u00b7 '+TNM[t]}
 function setMenuCar(){POOL.flat().forEach(c=>c.m.visible=false);cars=[POOL[TEAM][0]];me=0;cars[0].kind='me';setSod(cars[0],mySod);placeCars();showroom();profTeam(TEAM)}
 $('sl').onclick=()=>{const n=LS[(LS.findIndex(a=>a[0]==LEN)+1)%3];LEN=n[0];t=LEN;lb('sl',n[1])};
 $('sd').onclick=()=>{DF=(DF+1)%3;lb('sd',DS[DF])};
 $('cm').onclick=()=>{ballCam=!ballCam;lb('cm',ballCam?CS[0]:CS[1])};
-const sv=()=>{try{localStorage.sodl=JSON.stringify({l:LEN,d:DF,c:ballCam,m:muted?1:0,k:mySod,n:MODE,tm:TEAM})}catch(e){}};
+const sv=()=>{try{localStorage.sodl=JSON.stringify({l:LEN,d:DF,c:ballCam,m:muted?1:0,k:mySod,n:MODE,tm:TEAM,name:myName})}catch(e){}};
 $('dr').onclick=()=>{mySod=(mySod+1)%64;setSod(cars[st=='menu'?0:me],mySod);lb('dr',SOD.names[mySod])};
 $('sn').onclick=()=>{muted=!muted;lb('sn',muted?'Off':'On')};
-$('md').onclick=()=>{MODE=MODE%4+1;lb('md',MN[MODE-1])};
+$('md').onclick=()=>{MODE=MODE===4?50:MODE===50?1:MODE+1;DM=MODE===50;lb('md',MODE===50?MN[4]:MN[MODE-1])};
 $('tb').onclick=()=>{TEAM=1-TEAM;lb('tb',TNM[TEAM]);if(st=='menu')setMenuCar()};
 ['sl','sd','cm','dr','sn','md','tb'].forEach(id=>{const f=$(id).onclick;$(id).onclick=()=>{f();sv()}});
 try{const o=JSON.parse(localStorage.sodl||'{}'),m=LS.find(a=>a[0]==o.l);
  if(o.m)muted=true;if(o.k>=0&&o.k<64)mySod=o.k|0;
- if(o.n>=1&&o.n<=4)MODE=o.n|0;if(o.tm===0||o.tm===1)TEAM=o.tm;
+ if([1,2,3,4,50].includes(o.n))MODE=o.n|0;DM=MODE===50;if(typeof o.name=='string'&&o.name.trim())myName=o.name.trim().slice(0,16);if(o.tm===0||o.tm===1)TEAM=o.tm;
  if(m){LEN=m[0];t=LEN;lb('sl',m[1])}
  if(o.d>=0&&o.d<3){DF=o.d;lb('sd',DS[DF])}
  if(typeof o.c=='boolean'){ballCam=o.c;lb('cm',ballCam?CS[0]:CS[1])}}catch(e){}
-lb('sn',muted?'Off':'On');lb('dr',SOD.names[mySod]);lb('md',MN[MODE-1]);lb('tb',TNM[TEAM]);setMenuCar();
+lb('sn',muted?'Off':'On');lb('dr',SOD.names[mySod]);lb('md',MODE===50?MN[4]:MN[MODE-1]);lb('tb',TNM[TEAM]);if($('lname'))$('lname').value=myName;setMenuCar();
 document.querySelectorAll('.mi').forEach(el=>{
  el.onmouseenter=el.onfocus=()=>$('ds').textContent=el.dataset.d;
 });
-function pause(v){pz=v;$('pz').classList.toggle('on',!!v)}
+function pause(v){pz=v;$('pz').classList.toggle('on',!!v);if(v){mobileControls.classList.remove('active');Object.keys(K).forEach(k=>K[k]=0)}}
 $('rs').onclick=()=>pause(0);
 $('rt').onclick=()=>{pause(0);start()};
 $('mm').onclick=()=>{pause(0);menu()};
@@ -632,7 +689,7 @@ cars.forEach(c=>{
   m.rotation.x=(c.y>0?-clamp(c.vy*.03,-.5,.5):0)+fl;
   m.userData.f.visible=c.bs&&c.bo>0;
   c.sb.rotation.y=Math.atan2(C.position.x-c.x,C.position.z-c.z)-c.h;
-  c.sb.position.y=3.2+Math.sin(ts*.011+c.slot*1.7+c.team*3)*.045*(Math.hypot(c.vx,c.vz)>3?1:.35);
+  c.sb.position.y=3.2+Math.sin(ts*.011+c.slot*1.7+c.team*3)*.045*(Math.hypot(c.vx,c.vz)>3?1:.35);c.nameTag.rotation.y=Math.atan2(C.position.x-c.x,C.position.z-c.z)-c.h;
  });
  pads.forEach(p=>{p.pulse+=dt*2.2;if(p.t<=0){p.g.rotation.z+=dt*.9;p.g.scale.setScalar(1+Math.sin(p.pulse)*.07);p.m.scale.setScalar(1+Math.sin(p.pulse)*.04)}});
  B.m.position.set(B.x,B.y,B.z);
@@ -652,7 +709,7 @@ cars.forEach(c=>{
  $('bf').style.width=cars[me].bo+'%';
  $('bn').textContent=Math.round(cars[me].bo);
  $('bx').classList.toggle('low',cars[me].bo<20);
- document.body.classList.toggle('m',st=='menu'||st=='end');
+ document.body.classList.toggle('m',st=='menu'||st=='end');refreshMobileControls();
  if(st=='kickoff'){const n=Math.ceil(kc-.15);$('msg').textContent=n>0?n:'';if(n!=lastN){lastN=n;if(n>0)sfx('beep')}}
  CU.uT.value=ts/1000;CU.uC.value=Math.min(1,cheer);cheer=Math.max(0,cheer-dt*.35);R.render(S,C);
 }
@@ -663,25 +720,25 @@ const PN=id=>id==0?'Host':'Player '+(id+1);
 function renderLobby(){
  if(!room)return;const r=room.r,n=room.m,host=myId==0,mine=r.find(a=>a[0]==myId);
  [0,1].forEach(tm=>{const hs=r.filter(a=>a[1]==tm),rows=[];
-  hs.forEach(a=>rows.push('<div>'+PN(a[0])+(a[0]==myId?' (you)':'')+(a[2]||a[0]==0?' \u2713':'')+'</div>'));
+  hs.forEach(a=>rows.push('<div>'+String(a[4]||PN(a[0])).replace(/[<>]/g,'')+(a[0]==myId?' (you)':'')+(a[2]||a[0]==0?' \u2713':'')+'</div>'));
   for(let k=hs.length;k<n;k++)rows.push('<div class="bt">Bot</div>');
   $('t'+tm).innerHTML=rows.join('');
   const jb=$('j'+tm);jb.disabled=!!(mine&&mine[1]==tm)||hs.length>=n;jb.style.opacity=jb.disabled?.45:1});
- $('lm').textContent='Mode: '+MN[n-1];$('lm').disabled=!host;$('lm').style.opacity=host?1:.6;
+ $('lm').textContent='Mode: '+(n===50?MN[4]:MN[n-1]);$('lm').disabled=!host;$('lm').style.opacity=host?1:.6;
  $('lr').textContent=host?'Start match':(mine&&mine[2]?'Cancel ready':'Ready');
  const hum=r.length,bots=2*n-hum;$('lp').textContent=hum+' player'+(hum>1?'s':'')+' \u00b7 '+bots+' bot'+(bots==1?'':'s')+' fill the rest';
 }
-function buildRoster(){const n=room.m,r=[];[0,1].forEach(tm=>{const hs=room.r.filter(a=>a[1]==tm);for(let k=0;k<n;k++){const h=hs[k];r.push(h?[tm,h[0],h[0]==myId?mySod:h[3]]:[tm,-1,Math.random()*64|0])}});return r}
-function toLobby(){net=0;netHost=false;menu();$('ov').style.display='none';lob.classList.add('on');$s('l0',!ws);$s('l1',!!ws);if(ws&&ws.readyState==1)ws.send(JSON.stringify({t:'hi',k:mySod}));renderLobby()}
+function buildRoster(){const n=room.m,r=[];[0,1].forEach(tm=>{const hs=room.r.filter(a=>a[1]==tm);for(let k=0;k<n;k++){const h=hs[k];r.push(h?[tm,h[0],h[3],h[4]||PN(h[0])]:[tm,-1,Math.random()*64|0,'Bot '+(k+1)])}});return r}
+function toLobby(){net=0;netHost=false;menu();$('ov').style.display='none';lob.classList.add('on');$s('l0',!ws);$s('l1',!!ws);if(ws&&ws.readyState==1)ws.send(JSON.stringify({t:'hi',k:mySod,name:myName}));renderLobby()}
 function leave(){if(ws){ws.onclose=null;ws.close();ws=null}net=0;netHost=false;room=null;myId=0}
 let curCode='';
 function conn(code,mk){curCode=code;
  if(WS_URL.includes('YOUR-SUBDOMAIN'))return lerr('Set WS_URL to your deployed Worker.');
- leave();lerr('Connecting...');const w=ws=new WebSocket(WS_URL+'?room='+code+'&mk='+mk+'&tp='+TEAM+'&m='+MODE+'&k='+mySod);
+ leave();lerr('Connecting...');const w=ws=new WebSocket(WS_URL+'?room='+code+'&mk='+mk+'&tp='+TEAM+'&m='+MODE+'&k='+mySod+'&name='+encodeURIComponent(myName));
  w.onopen=()=>{lerr('');$('lcode').textContent='Party code: '+code;$s('l0',0);$s('l1',1)};
  w.onmessage=e=>{let m;try{m=JSON.parse(e.data)}catch(x){return}
   if(m.t=='none'||m.t=='full'||m.t=='busy'){lerr(m.t=='none'?'No party with that code.':m.t=='busy'?'That match is already in progress.':'That party is full.');leave();$s('l0',1);$s('l1',0)}
-  else if(m.t=='room'){room=m;myId=m.you;netHost=myId==0;
+  else if(m.t=='room'){room=m;MODE=m.m;DM=MODE===50;myId=m.you;netHost=myId==0;
    if(net==1&&netHost)cars.forEach(c=>{if(c.kind=='net'&&!m.r.some(a=>a[0]==c.pid)){c.kind='bot';c.pid=-1}});
    renderLobby()}
   else if(m.t=='err')lerr(m.m);
@@ -690,7 +747,7 @@ function conn(code,mk){curCode=code;
   else if(m.t=='in'){const c=cars.find(c=>c.kind=='net'&&c.pid==m.id);if(c){c.in.th=m.th;c.in.st=m.st;c.in.bo=m.bo;if(m.j)c.in.j=1}}
   else if(m.t=='s'&&net==1&&!netHost)tgt=m};
  w.onclose=()=>{if(ws==w){leave();toLobby();lerr('Disconnected.')}}}
-function begin(mm,r){net=1;tgt=null;netHost=myId==0;lob.classList.remove('on');lerr('');setupMatch(r,myId);beginMatch()}
+function begin(mm,r){MODE=mm;DM=MODE===50;net=1;tgt=null;netHost=myId==0;lob.classList.remove('on');lerr('');setupMatch(r,myId);beginMatch()}
 function netStep(ts,dt){
  if(net!=1||!ws||ws.readyState!=1)return;
  if(netHost){if(ts-ssend>33){ssend=ts;ws.send(JSON.stringify({t:'s',c:cars.map(c=>[c.x,c.y,c.z,c.h,c.vx,c.vy,c.vz,c.bo,c.bs?1:0,c.dead>0?1:0,c.flipT,c.flipDir].map(r2)),b:[B.x,B.y,B.z,B.vx,B.vy,B.vz].map(r2),sc,tm:r2(t),o:over?1:0,kc:r2(kc),st,pd:pads.map(p=>p.t<=0?1:0).join('')}))}return}
@@ -705,23 +762,25 @@ function netStep(ts,dt){
  B.x+=(m.b[0]-B.x)*bk;B.y+=(m.b[1]-B.y)*bk;B.z+=(m.b[2]-B.z)*bk;B.vx=m.b[3];B.vy=m.b[4];B.vz=m.b[5];
  const rs=Math.hypot(B.vx,B.vz);if(rs>.2)B.m.rotateOnWorldAxis(new THREE.Vector3(B.vz,0,-B.vx).normalize(),rs*dt/BR);
  pads.forEach((p,i)=>{const v=m.pd[i]=='1';if(p.m.visible&&!v){boom(p.x,.5,p.z,0xffc94a,p.amt>50?18:5,p.amt>50?18:8);if(Math.hypot(cars[me].x-p.x,cars[me].z-p.z)<6)sfx('pad')}p.m.visible=p.g.visible=v});
- sc=m.sc;t=m.tm;kc=m.kc;if(m.o&&!over){flash('OVERTIME',2.2,'#ffd24a');sfx('whistle')}over=!!m.o;B.m.visible=m.st!='goal';
+ sc=m.sc;t=m.tm;kc=m.kc;if(m.o&&!over){flash('OVERTIME',2.2,'#ffd24a');sfx('whistle')}over=!!m.o;B.m.visible=!DM&&m.st!='goal';
  if(m.st!=st){
   if(m.st=='goal'){const w=m.sc[1]>old[1]?1:0;flash(w?'ORANGE GOAL!':'BLUE GOAL!',3.1,w?'#ffb066':'#7fc0ff');boom(0,5,(w?1:-1)*(L/2+2),w?0xff8a1f:0x2f8cff,70,36);shake=1.2;cheer=1.2;sfx('goal')}
   else if(m.st=='play'&&st=='kickoff'){flash('GO!',.8);sfx('go')}
   st=m.st;if(st=='end')endMatch()}}
+$('lname').value=myName;$('lname').onchange=()=>{myName=$('lname').value.trim().slice(0,16)||'Player';$('lname').value=myName;sv();if(ws&&ws.readyState==1)ws.send(JSON.stringify({t:'name',v:myName}))};
 $('on').onclick=()=>{if(net==1)return toLobby();lerr('');lob.classList.add('on');$('ov').style.display='none';$s('l0',!ws);$s('l1',!!ws);renderLobby()};
 $('lc').onclick=()=>conn([...Array(4)].map(()=>'ABCDEFGHJKMNPQRSTUVWXYZ'[Math.random()*23|0]).join(''),1);
 $('lg').onclick=()=>{const c=$('lj').value.trim().toUpperCase();c.length>=4?conn(c,0):lerr('Enter the 4-letter code.')};
 $('lr').onclick=()=>{if(!ws||ws.readyState!=1||!room)return;
  if(myId==0){const w=room.r.filter(a=>a[0]!=0&&!a[2]).length;if(w)return lerr(w+' player'+(w>1?'s':'')+' not ready yet.');lerr('');ws.send(JSON.stringify({t:'go',r:buildRoster()}))}
  else{const a=room.r.find(a=>a[0]==myId);ws.send(JSON.stringify({t:'ready',v:a&&a[2]?0:1}))}};
-$('lm').onclick=()=>{if(ws&&room&&myId==0)ws.send(JSON.stringify({t:'mode',v:room.m%4+1}))};
+$('lm').onclick=()=>{if(ws&&room&&myId==0){const a=[1,2,3,4,50],i=a.indexOf(room.m);ws.send(JSON.stringify({t:'mode',v:a[(i+1)%a.length]}))}};
 $('j0').onclick=()=>{if(ws)ws.send(JSON.stringify({t:'team',v:0}))};
 $('j1').onclick=()=>{if(ws)ws.send(JSON.stringify({t:'team',v:1}))};
 $('lk').onclick=()=>{const u=location.href.split(/[?#]/)[0]+'?room='+curCode;navigator.clipboard?navigator.clipboard.writeText(u).then(()=>lerr('Invite link copied.'),()=>lerr(u)):lerr(u)};
 $('lj').onkeydown=e=>{if(e.key=='Enter')$('lg').click()};
-addEventListener('blur',()=>{if(!net&&!pz&&(st=='play'||st=='goal'||st=='kickoff'))pause(1)});
+addEventListener('blur',()=>{Object.keys(K).forEach(k=>K[k]=0);mobileControls.querySelectorAll('button').forEach(b=>b.classList.remove('down'));if(!net&&!pz&&(st=='play'||st=='goal'||st=='kickoff'))pause(1)});
+document.addEventListener('visibilitychange',()=>{if(document.hidden){Object.keys(K).forEach(k=>K[k]=0);jr=0;mobileControls.querySelectorAll('button').forEach(b=>b.classList.remove('down'))}});
 addEventListener('keydown',e=>{if(e.code=='KeyM'&&document.activeElement!==$('lj'))$('sn').click();if(e.code=='KeyF'&&document.activeElement!==$('lj')){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen()}});
 {const q=new URLSearchParams(location.search).get('room');if(q){lob.classList.add('on');$('ov').style.display='none';conn(q.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,6),0)}}
 $('lx').onclick=()=>{leave();lob.classList.remove('on');menu()};
