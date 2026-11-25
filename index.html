@@ -521,11 +521,39 @@ body.touch-device #mobileControls.active{display:block}
  .mi{margin-bottom:3px}
  #ft{min-height:44px}
 }
+
+/* ===== Simple touch controls: one stick drives and steers, two round buttons act. ===== */
+#mobileControls .stick-wrap{bottom:max(14px,env(safe-area-inset-bottom));left:max(14px,env(safe-area-inset-left));width:clamp(126px,31vw,164px);height:clamp(126px,31vw,164px)}
+#mobileControls .stick-wrap small{display:none}
+#mobileControls #stickBase{border-color:#ffffff4d;background:radial-gradient(circle at 50% 42%,#ffffff16,#08101f99)}
+#mobileControls #stickNub{width:44%;height:44%;left:28%;top:28%;background:linear-gradient(150deg,#eaf5ff,#3d8de2)}
+#mobileControls .touch-actions{display:flex;flex-direction:row;align-items:flex-end;gap:12px;grid-template-columns:none;grid-template-rows:none;right:max(12px,env(safe-area-inset-right))}
+#mobileControls .touch-actions .touch-boost{grid-column:auto;grid-row:auto;width:clamp(62px,16vw,80px);height:clamp(62px,16vw,80px);border-radius:50%;margin-bottom:clamp(36px,10vw,52px);font-size:clamp(11px,2.6vw,13px);background:#e97820e0}
+#mobileControls .touch-actions .touch-jump{grid-column:auto;grid-row:auto;width:clamp(88px,23vw,114px);height:clamp(88px,23vw,114px);border-radius:50%;font-size:clamp(12px,3vw,15px);background:#2878d4e8}
+#mobileControls .touch-cam{position:absolute;right:max(10px,env(safe-area-inset-right));top:calc(64px + env(safe-area-inset-top));bottom:auto;width:62px;height:30px;border-radius:9px;font-size:9px;letter-spacing:.1em;background:#101c35d4}
+#mobileControls .touch-actions button:active,#mobileControls .touch-actions button.down{filter:brightness(1.3);transform:scale(.94)}
+body.touch-device #bx{left:max(10px,env(safe-area-inset-left));bottom:calc(env(safe-area-inset-bottom) + 152px);top:auto;width:112px;height:14px;border-radius:7px}
+body.touch-device #bn{font:italic 800 10px/14px system-ui,sans-serif}
+@media (orientation:landscape) and (max-height:520px){#mobileControls .stick-wrap{width:clamp(104px,26vh,132px);height:clamp(104px,26vh,132px);bottom:max(8px,env(safe-area-inset-bottom))}#mobileControls .touch-actions{gap:9px;bottom:max(10px,env(safe-area-inset-bottom))}body.touch-device #bx{bottom:calc(env(safe-area-inset-bottom) + 120px);width:96px}}
+/* Music switch art + panes */
+.nav-coco{width:44px;height:44px;flex:0 0 auto;border-radius:10px;object-fit:cover;object-position:50% 20%;background:#fff;border:1px solid #ffffff3d;box-shadow:0 4px 12px #0006}
+.nav-choice.with-art{justify-content:flex-start;gap:11px}
+.nav-choice .nav-lbl{flex:1;text-align:left;font:italic 900 11.5px/1.25 system-ui,sans-serif;letter-spacing:.07em;text-transform:uppercase}
+.nav-choice .nav-state{font:900 11px system-ui;color:#8fcaff;letter-spacing:.06em}
+.nav-choice .nav-state.off{color:#ff9090}
+#lobMusic,#pzMusic,#npzMusic{font-weight:900}
+.npad{margin:10px 0 0;color:#a9c4e2;font:600 11px/1.5 system-ui,sans-serif!important}
+/* Control hints shown over the pitch during a match */
+#hud>div#ctrlHint{position:fixed;left:50%;transform:translateX(-50%);top:calc(64px + env(safe-area-inset-top,0px));z-index:4;display:none;flex-direction:row;gap:6px;align-items:center;flex-wrap:wrap;justify-content:center;max-width:78vw;min-width:0;padding:0;border:0;border-radius:0;background:none;box-shadow:none;backdrop-filter:none;pointer-events:none}
+#hud>div#ctrlHint.on{display:flex}
+#hud>div#ctrlHint span{display:inline-flex;align-items:center;gap:5px;padding:4px 8px;border-radius:8px;background:#08101fc4;border:1px solid #ffffff24;color:#d7e7fb;font:800 10px system-ui;letter-spacing:.07em}
+#hud>div#ctrlHint b{display:inline-grid;place-items:center;min-width:19px;height:19px;padding:0 5px;border-radius:5px;background:#eaf3ff;color:#0a1322;font:900 10px system-ui}
 </style></head><body>
 <div id="hud">
   <div class="sc" style="--t:var(--bl)"><em>BLUE</em><b id="sb">0</b></div>
   <div id="tm">5:00</div>
   <div class="sc" style="--t:var(--or)"><em>ORANGE</em><b id="so">0</b></div>
+  <div id="ctrlHint" aria-live="polite"></div>
 </div>
 <div id="bx"><i id="bf"></i><span id="bn">33</span></div>
 <div id="msg"></div>
@@ -553,7 +581,7 @@ body.touch-device #mobileControls.active{display:block}
   <div class="nk">Get ready</div>
   <h2>Sod League<br>is here.</h2>
   <p class="nlead">Choose rocket-powered car soccer or 50v50 Deathmatch. Play with bots or friends.</p>
-  <div class="nsec"><h3>How to play</h3><div class="nkeys"><kbd>W A S D</kbd><kbd>Space</kbd><kbd>Shift</kbd><kbd>C</kbd><kbd>Esc</kbd><kbd>F</kbd><kbd>M</kbd></div><p>Drive with WASD, jump and flip with Space, boost with Shift. Tap C for ball cam, F for fullscreen, M to mute.</p></div>
+  <div class="nsec"><h3>How to play</h3><div class="nkeys"><kbd>W A S D</kbd><kbd>Space</kbd><kbd>Shift</kbd><kbd>C</kbd><kbd>Esc</kbd><kbd>F</kbd><kbd>M</kbd></div><p>Drive with WASD, jump and flip with Space, boost with Shift. Tap C for ball cam, F for fullscreen, M to mute.</p><p id="padHowto" class="npad">Plug in a controller to play with an Xbox, PlayStation or Switch pad.</p></div>
   <div class="nsec"><h3>How to win</h3><p>Big pads give 100 boost, small pads 12. In 50v50 Deathmatch, the first team to 500 eliminations wins.</p></div>
   <div class="nlogos"><span>Blue</span><span>Orange</span><span>Overtime</span></div>
 </aside>
@@ -564,22 +592,21 @@ body.touch-device #mobileControls.active{display:block}
   <div class="hint">Press <kbd>Space</kbd> to play</div>
 </footer></div>
 <div id="lob"><div><h2>Multiplayer</h2><input id="lname" maxlength="16" placeholder="Your lobby name" autocomplete="nickname"><div id="l0"><button id="lc">Create party</button><input id="lj" maxlength="6" placeholder="CODE"><button id="lg">Join party</button></div>
-<div id="l1" style="display:none"><p id="lcode"></p><select id="lm" aria-label="Game mode"><option value="1">1v1 \u00b7 Compact</option><option value="2">2v2 Skirmish \u00b7 Compact</option><option value="3">3v3 \u00b7 Medium</option><option value="4">4v4 \u00b7 Large</option><option value="50">50v50 Deathmatch \u00b7 Huge</option></select><div id="lt"><div class="tc b"><b>BLUE</b><div id="t0"></div><button id="j0" class="alt">Join Blue</button></div><div class="tc o"><b>ORANGE</b><div id="t1"></div><button id="j1" class="alt">Join Orange</button></div></div><p id="lp"></p><button id="lr">Ready</button><button id="lk" class="alt">Copy invite link</button></div><p id="le"></p><button id="lx" class="alt">Back</button></div></div>
+<div id="l1" style="display:none"><p id="lcode"></p><select id="lm" aria-label="Game mode"><option value="1">1v1 \u00b7 Compact</option><option value="2">2v2 Skirmish \u00b7 Compact</option><option value="3">3v3 \u00b7 Medium</option><option value="4">4v4 \u00b7 Large</option><option value="50">50v50 Deathmatch \u00b7 Huge</option></select><div id="lt"><div class="tc b"><b>BLUE</b><div id="t0"></div><button id="j0" class="alt">Join Blue</button></div><div class="tc o"><b>ORANGE</b><div id="t1"></div><button id="j1" class="alt">Join Orange</button></div></div><p id="lp"></p><button id="lr">Ready</button><button id="lk" class="alt">Copy invite link</button></div><p id="le"></p><button id="lobMusic" class="alt">Music: on</button><button id="lx" class="alt">Back</button></div></div>
 
 <div id="mobileControls" aria-label="Touch driving controls">
- <div class="stick-wrap"><div id="stickBase"><div id="stickNub"></div></div><small>STEER</small></div>
+ <div class="stick-wrap"><div id="stickBase"><div id="stickNub"></div></div></div>
  <div class="touch-actions">
-  <button data-key="KeyS" class="touch-brake">BRAKE</button>
-  <button data-action="jump" class="touch-jump">JUMP</button>
   <button data-key="ShiftLeft" class="touch-boost">BOOST</button>
-  <button data-action="cam" class="touch-cam">CAM</button>
+  <button data-action="jump" class="touch-jump">JUMP</button>
  </div>
+ <button data-action="cam" class="touch-cam">CAM</button>
 </div>
 <div id="lockerPanel"><div class="feature-wrap"><div class="feature-head"><h2>🔧 THE LOCKER</h2><button id="lockerClose">CLOSE ✕</button></div><p class="feature-muted">Build your own look. Your selections save automatically.</p><div class="feature-grid"><div class="feature-card"><strong>Base Sod</strong><p id="lockerSodName">Classic</p><div class="feature-actions"><button id="sodPrev">◀</button><button id="sodNext">▶</button></div></div><div class="feature-card"><strong>Hat</strong><p id="lockerHatName">None</p><div class="feature-actions"><button id="hatPrev">◀</button><button id="hatNext">▶</button></div></div><div class="feature-card"><strong>Car Model</strong><p id="lockerCarName">Street Racer</p><div class="feature-actions"><button id="carPrev">◀</button><button id="carNext">▶</button></div></div><div class="feature-card"><strong>Car Decal</strong><p id="lockerDecalName">Classic Stripe</p><div class="feature-actions"><button id="decalPrev">◀</button><button id="decalNext">▶</button></div></div></div><p id="lockerNotice" class="feature-muted">Some cosmetics unlock through the League Pass.</p><button id="lockerPass">VIEW LEAGUE PASS</button></div></div>
 <div id="passPanel"><div class="feature-wrap"><div class="feature-head"><h2>🏆 SOD LEAGUE PASS</h2><button id="passClose">CLOSE ✕</button></div><p>Play matches, score goals and get eliminations to earn XP. Progress is saved on this device.</p><div style="display:flex;justify-content:space-between;gap:10px"><b id="passLevel">TIER 1 / 30</b><b id="passXP">0 XP</b></div><div class="progress-rail"><i id="passFill"></i></div><div class="pass-track" id="passRewards"></div><p class="feature-muted" id="passRefresh">Weekly pass · refreshes every Monday (UTC).</p><p class="feature-muted">Earn XP: elimination +25 · goal +40 · match completed +100 · win bonus +75.</p><button id="passToLocker">OPEN LOCKER</button></div></div>
 <button id="pmBtn" aria-label="Pause menu">II</button>
-<div id="npz"><div><h2>Menu</h2><small>The match keeps running while this menu is open.</small><button id="npzResume">Resume</button><button id="npzEnd" class="danger" style="display:none">End match for everyone</button><button id="npzLeave" class="alt">Leave match</button></div></div>
-<div id="pz"><div><h2>Paused</h2><button id="rs">Resume</button><button id="rt">Restart match</button><button id="mm">Main menu</button></div></div>
+<div id="npz"><div><h2>Menu</h2><small>The match keeps running while this menu is open.</small><button id="npzResume">Resume</button><button id="npzMusic" class="alt">Music: on</button><button id="npzEnd" class="danger" style="display:none">End match for everyone</button><button id="npzLeave" class="alt">Leave match</button></div></div>
+<div id="pz"><div><h2>Paused</h2><button id="rs">Resume</button><button id="pzMusic" class="alt">Music: on</button><button id="rt">Restart match</button><button id="mm">Main menu</button></div></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 const W=180,L=260,H=90,GW=42,GH=24,GD=20,BR=3,SZ=-L/2+28,P=Math.PI,$=id=>document.getElementById(id);
@@ -964,7 +991,7 @@ function mkPad(x,z,amt,cool,r,color){
 // ---------- state ----------
 const K={};let passXP=0,passWeek='';
 const currentPassWeek=()=>{const d=new Date(),day=(d.getUTCDay()+6)%7;d.setUTCDate(d.getUTCDate()-day);return d.toISOString().slice(0,10)};
-let carModel=0,carDecal=0;const CAR_MODELS=['Street Racer','Rally Buggy','Aero GT','Heavy Hauler','Neon Sprint','League Legend'];const CAR_DECALS=['Classic Stripe','Lightning','Checkerboard','Flames','Starburst','Champion Gold'];const PASS_REWARDS=['Mint Sod','Carbon Hat','Rally Buggy','Lightning Decal','Galaxy Sod','Aero GT','Crown Hat','Flame Decal','Gold Sod','Heavy Hauler','Neon Hat','Starburst Decal','Crystal Sod','Neon Sprint','Champion Hat','Gold Stripe','Shadow Sod','League Legend Car','Royal Crown','Champion Gold Decal','Frost Sod','Turbo Trail','Cosmic Hat','Diamond Decal','Magma Sod','Platinum Body','Victory Crown','Prism Decal','Legend Sod','Ultimate Champion Car'];let practiceMap=1,PRACTICE=false,practiceSavedMode=null,npzOpen=false,earlyEnd=false;let jr=0,ballCam=false,st='menu',t=300,gt=0,sc=[0,0],LEN=300,DF=1,pz=0,over=false,kc=0,msgT=0,shake=0,me=0,net=0,cheer=0,ws=null,tgt=null,lsend=0,ssend=0,muted=false,mySod=0,myHat=0,lastN=0,MODE=1,TEAM=0,netHost=false,myId=0,room=null,myName='Player',DM=false;
+let carModel=0,carDecal=0;const CAR_MODELS=['Street Racer','Rally Buggy','Aero GT','Heavy Hauler','Neon Sprint','League Legend'];const CAR_DECALS=['Classic Stripe','Lightning','Checkerboard','Flames','Starburst','Champion Gold'];const PASS_REWARDS=['Mint Sod','Carbon Hat','Rally Buggy','Lightning Decal','Galaxy Sod','Aero GT','Crown Hat','Flame Decal','Gold Sod','Heavy Hauler','Neon Hat','Starburst Decal','Crystal Sod','Neon Sprint','Champion Hat','Gold Stripe','Shadow Sod','League Legend Car','Royal Crown','Champion Gold Decal','Frost Sod','Turbo Trail','Cosmic Hat','Diamond Decal','Magma Sod','Platinum Body','Victory Crown','Prism Decal','Legend Sod','Ultimate Champion Car'];let practiceMap=1,PRACTICE=false,practiceSavedMode=null,npzOpen=false,earlyEnd=false;let jr=0,ballCam=false,st='menu',t=300,gt=0,sc=[0,0],LEN=300,DF=1,pz=0,over=false,kc=0,msgT=0,shake=0,me=0,net=0,cheer=0,ws=null,tgt=null,lsend=0,ssend=0,muted=false,musicMuted=false,mySod=0,myHat=0,lastN=0,MODE=1,TEAM=0,netHost=false,myId=0,room=null,myName='Player',DM=false;
 addEventListener('keydown',e=>{
  if(e.repeat){K[e.code]=1}else K[e.code]=1;
  if(e.code=='Space'&&!e.repeat)jr=1;
@@ -979,16 +1006,17 @@ addEventListener('keyup',e=>{K[e.code]=0});
 // Touch stick axes live beside the keyboard keys so releasing one input never
 // cancels the other (holding BRAKE while steering used to leave KeyS stuck).
 const stickAxis={x:0,y:0,on:false};
-const pin=()=>{const j=jr;jr=0;if(npzOpen)return{th:0,st:0,bo:false,j:0};
- const tf=stickAxis.on&&stickAxis.y<-.22,tb=stickAxis.on&&stickAxis.y>.22,tl=stickAxis.on&&stickAxis.x<-.18,tr=stickAxis.on&&stickAxis.x>.18;
- return{th:(K.KeyW||K.ArrowUp||tf?1:0)-(K.KeyS||K.ArrowDown||tb?1:0),st:(K.KeyD||K.ArrowRight||tr?1:0)-(K.KeyA||K.ArrowLeft||tl?1:0),bo:!!(K.ShiftLeft||K.ShiftRight),j}};
+const pin=()=>{const j=jr||pad.jump;jr=0;pad.jump=0;if(npzOpen)return{th:0,st:0,bo:false,j:0};
+ const pa=pad.active?pad:{ax:0,ay:0,boost:false};
+ const tf=(stickAxis.on&&stickAxis.y<-.22)||pa.ay<-.26,tb=(stickAxis.on&&stickAxis.y>.22)||pa.ay>.26,tl=(stickAxis.on&&stickAxis.x<-.18)||pa.ax<-.2,tr=(stickAxis.on&&stickAxis.x>.18)||pa.ax>.2;
+ return{th:(K.KeyW||K.ArrowUp||tf?1:0)-(K.KeyS||K.ArrowDown||tb?1:0),st:(K.KeyD||K.ArrowRight||tr?1:0)-(K.KeyA||K.ArrowLeft||tl?1:0),bo:!!(K.ShiftLeft||K.ShiftRight||pa.boost),j}};
 // Detect an actual touch/coarse-pointer device; desktop users keep keyboard controls only.
 if(touchDevice())document.body.classList.add('touch-device');
 function refreshMobileControls(){
- const active=touchDevice()&&['play','kickoff','goal'].includes(st)&&!pz;
+ const active=touchDevice()&&['play','kickoff','goal'].includes(st)&&!pz&&!npzOpen;
  mobileControls.classList.toggle('active',active);
 }
-mobileControls.querySelectorAll('.touch-actions button').forEach(btn=>{
+mobileControls.querySelectorAll('button').forEach(btn=>{
  const key=btn.dataset.key,action=btn.dataset.action;
  const down=e=>{e.preventDefault();btn.classList.add('down');try{btn.setPointerCapture(e.pointerId)}catch(_){}if(key)K[key]=1;if(action==='jump')jr=1;if(action==='cam'){ballCam=!ballCam;flash(ballCam?'BALL CAM':'CAR CAM',.8);$('cm').querySelector('b').textContent=ballCam?'Ball cam':'Car cam';sv()}};
  const up=e=>{if(e)e.preventDefault();btn.classList.remove('down');if(key)K[key]=0};
@@ -1000,6 +1028,68 @@ function stickEnd(e){if(e&&stickPid!==e.pointerId)return;stickPid=null;stickAxis
 mobileControls.addEventListener('contextmenu',e=>e.preventDefault());
 mobileControls.addEventListener('touchstart',e=>e.preventDefault(),{passive:false});
 stick.addEventListener('pointerdown',e=>{e.preventDefault();stickPid=e.pointerId;stick.setPointerCapture(e.pointerId);stickMove(e)});stick.addEventListener('pointermove',e=>{e.preventDefault();stickMove(e)});['pointerup','pointercancel','lostpointercapture'].forEach(ev=>stick.addEventListener(ev,stickEnd));
+
+// ---------- gamepads: Xbox, PlayStation and Switch ----------
+const PAD_LAYOUT={
+ xbox:{jump:0,boost:2,cam:3,brake:1,pause:9,label:'Xbox controller',glyph:{jump:'A',boost:'X',cam:'Y',brake:'B',pause:'☰'}},
+ playstation:{jump:0,boost:2,cam:3,brake:1,pause:9,label:'PlayStation controller',glyph:{jump:'✕',boost:'□',cam:'△',brake:'○',pause:'OPTIONS'}},
+ switch:{jump:0,boost:3,cam:2,brake:1,pause:9,label:'Switch controller',glyph:{jump:'B',boost:'X',cam:'Y',brake:'A',pause:'+'}},
+ generic:{jump:0,boost:2,cam:3,brake:1,pause:9,label:'Controller',glyph:{jump:'1',boost:'3',cam:'4',brake:'2',pause:'START'}}};
+const pad={active:false,kind:'generic',ax:0,ay:0,boost:false,brake:false,jump:0,on:{}};
+function padKind(id){const s=String(id||'').toLowerCase();
+ if(/054c|dualsense|dualshock|playstation|sony/.test(s))return'playstation';
+ if(/057e|nintendo|switch|joy-?con|pro controller/.test(s))return'switch';
+ if(/045e|xbox|xinput|microsoft/.test(s))return'xbox';return'generic'}
+function ctrlHintHTML(){
+ if(!pad.active)return [['W A S D','DRIVE'],['SPACE','JUMP'],['SHIFT','BOOST'],['C','CAM'],['ESC','PAUSE']].map(([k,v])=>`<span><b>${k}</b>${v}</span>`).join('');
+ const g=PAD_LAYOUT[pad.kind].glyph;
+ return [['JUMP',g.jump],['BOOST',g.boost],['CAM',g.cam],['PAUSE',g.pause]].map(([v,k])=>`<span><b>${k}</b>${v}</span>`).join('');
+}
+function renderCtrlHint(){
+ const el=$('ctrlHint');if(el){el.innerHTML=ctrlHintHTML();el.classList.toggle('on',pad.active||!touchDevice())}
+ const ph=$('padHowto');if(ph)ph.textContent=pad.active?`${PAD_LAYOUT[pad.kind].label}: ${PAD_LAYOUT[pad.kind].glyph.jump} jump · ${PAD_LAYOUT[pad.kind].glyph.boost} boost · ${PAD_LAYOUT[pad.kind].glyph.cam} ball cam · ${PAD_LAYOUT[pad.kind].glyph.pause} pause`:'Plug in a controller to play with an Xbox, PlayStation or Switch pad.';
+}
+function pollPad(){
+ const gp=navigator.getGamepads?navigator.getGamepads():null;let g=null;
+ if(gp)for(let i=0;i<gp.length;i++){const p=gp[i];if(p&&p.connected){g=p;break}}
+ if(!g){if(pad.active){pad.active=false;pad.ax=pad.ay=0;pad.boost=false;pad.brake=false;renderCtrlHint()}return}
+ const kind=padKind(g.id);
+ if(kind!==pad.kind||!pad.active){pad.kind=kind;pad.active=true;renderCtrlHint();flash((PAD_LAYOUT[kind].label+' connected').toUpperCase(),1.4)}
+ const ax=(g.axes&&g.axes[0])||0,ay=(g.axes&&g.axes[1])||0;
+ pad.ax=Math.abs(ax)>.16?clamp(ax,-1,1):0;pad.ay=Math.abs(ay)>.16?clamp(ay,-1,1):0;
+ const L=PAD_LAYOUT[pad.kind],btn=i=>{const b=g.buttons&&g.buttons[i];return !!b&&(b.pressed||b.value>.35)};
+ const jump=btn(L.jump),cam=btn(L.cam),pzBtn=btn(L.pause);
+ pad.boost=btn(L.boost)||btn(7);pad.brake=btn(L.brake);
+ if(jump&&!pad.on.jump)pad.jump=1;
+ if(cam&&!pad.on.cam){ballCam=!ballCam;flash(ballCam?'BALL CAM':'CAR CAM',.8);const cm=$('cm');if(cm)cm.querySelector('b').textContent=ballCam?'Ball cam':'Car cam';sv()}
+ if(pzBtn&&!pad.on.pause&&(st=='play'||st=='goal'||st=='kickoff')){if(net==1&&!npzOpen)netPause(true);else if(!net&&!pz)pause(true)}
+ pad.on.jump=jump;pad.on.cam=cam;pad.on.pause=pzBtn;
+}
+addEventListener('gamepadconnected',e=>{pad.kind=padKind(e.gamepad&&e.gamepad.id);pad.active=true;renderCtrlHint()});
+addEventListener('gamepaddisconnected',()=>{pad.active=false;pad.ax=pad.ay=0;pad.boost=false;pad.brake=false;renderCtrlHint()});
+
+// ---------- music mute ----------
+function musicOff(){return muted||musicMuted}
+function syncMusicBtns(){
+ const off=musicOff();
+ document.querySelectorAll('[data-music]').forEach(el=>{el.textContent=off?'OFF':'ON';el.classList.toggle('off',off)});
+ if($('lobMusic'))$('lobMusic').textContent=off?'🔇 Music off':'🔊 Music on';
+ if($('pzMusic'))$('pzMusic').textContent=off?'Music: off':'Music: on';
+ if($('npzMusic'))$('npzMusic').textContent=off?'Music: off':'Music: on';
+}
+function toggleMusic(){
+ musicMuted=!musicMuted;
+ if(!musicMuted&&muted){muted=false;lb('sn','On')}
+ sv();syncMusicBtns();flash(musicOff()?'MUSIC OFF':'MUSIC ON',1);
+}
+function controlsPanel(){
+ const g=pad.active?PAD_LAYOUT[pad.kind].glyph:PAD_LAYOUT.generic.glyph;
+ const name=pad.active?PAD_LAYOUT[pad.kind].label:'No controller detected';
+ const row=(a,b)=>`<button class="nav-choice">${a}<span>${b}</span></button>`;
+ openNavPanel('CONTROLS',`<p class="nav-note">Keyboard</p>${row('Drive / steer','W A S D or arrows')}${row('Jump / flip','SPACE')}${row('Boost','SHIFT')}${row('Ball cam','C')}${row('Pause','ESC')}<p class="nav-note">${name} · press a button to wake the pad</p>${row('Jump / flip',g.jump)}${row('Boost',g.boost)}${row('Ball cam',g.cam)}${row('Brake / reverse',g.brake)}${row('Pause',g.pause)}${row('Left stick','Drive and steer')}`);
+}
+$('lobMusic').onclick=toggleMusic;$('pzMusic').onclick=toggleMusic;$('npzMusic').onclick=toggleMusic;
+syncMusicBtns();renderCtrlHint();
 
 // ---------- ai ----------
 function roles(){
@@ -1316,7 +1406,7 @@ function setupMatch(r,meId){
  me=Math.max(0,cars.findIndex(c=>c.kind=='me'));
 }
 function rosterSP(){const r=[];[0,1].forEach(tm=>{for(let k=0;k<MODE;k++)r.push(tm==TEAM&&k==0?[tm,-2,mySod,myName,myHat]:[tm,-1,Math.random()*64|0,'Bot '+(k+1)])});return r}
-function beginMatch(){closeSubViews();endMatch._paid=false;earlyEnd=false;netPause(false);dmTimeExpired=false;applyArenaSize(MODE);DM=MODE===50&&!PRACTICE;document.querySelector('#hud .sc:first-child em').textContent=DM?'BLUE KILLS':'BLUE';document.querySelector('#hud .sc:last-child em').textContent=DM?'ORANGE KILLS':'ORANGE';sc=[0,0];over=false;t=LEN;pz=0;$('pz').classList.remove('on');$('ov').classList.remove('res');$('ov').style.display='none';profTeam(cars[me].team);kickoff();B.m.visible=!DM;if(DM)flash('50v50 DEATHMATCH · FIRST TO 500 KILLS',2.5,'#ffd24a')}
+function beginMatch(){closeSubViews();renderCtrlHint();syncMusicBtns();endMatch._paid=false;earlyEnd=false;netPause(false);dmTimeExpired=false;applyArenaSize(MODE);DM=MODE===50&&!PRACTICE;{const scEm=document.querySelectorAll('#hud .sc em');scEm[0].textContent=DM?'BLUE KILLS':'BLUE';scEm[1].textContent=DM?'ORANGE KILLS':'ORANGE';}sc=[0,0];over=false;t=LEN;pz=0;$('pz').classList.remove('on');$('ov').classList.remove('res');$('ov').style.display='none';profTeam(cars[me].team);kickoff();B.m.visible=!DM;if(DM)flash('50v50 DEATHMATCH · FIRST TO 500 KILLS',2.5,'#ffd24a')}
 function start(){if(PRACTICE)return startPractice();setupMatch(rosterSP(),-2);beginMatch()}
 function startPractice(){
  if(practiceSavedMode===null)practiceSavedMode=MODE;
@@ -1328,7 +1418,7 @@ function menu(){
  PRACTICE=false;if(practiceSavedMode!==null){MODE=practiceSavedMode;practiceSavedMode=null;applyArenaSize(MODE)}
  netPause(false);
  closeSubViews();mobileControls.classList.remove('active');Object.keys(K).forEach(k=>K[k]=0);
- document.querySelector('#hud .sc:first-child em').textContent='BLUE';document.querySelector('#hud .sc:last-child em').textContent='ORANGE';DM=MODE===50;
+ {const scEm=document.querySelectorAll('#hud .sc em');scEm[0].textContent='BLUE';scEm[1].textContent='ORANGE'}DM=MODE===50;
  pz=0;$('pz').classList.remove('on');
  sc=[0,0];over=false;t=LEN;setMenuCar();st='menu';
  $('ov').classList.remove('res');
@@ -1442,8 +1532,8 @@ $('sl').onclick=()=>{const n=LS[(LS.findIndex(a=>a[0]==LEN)+1)%3];LEN=n[0];t=LEN
 $('sd').onclick=()=>{DF=(DF+1)%3;lb('sd',DS[DF])};
 $('cm').onclick=()=>{ballCam=!ballCam;lb('cm',ballCam?CS[0]:CS[1])};
 const APP_VERSION=(document.querySelector('meta[name="sod-version"]')||{}).content||'0.0.0',CAM_MIG=2;
-const sv=()=>{try{localStorage.sodl=JSON.stringify({cv:CAM_MIG,ver:APP_VERSION,l:LEN,pm:practiceMap,d:DF,c:ballCam,m:muted?1:0,k:mySod,hat:myHat,n:(practiceSavedMode!==null?practiceSavedMode:MODE),tm:TEAM,name:myName,px:passXP,week:passWeek,car:carModel,decal:carDecal})}catch(e){}};
-$('sn').onclick=()=>{muted=!muted;lb('sn',muted?'Off':'On')};
+const sv=()=>{try{localStorage.sodl=JSON.stringify({cv:CAM_MIG,ver:APP_VERSION,l:LEN,pm:practiceMap,d:DF,c:ballCam,m:muted?1:0,mm:musicMuted?1:0,k:mySod,hat:myHat,n:(practiceSavedMode!==null?practiceSavedMode:MODE),tm:TEAM,name:myName,px:passXP,week:passWeek,car:carModel,decal:carDecal})}catch(e){}};
+$('sn').onclick=()=>{muted=!muted;lb('sn',muted?'Off':'On');syncMusicBtns()};
 $('md').onclick=()=>{
  const opts=[1,2,3,4,50];
  openNavPanel('SELECT MODE',opts.map(v=>`<button class="nav-choice ${MODE===v?'active':''}" data-mode="${v}">${v===50?'50v50 Deathmatch':v+'v'+v+' Soccer'}<span>${(MAP_PROFILES[v]||MAP_PROFILES[50]).name}</span></button>`).join('')+'<p class="nav-note">Choose an arena size and match type. Your selection is saved for your next game.</p>');
@@ -1452,7 +1542,7 @@ $('md').onclick=()=>{
 $('tb').onclick=()=>{TEAM=1-TEAM;lb('tb',TNM[TEAM]);if(st=='menu')setMenuCar()};
 ['sl','sd','cm','sn','md','tb'].forEach(id=>{const f=$(id).onclick;$(id).onclick=()=>{f();sv()}});
 try{const o=JSON.parse(localStorage.sodl||'{}'),m=LS.find(a=>a[0]==o.l);
- if(o.m)muted=true;passXP=Math.max(0,o.px|0);passWeek=typeof o.week==='string'?o.week:'';const liveWeek=currentPassWeek();if(passWeek!==liveWeek){passXP=0;passWeek=liveWeek;}carModel=clamp(o.car|0,0,CAR_MODELS.length-1);carDecal=clamp(o.decal|0,0,CAR_DECALS.length-1);if(o.k>=0&&o.k<64)mySod=o.k|0;if(o.hat>=0&&o.hat<HAT_NAMES.length)myHat=o.hat|0;
+ if(o.m)muted=true;if(o.mm)musicMuted=true;passXP=Math.max(0,o.px|0);passWeek=typeof o.week==='string'?o.week:'';const liveWeek=currentPassWeek();if(passWeek!==liveWeek){passXP=0;passWeek=liveWeek;}carModel=clamp(o.car|0,0,CAR_MODELS.length-1);carDecal=clamp(o.decal|0,0,CAR_DECALS.length-1);if(o.k>=0&&o.k<64)mySod=o.k|0;if(o.hat>=0&&o.hat<HAT_NAMES.length)myHat=o.hat|0;
  if([1,3,4,50].includes(o.pm))practiceMap=o.pm;if([1,2,3,4,50].includes(o.n))MODE=o.n|0;DM=MODE===50;if(typeof o.name=='string'&&o.name.trim())myName=o.name.trim().slice(0,16);if(o.tm===0||o.tm===1)TEAM=o.tm;
  if(m){LEN=m[0];t=LEN;lb('sl',m[1])}
  if(o.d>=0&&o.d<3){DF=o.d;lb('sd',DS[DF])}
@@ -1508,7 +1598,7 @@ $('settingsToggle').onclick=()=>{
  document.querySelectorAll('.mi').forEach(el=>{
  el.onmouseenter=el.onfocus=()=>$('ds').textContent=el.dataset.d;
 });
-function pause(v){pz=v;$('pz').classList.toggle('on',!!v);if(v){mobileControls.classList.remove('active');Object.keys(K).forEach(k=>K[k]=0)}}
+function pause(v){pz=v;$('pz').classList.toggle('on',!!v);if(v){mobileControls.classList.remove('active');Object.keys(K).forEach(k=>K[k]=0)}syncMusicBtns()}
 $('rs').onclick=()=>pause(0);
 $('rt').onclick=()=>{pause(0);start()};
 $('mm').onclick=()=>{pause(0);menu()};
@@ -1516,7 +1606,7 @@ $('mm').onclick=()=>{pause(0);menu()};
 let last=0,acc=0;
 function loop(ts){
  requestAnimationFrame(loop);
- const dt=Math.min(.05,(ts-last)/1000||0);last=ts;
+ const dt=Math.min(.05,(ts-last)/1000||0);last=ts;pollPad();
  acc+=Math.min(.1,dt);
  while(acc>=1/60){tick(1/60);acc-=1/60}netStep(ts,dt);audioStep(dt);
 cars.forEach(c=>{
@@ -1665,10 +1755,11 @@ function mkEng(){const c=A();if(!c||eng)return;
 function audioStep(dt){
  if(!unlocked)return;
  curM=(st=='menu'||st=='end')?'lobby':'match';
- for(const k in MUS){const a=MUS[k],tg=(muted||k!=curM)?0:(pz?.15:.45);
+   const mm=muted||musicMuted;
+  for(const k in MUS){const a=MUS[k],tg=(mm||k!=curM)?0:(pz?.15:.45);
   a.volume=clamp(a.volume+clamp(tg-a.volume,-dt*1.1,dt*1.1),0,1);
-  if(k==curM&&!muted&&a.paused)a.play().catch(()=>{});
-  else if((k!=curM||muted)&&a.volume<.005){if(!a.paused)a.pause();if(a.currentTime!==0)a.currentTime=0}}
+  if(k==curM&&!mm&&a.paused)a.play().catch(()=>{});
+  else if((k!=curM||mm)&&a.volume<.005){if(!a.paused)a.pause();if(a.currentTime!==0)a.currentTime=0}}
  if(!A())return;mkEng();if(!eng)return;
  const live=!muted&&!pz&&(st=='play'||st=='kickoff'||st=='goal'),t0=au.currentTime;
  eng.forEach((e,i)=>{const c=cars[i];
@@ -1855,9 +1946,9 @@ $('navBack').onclick=backToMainMenu;$('lockerClose').onclick=backToMainMenu;$('p
 $('lockerOpen').onclick=openLocker;$('passOpen').onclick=openPass;$('profileOpen').onclick=profilePanel;$('profileBadge').onclick=profilePanel;
 $('lockerPass').onclick=openPass;$('passToLocker').onclick=openLocker;
 $('md').onclick=()=>{const modes=[{v:1,n:'1V1 SOCCER',s:'COMPACT'},{v:2,n:'2V2 SOCCER',s:'COMPACT'},{v:3,n:'3V3 SOCCER',s:'MEDIUM'},{v:4,n:'4V4 SOCCER',s:'LARGE'},{v:50,n:'50V50 DEATHMATCH',s:'HUGE'}];openNavPanel('SELECT MODE',modes.map(o=>`<button class="nav-choice mode-choice ${MODE===o.v?'active':''}" data-mode="${o.v}" aria-pressed="${MODE===o.v}"><strong>${o.n}</strong><span>${o.s}</span></button>`).join('')+'<p class="nav-note">Select a mode to update the arena and match rules.</p>');$('navBody').querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{const v=Number(b.dataset.mode);if(![1,2,3,4,50].includes(v))return;MODE=v;DM=v===50;applyArenaSize(v);setMenuCar();sv();$('md').querySelector('b').textContent=(MN[v===50?4:v-1]||'1v1')+' · '+MAP_PROFILES[v].name;$('navBody').querySelectorAll('[data-mode]').forEach(x=>{x.classList.toggle('active',x===b);x.setAttribute('aria-pressed',x===b?'true':'false')});setTimeout(backToMainMenu,140)})};
-$('settingsToggle').onclick=()=>openNavPanel('SETTINGS',`<button class="nav-choice" id="navTeam">TEAM <span>${TNM[TEAM]}</span></button><button class="nav-choice" id="navLength">MATCH LENGTH <span>${LS.find(a=>a[0]===LEN)?.[1]||'5 min'}</span></button><button class="nav-choice" id="navSkill">BOT SKILL <span>${DS[DF]}</span></button><button class="nav-choice" id="navCamera">CAMERA <span>${ballCam?'BALL CAM':'CAR CAM'}</span></button><button class="nav-choice" id="navSound">SOUND <span>${muted?'OFF':'ON'}</span></button>`);
+$('settingsToggle').onclick=()=>openNavPanel('SETTINGS',`<button class="nav-choice" id="navTeam">TEAM <span>${TNM[TEAM]}</span></button><button class="nav-choice" id="navLength">MATCH LENGTH <span>${LS.find(a=>a[0]===LEN)?.[1]||'5 min'}</span></button><button class="nav-choice" id="navSkill">BOT SKILL <span>${DS[DF]}</span></button><button class="nav-choice" id="navCamera">CAMERA <span>${ballCam?'BALL CAM':'CAR CAM'}</span></button><button class="nav-choice" id="navSound">SOUND <span>${muted?'OFF':'ON'}</span></button><button class="nav-choice with-art" id="navMusic"><img class="nav-coco" src="assets/mama-coco.jpg" alt=""><span class="nav-lbl">Shut the fuck up music</span><span class="nav-state" data-music>ON</span></button><button class="nav-choice" id="navControls">CONTROLS <span>KEYBOARD + PAD</span></button>`);
 // Rebind settings panel buttons after opening, without nested modal tricks.
-const oldOpenNavPanel=openNavPanel;openNavPanel=function(title,html){oldOpenNavPanel(title,html);if(title==='SETTINGS'){const binds=[['navTeam','tb'],['navLength','sl'],['navSkill','sd'],['navCamera','cm'],['navSound','sn']];binds.forEach(([a,b])=>{const el=$(a);if(el)el.onclick=()=>{ $(b).click();$('settingsToggle').onclick()}})}};
+const oldOpenNavPanel=openNavPanel;openNavPanel=function(title,html){oldOpenNavPanel(title,html);if(title==='SETTINGS'){const binds=[['navTeam','tb'],['navLength','sl'],['navSkill','sd'],['navCamera','cm'],['navSound','sn']];binds.forEach(([a,b])=>{const el=$(a);if(el)el.onclick=()=>{ $(b).click();$('settingsToggle').onclick()}});const nm=$('navMusic');if(nm)nm.onclick=()=>toggleMusic();const nc=$('navControls');if(nc)nc.onclick=()=>controlsPanel();syncMusicBtns()}};
 $('on').onclick=()=>{if(net==1)return toLobby();lerr('');showSubView();$('navPanel').style.display='none';$('lob').classList.add('on');$s('l0',!ws);$s('l1',!!ws);renderLobby()};
 $('lx').onclick=()=>{leave();backToMainMenu()};
 $('tb').addEventListener('click',()=>{updateProfileBadge();saveCareerLocal()});
@@ -1872,7 +1963,7 @@ setInterval(()=>{accountBoardIndex=(accountBoardIndex+1)%3;paintAccountBillboard
 
 // ===== Practice button, online pause menu, on-screen pause button =====
 function netPause(v){
- npzOpen=!!v;$('npz').classList.toggle('on',npzOpen);
+ npzOpen=!!v;$('npz').classList.toggle('on',npzOpen);syncMusicBtns();
  if(npzOpen){Object.keys(K).forEach(k=>K[k]=0);$('npzEnd').style.display=(net==1&&netHost)?'block':'none';$('npzLeave').textContent=(net==1&&netHost)?'Leave and close party':'Leave match';$('npzLeave').dataset.armed=''}
 }
 const PRACTICE_MAPS=[{v:1,n:'COMPACT',s:'Tight 1v1 arena'},{v:3,n:'MEDIUM',s:'Mid-size 3v3 arena'},{v:4,n:'LARGE',s:'Big 4v4 arena'},{v:50,n:'HUGE',s:'Full 50v50 arena'}];
