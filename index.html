@@ -836,4 +836,18 @@ function audioStep(dt){
   e.o.frequency.setTargetAtTime(fr,t0,.05);e.o2.frequency.setTargetAtTime(fr*.5,t0,.05);
   e.ng.gain.setTargetAtTime(on&&c.bs&&c.bo>0?.07*near:0,t0,.05)})}
 placeCars();showroom();st='menu';requestAnimationFrame(loop);
+
+// Protect against accidentally closing the game with Ctrl+W.
+// Browsers reserve this shortcut, so the page cannot guarantee blocking it;
+// the beforeunload prompt is the fallback where the browser permits it.
+window.addEventListener('keydown',e=>{
+ if((e.ctrlKey||e.metaKey)&&e.code==='KeyW'){
+  e.preventDefault();
+  e.stopPropagation();
+ }
+},true);
+window.addEventListener('beforeunload',e=>{
+ e.preventDefault();
+ e.returnValue='';
+});
 </script></body></html>
