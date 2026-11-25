@@ -54,7 +54,6 @@ kbd{font:700 10px/1.4 system-ui,sans-serif;background:#232c42;border:1px solid r
 #ft{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:11px 4vw calc(env(safe-area-inset-bottom,0px) + 11px);background:linear-gradient(0deg,rgba(4,7,16,.97),rgba(4,7,16,.6) 72%,rgba(4,7,16,0));border-top:1px solid rgba(150,180,225,.12)}
 .prof{display:flex;align-items:center;gap:9px;padding:5px 12px 5px 6px;background:rgba(9,13,24,.85);border:1px solid rgba(150,180,225,.16);border-radius:3px}
 .av{width:32px;height:32px;border-radius:2px;background:linear-gradient(150deg,#2f6bff,#0a1738);box-shadow:inset 0 0 0 1px rgba(255,255,255,.16);position:relative;overflow:hidden}
-.av::after{content:'';position:absolute;left:5px;right:5px;bottom:7px;height:8px;border-radius:2px 3px 2px 2px;background:linear-gradient(90deg,#9dc6ff,#5b8ee0)}
 .prof b{display:block;font:italic 800 12.5px/1.25 system-ui,sans-serif;letter-spacing:.03em;text-transform:uppercase}
 .prof em{display:block;font:800 8.5px/1.3 system-ui,sans-serif;letter-spacing:.15em;text-transform:uppercase;color:#79bcff;font-style:normal}
 .wel{flex:1;text-align:center;font:700 10px/1 system-ui,sans-serif;letter-spacing:.24em;text-transform:uppercase;color:rgba(206,220,242,.55)}
@@ -109,19 +108,24 @@ body.touch-device #mobileControls.active{display:block}
 @media (orientation:landscape) and (max-height:500px){#mobileControls .mc-group{bottom:calc(env(safe-area-inset-bottom,0px) + 8px)}#mobileControls .mc-left{grid-template-columns:repeat(3,48px);grid-template-rows:48px 48px}#mobileControls .mc-right{grid-template-columns:58px 58px;grid-template-rows:58px 48px}}
 
 
-/* Responsive touch layout: left thumb steering, right thumb actions. */
+/* Responsive touch layout: left thumb steering, right thumb actions.
+   JUMP is the big thumb target, BOOST and BRAKE stack beside it, CAM sits
+   above the cluster. Sizes step down on short landscape phones. */
 #mobileControls{position:fixed;inset:0;z-index:20;display:none;pointer-events:none;touch-action:none;user-select:none;-webkit-user-select:none}
 body.touch-device #mobileControls.active{display:block}
-.stick-wrap{position:absolute;left:max(18px,env(safe-area-inset-left));bottom:max(18px,env(safe-area-inset-bottom));width:clamp(116px,19vw,176px);height:clamp(116px,19vw,176px);pointer-events:auto;display:grid;place-items:center}
-#stickBase{width:100%;height:100%;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.14),rgba(9,17,34,.76));border:2px solid rgba(255,255,255,.42);box-shadow:0 8px 26px #0008;touch-action:none;position:relative}
-#stickNub{position:absolute;width:42%;height:42%;left:29%;top:29%;border-radius:50%;background:linear-gradient(145deg,#bde4ff,#2878d4);border:2px solid #fff9;box-shadow:0 4px 15px #0008;pointer-events:none}
-.stick-wrap small{position:absolute;bottom:-17px;color:#fff;font:900 10px system-ui;text-shadow:0 2px 4px #000}
-.touch-actions{position:absolute;right:max(16px,env(safe-area-inset-right));bottom:max(18px,env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(2,clamp(64px,10vw,90px));grid-template-rows:repeat(2,clamp(58px,9vw,82px));gap:10px;pointer-events:auto}
-.touch-actions button{border:1px solid #ffffff80;border-radius:20px;color:white;font:900 clamp(11px,2vw,14px) system-ui;background:#101c35d9;box-shadow:0 5px 18px #0007;backdrop-filter:blur(8px);touch-action:none}
-.touch-actions .touch-boost{background:#e97820e8}.touch-actions .touch-jump{background:#2878d4e8}.touch-actions .touch-brake{background:#46536be8}
-.touch-actions button.down{filter:brightness(1.35);transform:scale(.96)}
-@media (orientation:landscape) and (max-height:520px){.stick-wrap{width:clamp(100px,21vh,140px);height:clamp(100px,21vh,140px);bottom:max(12px,env(safe-area-inset-bottom))}.touch-actions{grid-template-columns:repeat(2,clamp(56px,12vh,76px));grid-template-rows:repeat(2,clamp(48px,11vh,68px));gap:7px;bottom:max(12px,env(safe-area-inset-bottom))}}
-@media (orientation:portrait){.stick-wrap{width:clamp(124px,30vw,170px);height:clamp(124px,30vw,170px)}.touch-actions{grid-template-columns:repeat(2,clamp(66px,18vw,88px));grid-template-rows:repeat(2,clamp(62px,16vw,82px))}}
+.stick-wrap{position:absolute;left:max(16px,env(safe-area-inset-left));bottom:max(16px,env(safe-area-inset-bottom));width:clamp(124px,29vw,168px);height:clamp(124px,29vw,168px);pointer-events:auto;display:grid;place-items:center}
+#stickBase{width:100%;height:100%;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.10),rgba(9,17,34,.8));border:2px solid rgba(255,255,255,.4);box-shadow:0 8px 26px #0008,inset 0 0 26px rgba(0,0,0,.35);touch-action:none;position:relative}
+#stickBase::after{content:'';position:absolute;inset:27%;border-radius:50%;border:1px dashed rgba(255,255,255,.2);pointer-events:none}
+#stickNub{position:absolute;width:44%;height:44%;left:28%;top:28%;border-radius:50%;background:linear-gradient(145deg,#d5ecff,#2f83e4);border:2px solid #fff9;box-shadow:0 4px 15px #0008;pointer-events:none}
+.stick-wrap small{position:absolute;bottom:-15px;color:#fff;font:900 9px system-ui;letter-spacing:.14em;opacity:.8;text-shadow:0 2px 4px #000}
+.touch-actions{position:absolute;right:max(14px,env(safe-area-inset-right));bottom:max(14px,env(safe-area-inset-bottom));display:grid;grid-template-columns:clamp(58px,15vw,78px) clamp(76px,20vw,98px);grid-template-rows:clamp(50px,13vw,62px) clamp(62px,17vw,80px);gap:9px;pointer-events:auto}
+.touch-actions button{border:1px solid #ffffff80;border-radius:18px;color:white;font:900 clamp(11px,2.8vw,14px) system-ui;background:#101c35d9;box-shadow:0 5px 18px #0007,inset 0 1px 0 #ffffff26;backdrop-filter:blur(8px);touch-action:none;min-width:0;min-height:0}
+.touch-actions .touch-boost{background:#e97820e8;grid-column:1;grid-row:2}
+.touch-actions .touch-jump{background:#2878d4e8;grid-column:2;grid-row:1 / span 2;border-radius:50%}
+.touch-actions .touch-brake{background:#46536be8;grid-column:1;grid-row:1}
+.touch-actions .touch-cam{position:absolute;right:0;bottom:calc(100% + 8px);min-width:64px;height:34px;border-radius:12px;font-size:10px;background:#1d2941d9}
+.touch-actions button.down{filter:brightness(1.35);transform:scale(.95)}
+@media (orientation:landscape) and (max-height:520px){.stick-wrap{width:clamp(104px,24vh,140px);height:clamp(104px,24vh,140px);bottom:max(10px,env(safe-area-inset-bottom))}.stick-wrap small{display:none}.touch-actions{grid-template-columns:clamp(52px,13vh,68px) clamp(68px,17vh,86px);grid-template-rows:clamp(44px,11vh,56px) clamp(54px,14vh,68px);gap:7px;bottom:max(10px,env(safe-area-inset-bottom))}}
 
 
 #lockerPanel,#passPanel{display:none;position:fixed;z-index:45;inset:0;background:#050b16ed;backdrop-filter:blur(12px);color:#fff;overflow:auto;padding:22px;box-sizing:border-box;font:700 14px system-ui}
@@ -445,6 +449,78 @@ body.touch-device #mobileControls.active{display:block}
 .friend-search input{flex:1;padding:10px;border-radius:6px;border:1px solid #526783;background:#070e19;color:#fff;font:600 13px system-ui}
 .friend-section-title{font:900 11px system-ui;letter-spacing:.1em;color:#9fcaff;margin:16px 0 8px;text-transform:uppercase}
 .friend-empty{color:#9aacc5;font:600 12px system-ui;padding:8px 0}
+
+/* Phone sizing: the desktop menu, HUD and side panels were too large for
+   phone screens, so tighten type and spacing while keeping taps >= 42px. */
+@media (max-width:760px){
+ #ov{padding:calc(env(safe-area-inset-top,0px) + 2vh) 5vw calc(env(safe-area-inset-bottom,0px) + 76px)}
+ #mn{width:min(90vw,420px)}
+ .brand{gap:8px;margin-bottom:10px}
+ .brand .ball{width:20px;height:20px}
+ .brand b{font-size:21px;letter-spacing:0}
+ #op{font-size:12.5px;line-height:1.5;margin-bottom:10px;max-width:none}
+ .mi{margin-bottom:4px;border-radius:4px}
+ .mi i{padding:9px 13px;font-size:13.5px;letter-spacing:.07em;gap:8px}
+ .mi b{font-size:9px;letter-spacing:.06em}
+ .mi.prime i{padding-left:30px}
+ #ds{font-size:11px;line-height:1.45;margin-top:9px;max-width:none}
+ #ft{min-height:52px;gap:8px;padding:6px 10px calc(env(safe-area-inset-bottom,0px) + 6px)}
+ .prof{padding:5px 9px 5px 5px;gap:8px;border-radius:6px}
+ .av{width:27px;height:27px;border-radius:5px}
+ .prof b{font-size:10.5px;letter-spacing:.04em}
+ .prof em{font-size:7px;letter-spacing:.1em}
+ .hint{display:none}
+ #hud{gap:5px;padding-top:calc(env(safe-area-inset-top,0px) + 6px)}
+ #hud>div{padding:3px 9px;min-width:56px;border-radius:7px}
+ #hud em{font-size:7.5px;letter-spacing:.1em;margin-bottom:2px}
+ #hud b{font:italic 800 19px/1 system-ui,sans-serif}
+ #tm{font:italic 800 17px/1 system-ui,sans-serif;min-width:70px}
+ #bx{left:10px;bottom:calc(env(safe-area-inset-bottom,0px) + 10px);width:132px;height:16px;border-radius:8px}
+ #bn{font:italic 800 10px/16px system-ui,sans-serif}
+ #msg{top:22%;font-size:clamp(28px,9vw,58px)}
+ #pmBtn{width:42px;height:42px;border-radius:10px;font-size:15px;top:calc(6px + env(safe-area-inset-top,0px));right:8px}
+ #navPanel,#lockerPanel,#passPanel{padding:10px 4vw calc(env(safe-area-inset-bottom,0px) + 62px)}
+ .nav-panel-inner,#lockerPanel .feature-wrap,#passPanel .feature-wrap,#lob>div{width:min(94vw,560px);max-height:86vh;padding:14px}
+ .nav-panel-head h2{font-size:21px}
+ .nav-panel-head{padding-bottom:11px;margin-bottom:13px}
+ .nav-back{padding:8px 11px;font-size:10px}
+ .nav-choice{min-height:46px;padding:10px 12px;font-size:11.5px;letter-spacing:.05em}
+ .nav-choice span{font-size:9px}
+ .nav-note{font-size:11px}
+ .feature-head h2{font-size:20px}
+ .feature-grid{grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
+ .feature-card{min-height:0;padding:11px}
+ .feature-card strong{font-size:10.5px}
+ .feature-card p{font-size:14px;margin:7px 0 9px}
+ .feature-wrap>p{font-size:12px;margin:10px 0}
+ .feature-wrap button{min-height:38px;font-size:11px;padding:9px 12px}
+ .career-rewards,.pass-track{grid-template-columns:1fr 1fr}
+ .career-summary{grid-template-columns:1fr 1fr;gap:8px}
+ .career-summary strong{font-size:21px}
+ .profile-head{gap:10px}
+ .pfp-wrap{width:58px;height:58px;border-radius:10px}
+ .account-form input{padding:10px}
+ #lob>div{padding:16px;gap:9px}
+ #lob h2{font-size:24px}
+ #lob input{padding:10px 11px;font-size:13px}
+ #pz>div,#npz>div{width:min(90vw,340px);padding:20px}
+ #pz h2,#npz h2{font-size:28px}
+}
+@media (max-width:400px){
+ .mi i{font-size:12.5px;padding:8px 11px}
+ .mi b{display:none}
+ .mi.prime i{padding-left:26px}
+ #op{font-size:11.5px}
+ .brand b{font-size:19px}
+}
+@media (max-height:560px) and (orientation:landscape){
+ #ov{padding:2vh 4vw 4vh}
+ .brand{margin-bottom:6px}.brand b{font-size:18px}.brand .ball{width:18px;height:18px}
+ #op,#ds{display:none}
+ .mi i{padding:6px 11px;font-size:12px;letter-spacing:.05em}
+ .mi{margin-bottom:3px}
+ #ft{min-height:44px}
+}
 </style></head><body>
 <div id="hud">
   <div class="sc" style="--t:var(--bl)"><em>BLUE</em><b id="sb">0</b></div>
@@ -513,8 +589,8 @@ const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const cl=(o,k,v,lo,hi,e)=>{if(o[k]<lo){o[k]=lo;if(o[v]<0)o[v]*=-e}else if(o[k]>hi){o[k]=hi;if(o[v]>0)o[v]*=-e}};
 const R=new THREE.WebGLRenderer({antialias:true});R.shadowMap.enabled=true;R.shadowMap.type=THREE.PCFSoftShadowMap;R.setPixelRatio(Math.min(devicePixelRatio,2));document.body.prepend(R.domElement);
 const S=new THREE.Scene(),sk=document.createElement('canvas');sk.width=2;sk.height=256;
-{const x=sk.getContext('2d'),g=x.createLinearGradient(0,0,0,256);g.addColorStop(0,'#060a1e');g.addColorStop(.6,'#1d2f66');g.addColorStop(1,'#34408a');x.fillStyle=g;x.fillRect(0,0,2,256)}
-S.background=new THREE.CanvasTexture(sk);S.fog=new THREE.Fog(0x1d2f66,150,440);
+{const x=sk.getContext('2d'),g=x.createLinearGradient(0,0,0,256);g.addColorStop(0,'#050817');g.addColorStop(.52,'#16224e');g.addColorStop(.84,'#2c3a72');g.addColorStop(1,'#46528f');x.fillStyle=g;x.fillRect(0,0,2,256)}
+S.background=new THREE.CanvasTexture(sk);S.fog=new THREE.Fog(0x23305a,200,640);
 const C=new THREE.PerspectiveCamera(70,1,.5,700);
 S.add(new THREE.HemisphereLight(0xdbe8ff,0x1a2438,.85));
 const dl=new THREE.DirectionalLight(0xfff4e0,1.1);S.add(dl,dl.target);dl.castShadow=true;dl.shadow.mapSize.set(2048,2048);Object.assign(dl.shadow.camera,{left:-85,right:85,top:85,bottom:-85,near:1,far:260});dl.shadow.camera.updateProjectionMatrix();dl.shadow.bias=-.0004;
@@ -674,21 +750,124 @@ gl_Position=projectionMatrix*viewMatrix*vec4(p,1.);}`,
 fragmentShader:`uniform sampler2D map;varying vec2 vUv;void main(){vec4 c=texture2D(map,vUv);if(c.a<.5)discard;gl_FragColor=vec4(c.rgb*.92,1.);}`}));
 cm.frustumCulled=false;S.add(cm);
 [-1,1].forEach(a=>[-1,1].forEach(b=>{box(1,H-4,1,0x222a44,a*(W/2+22),(H-4)/2,b*(L/2+6));box(7,2.5,1.5,0xfff6dd,a*(W/2+22),H-4,b*(L/2+6),{emissive:0xffeeaa})}));
+// ---------- outside the arena: venue grounds ----------
+// The stadium sits in a proper venue. Grounds are layered from the pitch
+// outwards: night ground, grass fields, a ring service road, the concrete
+// concourse, then a boundary wall with gated entrances and a tree line.
+box(W+560,.4,L+700,0x090e18,0,-1.95,0);           // night ground at the horizon
+box(W+548,.3,L+684,0x17331f,0,-1.70,0);           // grass fields
+box(W+196,.36,L+268,0x151c2a,0,-1.34,0);          // ring service road
+box(W+132,.4,L+184,0x1b2434,0,-1.04,0);           // concrete concourse
+box(W+132,.06,.9,0x63748d,0,-.82,L/2+91);         // painted concourse edge
+box(W+132,.06,.9,0x63748d,0,-.82,-(L/2+91));
+box(.9,.06,L+184,0x63748d,W/2+65,-.82,0);
+box(.9,.06,L+184,0x63748d,-(W/2+65),-.82,0);
+box(W+64,.5,L+96,0x121b2c,0,-.78,0);              // kerb ring around the plinth
+// Boundary wall: plinth, panel, coping, pilasters, gate pylons, corner towers.
+const WY=-.84,WH=6.4;
+function wallRun(x,z,w,d){box(w,WH,d,0x2b3646,x,WY+WH/2,z);box(w+.7,.45,d+.7,0x4b5a70,x,WY+WH+.2,z);box(w+.9,.9,d+.9,0x1c2431,x,WY+.45,z)}
+[-1,1].forEach(s=>{
+ const wx=s*(W/2+50);
+ wallRun(wx,0,1.5,L+112);
+ for(let z=-(L/2+50);z<=L/2+50;z+=26)box(2.7,WH+.7,2.7,0x3a4759,wx,WY+(WH+.7)/2,z);
+});
+const GATE=32,SEG=(W+100-GATE)/2;
+[-1,1].forEach(s=>{
+ const wz=s*(L/2+56);
+ [-1,1].forEach(w=>{
+  const cx=w*(GATE/2+SEG/2);
+  wallRun(cx,wz,SEG,1.5);
+  for(let x=cx-SEG/2+14;x<=cx+SEG/2-14;x+=26)box(2.7,WH+.7,2.7,0x3a4759,x,WY+(WH+.7)/2,wz);
+ });
+ [-1,1].forEach(w=>{
+  const px=w*(GATE/2+2.4);
+  box(4.6,11.4,4.6,0x39465a,px,WY+5.7,wz);
+  box(5.2,.6,5.2,0x55657c,px,WY+11.6,wz);
+  box(3.4,.5,3.4,0xfff0c8,px,WY+11.15,wz,{emissive:0xffe6a0});
+ });
+});
+[-1,1].forEach(sx=>[-1,1].forEach(sz=>{
+ const x=sx*(W/2+50),z=sz*(L/2+56);
+ box(6,11.5,6,0x38455a,x,WY+5.75,z);
+ box(6.8,.7,6.8,0x5b6c85,x,WY+11.8,z);
+ box(4.2,.55,4.2,0xfff0c8,x,WY+7.6,z,{emissive:0x8fd0ff});
+}));
+// Floodlight masts outside the wall.
+[[W/2+66,L/2+78],[W/2+66,-(L/2+78)],[-W/2-66,L/2+78],[-W/2-66,-(L/2+78)],[W/2+66,0],[-W/2-66,0],[0,L/2+78],[0,-(L/2+78)]].forEach(([mx,mz])=>{
+ box(1.2,24,1.2,0x2c3746,mx,10.9,mz);
+ box(2.6,1.3,2.6,0x1d2634,mx,-1.15,mz);
+ box(8.4,2.2,1.6,0x1a2230,mx,23.2,mz);
+ box(7.8,1.5,.8,0xfff0c8,mx,23.2,mz,{emissive:0xffe6a0});
+});
+// Branded stadium facade on the outside of the two long stands, capped by a
+// lit roofline: the venue has a face instead of an open wall of crowd sprites.
+const facadeMat=(()=>{const c=document.createElement('canvas');c.width=2048;c.height=160;const x=c.getContext('2d');
+ const g=x.createLinearGradient(0,0,0,160);g.addColorStop(0,'#1a2940');g.addColorStop(.55,'#0d1727');g.addColorStop(1,'#070d18');x.fillStyle=g;x.fillRect(0,0,2048,160);
+ x.fillStyle='rgba(255,255,255,.055)';for(let i=0;i<32;i++)x.fillRect(i*64,0,3,160);
+ x.fillStyle='#2f8cff';x.fillRect(0,144,1024,8);x.fillStyle='#ff8a1f';x.fillRect(1024,144,1024,8);
+ x.textAlign='center';x.fillStyle='#e8f1ff';x.font='900 62px system-ui';x.fillText('SOD LEAGUE',1024,72);
+ x.fillStyle='#84a9d4';x.font='800 22px system-ui';x.fillText('C H A M P I O N S H I P   S E R I E S',1024,108);
+ const t=new THREE.CanvasTexture(c);t.anisotropy=4;return new THREE.MeshBasicMaterial({map:t})})();
+[-1,1].forEach(s=>{
+ const m=new THREE.Mesh(new THREE.PlaneGeometry(L+10,21),facadeMat);
+ m.position.set(s*(W/2+32.2),10.5,0);m.rotation.y=s>0?Math.PI/2:-Math.PI/2;S.add(m);
+ box(2.2,.45,L-4,0xbcd8ff,s*(W/2+32),21.2,0,{emissive:0x9fc4ff});
+});
+// Tree line: three instanced low-poly pines, spread over the grass fields.
+const TREES=96,TGY=-1.55;
+let tseed=20261125;const trnd=()=>{tseed=(tseed*1664525+1013904223)%4294967296;return tseed/4294967296};
+const trunkI=new THREE.InstancedMesh(new THREE.CylinderGeometry(.5,.85,7,6),M(0x4b3524),TREES);
+const lowI=new THREE.InstancedMesh(new THREE.ConeGeometry(4.6,8.6,7),M(0x1f6b39),TREES);
+const highI=new THREE.InstancedMesh(new THREE.ConeGeometry(3.1,6.4,7),M(0x2d8a4a),TREES);
+const tdum=new THREE.Object3D();
+for(let i=0;i<TREES;i++){
+ let x=0,z=0,tries=0;
+ do{x=(trnd()*2-1)*(W/2+250);z=(trnd()*2-1)*(L/2+300);tries++}
+ while(tries<40&&((Math.abs(x)<W/2+98&&Math.abs(z)<L/2+134)||(Math.abs(Math.abs(x)-(W/2+100))<32&&Math.abs(z)<48)));
+ const s=.72+trnd()*.9;
+ tdum.rotation.set(0,trnd()*6.28,0);
+ tdum.position.set(x,TGY+3.5*s,z);tdum.scale.set(s,s,s);tdum.updateMatrix();trunkI.setMatrixAt(i,tdum.matrix);
+ tdum.position.set(x,TGY+6.6*s,z);tdum.scale.set(s,s*.95,s);tdum.updateMatrix();lowI.setMatrixAt(i,tdum.matrix);
+ tdum.position.set(x,TGY+11.2*s,z);tdum.scale.set(s*.78,s*.85,s*.78);tdum.updateMatrix();highI.setMatrixAt(i,tdum.matrix);
+}
+[trunkI,lowI,highI].forEach(m=>{m.frustumCulled=false;S.add(m)});
 const stadiumRoot=new THREE.Group();
 S.children.slice(crowdStart).forEach(o=>{S.remove(o);stadiumRoot.add(o)});
 S.add(stadiumRoot);
 
 // Arena billboards: account prompts for guests, rotating welcome messages for members.
 const accountBoardCanvases=[];
+// Each sign is a panel on a slim frame carried high on two braced steel poles on
+// the grass beyond the perimeter wall; the panel is not stretched by arena mode
+// so the artwork keeps its aspect ratio. Positioned from PW in
+// syncBillboardPositions.
+const BOARD_W=54,BOARD_H=13.5,BOARD_Y=40,BOARD_GAP=100;
 function makeArenaBillboard(x,rot){
  const cv=document.createElement('canvas');cv.width=1024;cv.height=256;const cx=cv.getContext('2d');
- const tex=new THREE.CanvasTexture(cv);tex.colorSpace=THREE.SRGBColorSpace;
- const board=new THREE.Mesh(new THREE.PlaneGeometry(48,12),new THREE.MeshBasicMaterial({map:tex,side:THREE.DoubleSide}));
- board.position.set(x,28,0);board.rotation.y=rot;stadiumRoot.add(board);
- const frame=new THREE.Mesh(new THREE.BoxGeometry(.5,12.8,48.8),M(0x101a2a));frame.position.copy(board.position);frame.rotation.copy(board.rotation);stadiumRoot.add(frame);
- accountBoardCanvases.push({cv,cx,tex});
+ const tex=new THREE.CanvasTexture(cv);tex.colorSpace=THREE.SRGBColorSpace;tex.anisotropy=4;
+ const g=new THREE.Group();g.position.set(x,0,0);g.rotation.y=rot;S.add(g);
+ const board=new THREE.Mesh(new THREE.PlaneGeometry(BOARD_W,BOARD_H),new THREE.MeshBasicMaterial({map:tex,side:THREE.FrontSide,toneMapped:false}));
+ board.position.set(0,BOARD_Y,0);g.add(board);
+ // Thin backing frame only: the panel reads as a sign, not a solid black block.
+ const frame=new THREE.Mesh(new THREE.BoxGeometry(BOARD_W+1.2,BOARD_H+1.2,.5),M(0x2a3546));
+ frame.position.set(0,BOARD_Y,-.33);g.add(frame);
+ // Galvanised ribs give the back of the sign structure instead of a black slab.
+ for(let i=-2;i<=2;i++){const rib=new THREE.Mesh(new THREE.BoxGeometry(.7,BOARD_H+.6,.6),M(0x3c4a5e));rib.position.set(i*BOARD_W*.19,BOARD_Y,-.62);g.add(rib)}
+ const topY=BOARD_Y-BOARD_H/2,poleH=topY+1.8;
+ [-1,1].forEach(s=>{
+  const pole=new THREE.Mesh(new THREE.CylinderGeometry(.7,1.15,poleH,10),M(0x35424f));
+  pole.position.set(s*BOARD_W*.33,(topY-1.8)/2,0);g.add(pole);
+  const foot=new THREE.Mesh(new THREE.BoxGeometry(3.6,.9,3.6),M(0x1b2432));
+  foot.position.set(s*BOARD_W*.33,-1.45,0);g.add(foot);
+ });
+ // Cross bracing, a maintenance catwalk under the panel and warning beacons.
+ [11,23].forEach(y=>{const brace=new THREE.Mesh(new THREE.BoxGeometry(2*BOARD_W*.33,.8,.8),M(0x35424f));brace.position.set(0,y,0);g.add(brace)});
+ const walk=new THREE.Mesh(new THREE.BoxGeometry(BOARD_W+1.4,1,2.6),M(0x232c3a));walk.position.set(0,topY-.9,0);g.add(walk);
+ [-1,1].forEach(s=>{const lamp=new THREE.Mesh(new THREE.SphereGeometry(.5,8,6),new THREE.MeshBasicMaterial({color:0xff3b30}));lamp.position.set(s*(BOARD_W/2-1.2),BOARD_Y+BOARD_H/2+.6,0);g.add(lamp)});
+ accountBoardCanvases.push({g,cv,cx,tex});
 }
-makeArenaBillboard(-W/2+1.4,Math.PI/2);makeArenaBillboard(W/2-1.4,-Math.PI/2);
+makeArenaBillboard(-(W/2+BOARD_GAP),Math.PI/2);makeArenaBillboard(W/2+BOARD_GAP,-Math.PI/2);
+function syncBillboardPositions(){accountBoardCanvases.forEach((b,i)=>{if(b.g)b.g.position.x=(i===0?-1:1)*(PW/2+BOARD_GAP)})}
 let accountBoardIndex=0,accountBoardTimer=0;
 const guestBoardLines=[['SAVE YOUR CAREER','Create a free Sod League account.'],['PLAY ANYWHERE','Keep your level, rewards and stats on every device.'],['JOIN THE LEAGUE','Create an account and build your legacy.']];
 const memberBoardLines=[['WELCOME BACK','Your Sod League career is ready.'],['YOUR PROGRESS, EVERYWHERE','Your level and rewards are synced.'],['NEXT STOP: LEVEL 87','Keep playing and climb the career ladder.']];
@@ -797,7 +976,12 @@ addEventListener('keydown',e=>{
  if(/^(Space|Arrow)/.test(e.code))e.preventDefault();
 });
 addEventListener('keyup',e=>{K[e.code]=0});
-const pin=()=>{const j=jr;jr=0;if(npzOpen)return{th:0,st:0,bo:false,j:0};return{th:(K.KeyW||K.ArrowUp?1:0)-(K.KeyS||K.ArrowDown?1:0),st:(K.KeyD||K.ArrowRight?1:0)-(K.KeyA||K.ArrowLeft?1:0),bo:!!(K.ShiftLeft||K.ShiftRight),j}};
+// Touch stick axes live beside the keyboard keys so releasing one input never
+// cancels the other (holding BRAKE while steering used to leave KeyS stuck).
+const stickAxis={x:0,y:0,on:false};
+const pin=()=>{const j=jr;jr=0;if(npzOpen)return{th:0,st:0,bo:false,j:0};
+ const tf=stickAxis.on&&stickAxis.y<-.22,tb=stickAxis.on&&stickAxis.y>.22,tl=stickAxis.on&&stickAxis.x<-.18,tr=stickAxis.on&&stickAxis.x>.18;
+ return{th:(K.KeyW||K.ArrowUp||tf?1:0)-(K.KeyS||K.ArrowDown||tb?1:0),st:(K.KeyD||K.ArrowRight||tr?1:0)-(K.KeyA||K.ArrowLeft||tl?1:0),bo:!!(K.ShiftLeft||K.ShiftRight),j}};
 // Detect an actual touch/coarse-pointer device; desktop users keep keyboard controls only.
 if(touchDevice())document.body.classList.add('touch-device');
 function refreshMobileControls(){
@@ -811,8 +995,10 @@ mobileControls.querySelectorAll('.touch-actions button').forEach(btn=>{
  btn.addEventListener('pointerdown',down,{passive:false});['pointerup','pointercancel','lostpointercapture'].forEach(ev=>btn.addEventListener(ev,up,{passive:false}));
 });
 const stick=$('stickBase'),nub=$('stickNub');let stickPid=null;
-function stickMove(e){if(stickPid!==e.pointerId)return;const r=stick.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,dx=e.clientX-cx,dy=e.clientY-cy,lim=r.width*.31,len=Math.hypot(dx,dy)||1,k=Math.min(1,lim/len),x=dx*k,y=dy*k;nub.style.transform=`translate(${x}px,${y}px)`;K.KeyD=x/lim>.16;K.KeyA=x/lim<-.16;K.KeyW=-y/lim>.16;K.KeyS=y/lim>.16;}
-function stickEnd(e){if(stickPid!==e.pointerId)return;stickPid=null;nub.style.transform='';K.KeyA=K.KeyD=K.KeyW=0}
+function stickMove(e){if(stickPid!==e.pointerId)return;const r=stick.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,dx=e.clientX-cx,dy=e.clientY-cy,lim=r.width*.32,len=Math.hypot(dx,dy)||0,k=len>lim?lim/len:1,x=dx*k,y=dy*k;nub.style.transform=`translate(${x}px,${y}px)`;stickAxis.x=clamp(x/lim,-1,1);stickAxis.y=clamp(y/lim,-1,1);stickAxis.on=true;}
+function stickEnd(e){if(e&&stickPid!==e.pointerId)return;stickPid=null;stickAxis.x=0;stickAxis.y=0;stickAxis.on=false;nub.style.transform=''}
+mobileControls.addEventListener('contextmenu',e=>e.preventDefault());
+mobileControls.addEventListener('touchstart',e=>e.preventDefault(),{passive:false});
 stick.addEventListener('pointerdown',e=>{e.preventDefault();stickPid=e.pointerId;stick.setPointerCapture(e.pointerId);stickMove(e)});stick.addEventListener('pointermove',e=>{e.preventDefault();stickMove(e)});['pointerup','pointercancel','lostpointercapture'].forEach(ev=>stick.addEventListener(ev,stickEnd));
 
 // ---------- ai ----------
@@ -1241,7 +1427,7 @@ $('go').onclick=()=>net==1?toLobby():!net&&start();
 const LS=[[180,'3 min'],[300,'5 min'],[600,'10 min']],DS=['Rookie','Pro','Champion'],CS=['Ball cam','Car cam'],MN=['1v1','2v2 Skirmish','3v3','4v4','50v50 Deathmatch'],TNM=['Blue','Orange'];
 function applyArenaSize(mode){
  const p=MAP_PROFILES[mode]||MAP_PROFILES[50];mapSX=p.x;mapSZ=p.z;PW=W*mapSX;PL=L*mapSZ;PGW=GW*mapSX;SHOW_Z=-PL/2+28*mapSZ;RAMP_X=0;RAMP_Z=0;
- pitchRoot.scale.set(mapSX,1,mapSZ);stadiumRoot.scale.set(mapSX,1,mapSZ);if(CU&&CU.uScale)CU.uScale.value.set(mapSX,mapSZ);
+ pitchRoot.scale.set(mapSX,1,mapSZ);stadiumRoot.scale.set(mapSX,1,mapSZ);if(CU&&CU.uScale)CU.uScale.value.set(mapSX,mapSZ);syncBillboardPositions();
  pads.forEach(q=>{q.x=q.bx*mapSX;q.z=q.bz*mapSZ;q.m.position.set(q.x,.14,q.z);q.g.position.set(q.x,.17,q.z)});
  // Mode changes resize the pitch. Rebuild the showroom transform too, otherwise
  // the car stays at the old mode's coordinates and can disappear from view.
@@ -1443,7 +1629,7 @@ addEventListener('keydown',e=>{if(e.code=='KeyM'&&document.activeElement!==$('lj
 $('lx').onclick=()=>{leave();backToMainMenu()};
 
 // ---------- audio ----------
-const MUS={lobby:new Audio('audio/lobby.mp3'),match:new Audio('Minion-March.mp3')};
+const MUS={lobby:new Audio('audio/lobby.mp3'),match:new Audio('audio/Minion-March.mp3')};
 Object.values(MUS).forEach(a=>{a.loop=true;a.preload='auto';a.volume=0});
 let au=null,ag=null,nb=null,unlocked=false,curM='lobby',eng=null;
 function A(){if(!au){try{au=new(window.AudioContext||window.webkitAudioContext)();ag=au.createGain();ag.gain.value=.85;ag.connect(au.destination);
