@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="sod-version" content="1.5.0">
+<meta name="sod-version" content="1.6.1">
 <title>Sod League</title>
 <link rel="icon" type="image/png" href="assets/logo.png">
 <meta name="theme-color" content="#0a1120">
@@ -697,8 +697,10 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
  font-family:system-ui,sans-serif;color:#e9f0ff;opacity:0;transition:opacity .3s ease;touch-action:manipulation}
 #login.on{opacity:1}
 #login.off{opacity:0;pointer-events:none}
-#login::before{content:'';position:absolute;inset:-14%;background-image:url(assets/logo.png);background-size:clamp(80px,10vw,124px) auto;background-repeat:repeat;opacity:.05;filter:grayscale(1) brightness(1.7);transform:rotate(-7deg);pointer-events:none}
-#login::after{content:'';position:absolute;left:43%;top:54%;width:min(92vw,740px);aspect-ratio:1;border:1px solid rgba(140,180,235,.10);border-radius:50%;transform:translate(-50%,-50%);box-shadow:inset 0 0 0 1px rgba(255,138,31,.05),inset 0 0 110px rgba(47,140,255,.08);pointer-events:none}
+#login::before{content:'';position:absolute;inset:-32%;background-image:url(assets/logo.png);background-size:clamp(92px,11vw,134px) auto;background-repeat:repeat;opacity:.075;filter:grayscale(1) brightness(1.95) blur(.3px);transform:rotate(-7deg);pointer-events:none;animation:lgLogos 62s linear infinite;will-change:background-position}
+@keyframes lgLogos{from{background-position:0 0}to{background-position:-1340px 0}}
+#login .lg-tint{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 20% 24%,rgba(47,140,255,.22),transparent 50%),radial-gradient(ellipse at 84% 80%,rgba(255,138,31,.17),transparent 48%),radial-gradient(ellipse at 50% 48%,transparent 38%,rgba(2,5,12,.66) 100%)}
+@media(prefers-reduced-motion:reduce){#login::before,#login .lg-card::before,#login .lg-primary::after{animation:none}}
 #login .lg-stage{position:relative;z-index:2;display:flex;align-items:center;justify-content:center;gap:clamp(14px,4vw,64px);width:100%;max-width:1180px;padding:26px 18px}
 #login .lg-back{position:fixed;left:max(14px,3vw);top:max(12px,3vh);width:50px;height:50px;border:1px solid rgba(150,180,225,.22);border-radius:50%;background:rgba(9,13,24,.72);color:#dfe9fb;font:700 27px/1 system-ui;cursor:pointer;z-index:5;box-shadow:0 10px 26px rgba(0,0,0,.45)}
 #login .lg-back:hover{background:rgba(47,140,255,.2);border-color:rgba(143,196,255,.5)}
@@ -708,7 +710,9 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 #login .lg-character canvas{position:relative;z-index:1;width:clamp(150px,22vw,286px);height:auto;filter:drop-shadow(0 22px 28px rgba(0,0,0,.62))}
 #login .lg-character p{position:relative;z-index:1;margin:0;padding:6px 16px;border:1px solid rgba(150,180,225,.24);border-radius:2px;background:rgba(9,13,24,.82);font:italic 800 10.5px/1 system-ui;letter-spacing:.22em;text-transform:uppercase;color:#8fc4ff;box-shadow:0 9px 22px rgba(0,0,0,.45)}
 #login .lg-card{position:relative;width:min(92vw,470px);background:linear-gradient(168deg,#16223a,#0a1120 58%,#060a13);border:1px solid rgba(150,180,225,.20);border-radius:5px;overflow:hidden;box-shadow:0 34px 90px rgba(0,0,0,.78),inset 0 1px 0 rgba(255,255,255,.06)}
-#login .lg-card::before{content:'';position:absolute;inset:0 0 auto;height:3px;z-index:3;background:linear-gradient(90deg,#2f8cff,#8fc4ff 46%,#ffb066 72%,#ff8a1f)}
+#login .lg-card::before{content:'';position:absolute;inset:0 0 auto;height:3px;z-index:3;background:linear-gradient(90deg,#2f8cff,#8fc4ff 46%,#ffb066 72%,#ff8a1f,#2f8cff);background-size:220% 100%;animation:lgTopBar 6.5s linear infinite}
+@keyframes lgTopBar{from{background-position:0 0}to{background-position:220% 0}}
+#login .lg-card{box-shadow:0 42px 110px rgba(0,0,0,.82),0 0 0 1px rgba(143,196,255,.09),inset 0 1px 0 rgba(255,255,255,.07)}
 #login .lg-head{background:linear-gradient(90deg,rgba(38,48,66,.95),rgba(16,20,28,.55));border-bottom:1px solid rgba(150,180,225,.16);padding:15px 22px 13px;display:flex;align-items:center;justify-content:space-between;gap:10px}
 #login .lg-kicker{display:block;margin-bottom:5px;font:800 8.5px/1 system-ui;letter-spacing:.3em;text-transform:uppercase;color:#79bcff}
 #login .lg-head h1{margin:0;font:italic 900 27px/1 system-ui;letter-spacing:.005em;text-transform:uppercase;color:#fff;text-shadow:0 3px 18px rgba(0,0,0,.6)}
@@ -730,6 +734,9 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 #login .lg-primary:hover{filter:brightness(1.07) drop-shadow(0 6px 0 rgba(3,6,14,.85))}
 #login .lg-primary:active{transform:translateY(3px);filter:drop-shadow(0 2px 0 rgba(3,6,14,.85))}
 #login .lg-primary:disabled{opacity:.45;filter:none;cursor:default}
+#login .lg-primary{position:relative;overflow:hidden}
+#login .lg-primary::after{content:'';position:absolute;inset:0;background:linear-gradient(105deg,transparent 34%,rgba(255,255,255,.8) 50%,transparent 66%);transform:translateX(-130%);animation:lgShine 5.4s ease-in-out infinite;pointer-events:none}
+@keyframes lgShine{0%,66%{transform:translateX(-130%)}100%{transform:translateX(130%)}}
 #login .lg-second{width:100%;min-height:50px;border:1px solid rgba(150,180,225,.28);border-radius:2px;background:rgba(9,13,24,.9);color:#dde6f6;font:italic 900 16px/1 system-ui;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;clip-path:polygon(12px 0,100% 0,calc(100% - 12px) 100%,0 100%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.03);filter:drop-shadow(0 4px 0 rgba(3,6,14,.8));transition:background .14s,transform .1s}
 #login .lg-second:hover{background:rgba(47,140,255,.18);border-color:rgba(143,196,255,.5)}
 #login .lg-second:active{transform:translateY(2px)}
@@ -787,7 +794,6 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
  #login .lg-character{display:none}
  #login .lg-card{width:min(94vw,440px)}
  #login .lg-stage{padding:60px 12px 26px}
- #login::after{left:50%}
 }
 @media(max-width:420px){
  #login .lg-head{padding:13px 16px 11px}
@@ -834,6 +840,124 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
  #login .lg-second{min-height:36px;font-size:13px}
  #login .lg-divider{margin:0}
 }
+/* ===== Final pass: merged menu, battle-pass track, panel fades ===== */
+.menu-label{display:flex;align-items:center;gap:9px;margin:12px 0 6px;font:900 8.5px/1 system-ui,sans-serif;letter-spacing:.3em;text-transform:uppercase;color:#7a94ba}
+.menu-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(143,196,255,.34),transparent)}
+#mn>.mi{margin-bottom:4px}
+#mn>.mi i{padding-top:10px;padding-bottom:10px}
+@keyframes menuItemIn{from{opacity:0;transform:translate3d(-16px,7px,0) skewX(-16deg)}to{opacity:1;transform:translate3d(0,0,0) skewX(-16deg)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes lgCardIn{from{opacity:0;transform:translateY(16px) scale(.986)}to{opacity:1;transform:none}}
+#mn>.mi{animation:menuItemIn .5s cubic-bezier(.2,.8,.2,1) backwards}
+#mn>.menu-label{animation:fadeIn .6s ease backwards}
+#mn>.mi:nth-of-type(1){animation-delay:.02s}
+#mn>.mi:nth-of-type(2){animation-delay:.07s}
+#mn>.mi:nth-of-type(3){animation-delay:.12s}
+#mn>.mi:nth-of-type(4){animation-delay:.17s}
+#mn>.mi:nth-of-type(5){animation-delay:.22s}
+#mn>.mi:nth-of-type(6){animation-delay:.27s}
+#mn>.mi:nth-of-type(7){animation-delay:.32s}
+#mn>.mi:nth-of-type(8){animation-delay:.37s}
+.brand,#op{animation:fadeIn .5s ease backwards}
+#news{animation:fadeIn .7s ease backwards .12s}
+#navBody .nav-choice,#navBody .setup-opt,#navBody .hub-card{animation:fadeUp .3s cubic-bezier(.2,.8,.2,1) backwards}
+#navBody>*:nth-child(2) .nav-choice,#navBody .nav-choice:nth-of-type(2),#navBody .setup-opt:nth-of-type(2),#navBody .hub-card:nth-of-type(2){animation-delay:.04s}
+#navBody .nav-choice:nth-of-type(3),#navBody .setup-opt:nth-of-type(3),#navBody .hub-card:nth-of-type(3){animation-delay:.08s}
+#navBody .nav-choice:nth-of-type(4),#navBody .setup-opt:nth-of-type(4){animation-delay:.12s}
+#navBody .nav-choice:nth-of-type(5),#navBody .setup-opt:nth-of-type(5){animation-delay:.16s}
+#navBody .nav-choice:nth-of-type(6),#navBody .setup-opt:nth-of-type(6){animation-delay:.2s}
+#navBody .nav-choice:nth-of-type(7){animation-delay:.24s}
+#navBody .nav-choice:nth-of-type(8){animation-delay:.28s}
+.nav-panel-inner{animation:menuSlideIn .36s cubic-bezier(.2,.8,.2,1) both}
+#lockerPanel.open .feature-card{animation:fadeUp .38s cubic-bezier(.2,.8,.2,1) backwards}
+#lockerPanel.open .feature-card:nth-child(2){animation-delay:.06s}
+#lockerPanel.open .feature-card:nth-child(3){animation-delay:.12s}
+#lockerPanel.open .feature-card:nth-child(4){animation-delay:.18s}
+#login.on .lg-card{animation:lgCardIn .52s cubic-bezier(.2,.8,.2,1) both}
+#login.on .lg-character{animation:fadeIn .85s ease both}
+#login.on .lg-back{animation:fadeIn .45s ease both}
+#login .lg-character::before{background:radial-gradient(ellipse at 50% 50%,rgba(47,140,255,.26),rgba(255,138,31,.08) 56%,transparent 76%);filter:blur(2px)}
+
+/* Match setup + customise hub */
+.setup-block{margin:0 0 15px}
+.setup-kicker{display:block;margin:0 0 8px;font:900 8.5px/1 system-ui,sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#7fa8d8}
+.setup-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.setup-grid.arenas{grid-template-columns:1fr}
+.setup-opt{display:flex;flex-direction:column;gap:3px;align-items:flex-start;padding:11px 13px;border:1px solid #ffffff14;border-radius:7px;background:linear-gradient(110deg,#121f33,#0a1220);color:#e5edfb;cursor:pointer;text-align:left;font:inherit;transition:border-color .15s,background .15s,transform .15s}
+.setup-opt b{font:italic 900 11.5px/1.2 system-ui,sans-serif;letter-spacing:.13em;text-transform:uppercase}
+.setup-opt span{font:700 9.5px/1.2 system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#93aecb}
+.setup-opt:hover{border-color:#75baff88;transform:translateX(3px)}
+.setup-opt.on{border-color:#83c4ff;background:linear-gradient(110deg,#254a74,#12233a);box-shadow:inset 0 0 0 1px #83c4ff44}
+.setup-opt.on b{color:#fff}
+.hub-grid{display:grid;gap:9px;margin:0 0 4px}
+.hub-card{position:relative;display:grid;grid-template-columns:54px 1fr;grid-template-rows:auto auto;gap:2px 14px;align-items:center;padding:14px 16px 15px;border:1px solid #ffffff16;border-radius:9px;background:linear-gradient(115deg,#152740,#0a1320);color:#eaf2ff;cursor:pointer;text-align:left;font:inherit;transition:transform .16s,border-color .16s,background .16s}
+.hub-card:hover{transform:translateX(5px);border-color:#7fc0ff99;background:linear-gradient(115deg,#1b3a5e,#0d1a2c)}
+.hub-ico{grid-row:1 / span 2;display:grid;place-items:center;width:54px;height:54px;border-radius:9px;font-size:24px;background:radial-gradient(circle at 34% 26%,#27405f,#0d1624);border:1px solid #ffffff1c}
+.hub-card b{font:italic 900 15px/1.1 system-ui,sans-serif;letter-spacing:.13em;text-transform:uppercase;align-self:end}
+.hub-card em{font:700 11px/1.35 system-ui,sans-serif;color:#9db6d3;font-style:normal;align-self:start}
+.hub-card .hub-go{position:absolute;right:14px;bottom:10px;font:900 8.5px/1 system-ui,sans-serif;letter-spacing:.16em;color:#8fc4ff}
+.hub-card.gold{border-color:#ffd36a3d;background:linear-gradient(115deg,#2c2416,#111722)}
+.hub-card.gold .hub-ico{background:radial-gradient(circle at 34% 26%,#5c4720,#231a0c);border-color:#ffd36a44}
+.hub-card.gold .hub-go{color:#ffd36a}
+
+/* Battle-pass style League Pass */
+#passPanel .feature-wrap{width:min(72vw,1040px);max-width:none;max-height:86vh;overflow-x:hidden;overflow-y:auto;padding:0;border-radius:8px;border-top:2px solid #ffd36a}
+.bp-wrap{display:flex;flex-direction:column}
+.bp-top{position:relative;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:22px 26px 18px;border-bottom:1px solid #ffffff1f;background:linear-gradient(115deg,rgba(255,138,31,.16),rgba(47,140,255,.10) 46%,transparent 78%),linear-gradient(160deg,#1b2436,#0a1018)}
+.bp-top::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:2px;background:linear-gradient(90deg,#ffd36a,#ff8a1f 32%,transparent 68%)}
+.bp-season{font:900 9.5px/1 system-ui,sans-serif;letter-spacing:.3em;color:#ffd36a}
+.bp-title h2{margin:7px 0 0;font:italic 900 clamp(26px,3.4vw,40px)/1 system-ui,sans-serif;letter-spacing:.01em;color:#fff}
+.bp-title h2 em{background:linear-gradient(92deg,#ffe9a8,#ffcf5a 46%,#ff8a1f);-webkit-background-clip:text;background-clip:text;color:transparent;font-style:italic;padding-right:.06em}
+.bp-tierchip{flex:0 0 auto;display:grid;place-items:center;width:84px;height:84px;clip-path:polygon(50% 0,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%);background:linear-gradient(160deg,#ffe6a3,#ffcf5a 40%,#c98a1e);color:#231503;text-align:center;line-height:1}
+.bp-tierchip small{font:900 8px/1 system-ui,sans-serif;letter-spacing:.2em;opacity:.7}
+.bp-tierchip b{font:italic 900 30px/1 system-ui,sans-serif;margin:2px 0}
+.bp-tierchip span{font:900 7.5px/1 system-ui,sans-serif;letter-spacing:.16em;opacity:.75}
+.bp-stats{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 26px 0}
+.bp-stats #passLevel{color:#dbe9ff}
+.bp-stats #passTokens{color:#ffd36a}
+#passPanel .progress-rail{margin:10px 26px 0;height:12px}
+#passPanel .bp-next{margin:7px 26px 0;font:700 10.5px/1.4 system-ui,sans-serif;letter-spacing:.06em;color:#8ba3c2}
+.bp-rail{position:relative;margin:6px 0 0;padding:0 20px}
+.bp-track{display:flex;gap:11px;overflow-x:auto;overflow-y:hidden;padding:12px 6px 16px;scroll-snap-type:x proximity;scrollbar-width:thin;scrollbar-color:#3d5876 transparent}
+.bp-track::-webkit-scrollbar{height:8px}
+.bp-track::-webkit-scrollbar-thumb{background:#3d5876;border-radius:99px}
+.bp-tier{position:relative;flex:0 0 138px;display:flex;flex-direction:column;gap:7px;padding:16px 12px 12px;border:1px solid #ffffff1c;border-radius:3px;background:linear-gradient(175deg,#16223a,#0a1220 62%,#060a12);box-shadow:inset 0 1px 0 #ffffff0d;scroll-snap-align:center;opacity:.6;transition:transform .18s,border-color .18s,opacity .18s}
+.bp-tier:hover{opacity:1;transform:translateY(-4px);border-color:#7fc0ff88}
+.bp-tier.unlocked{opacity:1;border-color:#ffd36a66;border-top:2px solid #ffd36a;background:linear-gradient(175deg,#2c2415,#121722 60%,#0a0e16)}
+.bp-tier.current{opacity:1;border-color:#8ff0ff;box-shadow:0 0 0 1px #8ff0ff44,0 0 28px rgba(90,220,255,.2),inset 0 1px 0 #ffffff18}
+.bp-tier.current::after{content:'YOUR TIER';position:absolute;left:0;right:0;top:-8px;text-align:center;font:900 7.5px/1 system-ui,sans-serif;letter-spacing:.18em;color:#08131c;background:#8ff0ff;border-radius:2px;padding:2px 0}
+.bp-tiernum{font:900 8.5px/1 system-ui,sans-serif;letter-spacing:.18em;color:#7f97b6}
+.bp-tier.unlocked .bp-tiernum{color:#ffd36a}
+.bp-emblem{display:grid;place-items:center;width:44px;height:44px;margin:2px 0 3px;border-radius:50%;font-size:20px;background:radial-gradient(circle at 34% 26%,#2a3c58,#111a28);border:1px solid #ffffff1f}
+.bp-tier.unlocked .bp-emblem{background:radial-gradient(circle at 34% 26%,#5a4520,#241a0c);border-color:#ffd36a55;box-shadow:0 0 16px rgba(255,196,90,.25)}
+.bp-tier strong{font:800 12px/1.3 system-ui,sans-serif;color:#e8f1ff;word-break:break-word}
+.bp-tier small{font:700 9px/1.3 system-ui,sans-serif;color:#8fa6c2}
+.bp-state{margin-top:auto;font:900 8px/1 system-ui,sans-serif;letter-spacing:.16em;color:#7688a0}
+.bp-tier.unlocked .bp-state{color:#ffd36a}
+.bp-tier.current .bp-state{color:#8ff0ff}
+.bp-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:2px 26px 12px}
+.bp-actions{display:flex;gap:9px;flex-wrap:wrap}
+.bp-actions button{min-height:40px}
+.bp-actions button.alt{background:linear-gradient(100deg,#151e2c,#0b111b);color:#dce8fa;box-shadow:inset 0 0 0 1px #ffffff22}
+#passPanel .bp-xpnote{margin:0 26px 22px;color:#7d8ea6;font:700 10.5px/1.5 system-ui,sans-serif;letter-spacing:.05em}
+@media(max-width:1024px){#passPanel .feature-wrap{width:min(86vw,900px)}}
+@media(max-width:760px){
+ #passPanel .feature-wrap{width:100%!important;max-width:560px;max-height:none;border-radius:6px}
+ .bp-top{padding:16px 18px 14px;gap:10px}
+ .bp-tierchip{width:68px;height:68px}
+ .bp-tierchip b{font-size:24px}
+ .bp-stats{padding:14px 16px 0}
+ #passPanel .progress-rail{margin-left:16px;margin-right:16px}
+ #passPanel .bp-next,#passPanel .bp-xpnote{margin-left:16px;margin-right:16px}
+ .bp-foot{padding:0 16px 14px}
+ .bp-rail{padding:0 10px}
+ .bp-tier{flex:0 0 118px;padding:14px 10px 10px}
+ .bp-emblem{width:38px;height:38px;font-size:17px}
+}
+@media(prefers-reduced-motion:reduce){
+ #mn>.mi,#mn>.menu-label,.brand,#op,#news,#navBody .nav-choice,#navBody .setup-opt,#navBody .hub-card,#lockerPanel.open .feature-card,#login.on .lg-card,#login.on .lg-character,.nav-panel-inner,#passPanel .feature-wrap{animation:none!important}
+}
 </style></head><body>
 <div id="hud">
   <div class="sc" style="--t:var(--bl)"><em>BLUE</em><b id="sb">0</b></div>
@@ -849,10 +973,10 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   <button class="mi prime" id="go" data-d="Play against bots. Pick your mode and team below."><i id="gl">Single player</i></button>
   <button class="mi" id="pr" data-d="Free play with just you and the ball. Pick your map size."><i>Practice<b>Free play</b></i></button>
   <button class="mi" id="on" data-d="Create a party or join one with a code. Empty slots are filled with bots."><i>Multiplayer</i></button>
-  <button class="mi" id="md" data-d="Choose 1v1 to 4v4 soccer or 50v50 Deathmatch."><i>Mode<b>1v1</b></i></button>
-  <button class="mi" id="lockerOpen" data-d="Customise your sod, hat, car body and car decal in the Locker."><i>Locker<b>Open</b></i></button>
-  <button class="mi" id="passOpen" data-d="Earn weekly League Pass XP, League Tokens and seasonal cosmetics."><i>League Pass<b>View rewards</b></i></button>
-  <button class="mi" id="shopOpen" data-d="Spend League Tokens on sods, car skins and hats."><i>Item Shop<b>League Tokens</b></i></button>
+  <button class="mi" id="ms" data-d="Pick the mode and the arena look in one place. Arena size follows the mode."><i>Match setup<b id="msInfo">1v1 · League Stadium</b></i></button>
+  <div class="menu-label">Collection</div>
+  <button class="mi" id="hubOpen" data-d="League Pass, Locker and Item Shop, all in one place."><i>Customise<b id="hubInfo">Pass · Locker · Shop</b></i></button>
+  <div class="menu-label">Account</div>
   <button class="mi" id="profileOpen" data-d="Your career, achievements, friends and account perks."><i>Profile<b>Rewards & perks</b></i></button>
   <button class="mi" id="switchAccount" data-d="Sign in as another account, create one, or play as a guest."><i>Switch account<b id="switchAccountName">Guest</b></i></button>
   <button class="mi" id="settingsToggle" data-d="Show match, team, bot, camera and sound settings."><i>Settings <b>＋</b></i></button>
@@ -880,7 +1004,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   <div class="hint">Press <kbd>Space</kbd> to play</div>
 </footer></div>
 <div id="lob"><div><h2>Multiplayer</h2><input id="lname" maxlength="16" placeholder="Multiplayer name" autocomplete="nickname"><small class="npad" style="margin:-4px 0 2px">Temporary multiplayer name · resets when you sign in again</small><div id="l0"><button id="lc">Create party</button><input id="lj" maxlength="6" placeholder="CODE"><button id="lg">Join party</button></div>
-<div id="l1" style="display:none"><p id="lcode"></p><select id="lm" aria-label="Game mode"><option value="1">1v1 \u00b7 Compact</option><option value="2">2v2 Skirmish \u00b7 Compact</option><option value="3">3v3 \u00b7 Medium</option><option value="4">4v4 \u00b7 Large</option><option value="50">50v50 Deathmatch \u00b7 Huge</option></select><div id="lt"><div class="tc b"><b>BLUE</b><div id="t0"></div><button id="j0" class="alt">Join Blue</button></div><div class="tc o"><b>ORANGE</b><div id="t1"></div><button id="j1" class="alt">Join Orange</button></div></div><p id="lp"></p><button id="lr">Ready</button><button id="lk" class="alt">Copy invite link</button></div><p id="le"></p><button id="lobMusic" class="alt">Music: on</button><button id="lx" class="alt">Back</button></div></div>
+<div id="l1" style="display:none"><p id="lcode"></p><select id="lm" aria-label="Game mode"><option value="1">1v1 \u00b7 Compact</option><option value="2">2v2 Skirmish \u00b7 Compact</option><option value="3">3v3 \u00b7 Medium</option><option value="4">4v4 \u00b7 Large</option><option value="50">50v50 Deathmatch \u00b7 Huge</option></select><select id="lmap" aria-label="Arena style"></select><div id="lt"><div class="tc b"><b>BLUE</b><div id="t0"></div><button id="j0" class="alt">Join Blue</button></div><div class="tc o"><b>ORANGE</b><div id="t1"></div><button id="j1" class="alt">Join Orange</button></div></div><p id="lp"></p><button id="lr">Ready</button><button id="lk" class="alt">Copy invite link</button></div><p id="le"></p><button id="lobMusic" class="alt">Music: on</button><button id="lx" class="alt">Back</button></div></div>
 
 <div id="mobileControls" aria-label="Touch driving controls">
  <div class="stick-wrap"><div id="stickBase"><div id="stickNub"></div></div></div>
@@ -891,12 +1015,27 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
  <button data-action="cam" class="touch-cam">CAM</button>
 </div>
 <div id="lockerPanel"><div class="feature-wrap"><div class="feature-head"><h2>🔧 THE LOCKER</h2><button id="lockerClose">CLOSE ✕</button></div><p class="feature-muted">Build your own look. Your selections save automatically.</p><div class="feature-grid"><div class="feature-card"><strong>Base Sod</strong><p id="lockerSodName">Classic</p><div class="feature-actions"><button id="sodPrev">◀</button><button id="sodNext">▶</button></div></div><div class="feature-card"><strong>Hat</strong><p id="lockerHatName">None</p><div class="feature-actions"><button id="hatPrev">◀</button><button id="hatNext">▶</button></div></div><div class="feature-card"><strong>Car Model</strong><p id="lockerCarName">Street Racer</p><div class="feature-actions"><button id="carPrev">◀</button><button id="carNext">▶</button></div></div><div class="feature-card"><strong>Car Decal</strong><p id="lockerDecalName">Classic Stripe</p><div class="feature-actions"><button id="decalPrev">◀</button><button id="decalNext">▶</button></div></div></div><p id="lockerNotice" class="feature-muted">Some cosmetics unlock through the League Pass.</p><button id="lockerPass">VIEW LEAGUE PASS</button></div></div>
-<div id="passPanel"><div class="feature-wrap"><div class="feature-head"><h2>🏆 SOD LEAGUE PASS</h2><button id="passClose">CLOSE ✕</button></div><p>Play matches, score goals and get eliminations to earn XP. Progress is saved on this device.</p><div style="display:flex;justify-content:space-between;gap:10px"><b id="passLevel">TIER 1 / 30</b><b id="passTokens">◆ 0</b><b id="passXP">0 XP</b></div><div class="progress-rail"><i id="passFill"></i></div><div class="pass-track" id="passRewards"></div><p class="feature-muted" id="passRefresh">Weekly pass · refreshes every Monday (UTC).</p><p class="feature-muted">Earn XP: elimination +25 · goal +40 · match completed +100 · win bonus +75.</p><button id="passToLocker">OPEN LOCKER</button></div></div>
+<div id="passPanel"><div class="feature-wrap bp-wrap">
+ <div class="bp-top">
+  <div class="bp-title"><span class="bp-season">SEASON 01 · TURF WARS</span><h2>SOD LEAGUE <em>PASS</em></h2></div>
+  <div class="bp-tierchip"><small>TIER</small><b id="passTierBig">1</b><span>OF 30</span></div>
+ </div>
+ <div class="bp-stats"><b id="passLevel">TIER 1 / 30</b><b id="passTokens">◆ 0</b><b id="passXP">0 XP</b></div>
+ <div class="progress-rail"><i id="passFill"></i></div>
+ <p class="bp-next" id="passNext">0 / 250 XP · 250 XP to Tier 2</p>
+ <div class="bp-rail"><div class="bp-track" id="passRewards"></div></div>
+ <div class="bp-foot">
+  <p class="feature-muted" id="passRefresh">Weekly pass · refreshes every Monday (UTC).</p>
+  <div class="bp-actions"><button id="passToLocker">OPEN LOCKER</button><button id="passClose" class="alt">CLOSE ✕</button></div>
+ </div>
+ <p class="bp-xpnote">Earn XP: elimination +25 · goal +40 · match completed +100 · win bonus +75</p>
+</div></div>
 <div id="shopPanel"><div class="feature-wrap"><div class="feature-head"><h2>🛒 ITEM SHOP</h2><button id="shopClose">CLOSE ✕</button></div><p class="feature-muted">Spend League Tokens earned from the League Pass. The ??? sod is not for sale.</p><div class="shop-balance"><span>LEAGUE TOKENS</span><b id="shopTokens">0</b></div><div class="shop-tabs"><button data-shop="sods" class="on">SODS</button><button data-shop="skins">SKINS</button><button data-shop="hats">HATS</button></div><div id="shopGrid" class="shop-grid"></div><p class="feature-muted" id="shopMsg">Buying an item unlocks it in the Locker for good.</p></div></div>
 <button id="pmBtn" aria-label="Pause menu">II</button>
 <div id="npz"><div><h2>Menu</h2><small>The match keeps running while this menu is open.</small><button id="npzResume">Resume</button><button id="npzMusic" class="alt">Music: on</button><button id="npzEnd" class="danger" style="display:none">End match for everyone</button><button id="npzLeave" class="alt">Leave match</button></div></div>
 <div id="pz"><div><h2>Paused</h2><p id="pzInfo" class="pz-info"></p><button id="rs">Resume</button><button id="pzMusic" class="alt">Music: on</button><button id="rt">Restart match</button><button id="mm">Main menu</button></div></div>
 <div id="login" role="dialog" aria-label="Sod League account">
+ <div class="lg-tint" aria-hidden="true"></div>
  <button class="lg-back" id="lgBack" aria-label="Back">&#8592;</button>
  <div class="lg-stage">
   <div class="lg-character"><canvas id="lgSod" width="512" height="700"></canvas><p id="lgSodName">Classic</p></div>
@@ -909,15 +1048,27 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 const W=180,L=260,H=90,GW=42,GH=24,GD=20,BR=3,SZ=-L/2+28,P=Math.PI,$=id=>document.getElementById(id);
 let mapSX=1,mapSZ=1,PW=W,PL=L,PGW=GW,RAMP_X=0,RAMP_Z=0,SHOW_Z=SZ;
 const MAP_PROFILES={1:{x:.56,z:.58,name:'Compact'},2:{x:.56,z:.58,name:'Compact'},3:{x:.72,z:.74,name:'Medium'},4:{x:.86,z:.88,name:'Large'},50:{x:1,z:1,name:'Huge'}};
+// Arena looks. They only change turf, markings, sky, fog, lighting and boost
+// pads. Arena size and gameplay are untouched.
+const MAP_THEMES=[
+ {id:'stadium',name:'League Stadium',sub:'Classic night turf',turf:[0x2e8a4e,0x227a3f],line:0xffffff,sky:['#050817','#16224e','#2c3a72','#46548f'],fog:0x23305a,hemi:[0xdbe8ff,0x1a2438],sun:0xfff4e0,glass:0x9bdcff,padBig:0xffc94a,padSmall:0xffb020},
+ {id:'frost',name:'Frost Dome',sub:'Icy blue rink',turf:[0xa9c9dc,0x93b6cb],line:0xf4fdff,sky:['#020912','#082438','#0f3d54','#2e7d97'],fog:0x123143,hemi:[0xdcf4ff,0x0d1c28],sun:0xeaf7ff,glass:0xc9f0ff,padBig:0x8ff6ff,padSmall:0x4fd8ff},
+ {id:'dust',name:'Sunset Dust',sub:'Desert bowl',turf:[0xc79a58,0xb0854a],line:0xfff1cf,sky:['#170d22','#4d2036','#a04f36','#f5a353'],fog:0x6c3630,hemi:[0xffdcb0,0x3a2416],sun:0xffd39a,glass:0xffcf9a,padBig:0xffd05a,padSmall:0xff9a2e},
+ {id:'neon',name:'Neon Grid',sub:'Midnight synthwave',turf:[0x22315a,0x18234a],line:0x67f7ff,sky:['#04030d','#100a2b','#2a1046','#5c1a63'],fog:0x180d2c,hemi:[0xbfaaff,0x120a20],sun:0xcdbcff,glass:0xd07bff,padBig:0xff54d8,padSmall:0x8a63ff},
+ {id:'jungle',name:'Jungle Bowl',sub:'Rainforest pitch',turf:[0x3a9e46,0x2c8a3a],line:0xf2ffe0,sky:['#03110e','#0a2a22','#134a35','#2f7a4a'],fog:0x123527,hemi:[0xd8ffcf,0x0a1a10],sun:0xf1ffd8,glass:0xa9ffcf,padBig:0xffe066,padSmall:0x7dff9a}
+];
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const cl=(o,k,v,lo,hi,e)=>{if(o[k]<lo){o[k]=lo;if(o[v]<0)o[v]*=-e}else if(o[k]>hi){o[k]=hi;if(o[v]>0)o[v]*=-e}};
 const R=new THREE.WebGLRenderer({antialias:true});R.shadowMap.enabled=true;R.shadowMap.type=THREE.PCFSoftShadowMap;R.setPixelRatio(Math.min(devicePixelRatio,2));document.body.prepend(R.domElement);
 const S=new THREE.Scene(),sk=document.createElement('canvas');sk.width=2;sk.height=256;
 {const x=sk.getContext('2d'),g=x.createLinearGradient(0,0,0,256);g.addColorStop(0,'#050817');g.addColorStop(.52,'#16224e');g.addColorStop(.84,'#2c3a72');g.addColorStop(1,'#46528f');x.fillStyle=g;x.fillRect(0,0,2,256)}
 S.background=new THREE.CanvasTexture(sk);S.fog=new THREE.Fog(0x23305a,200,640);
+const skyCtx=sk.getContext('2d');
+function paintSky(stops){const g=skyCtx.createLinearGradient(0,0,0,256);stops.forEach((c,i)=>g.addColorStop(i/(stops.length-1),c));skyCtx.clearRect(0,0,2,256);skyCtx.fillStyle=g;skyCtx.fillRect(0,0,2,256);S.background.needsUpdate=true}
 const C=new THREE.PerspectiveCamera(70,1,.5,700);
-S.add(new THREE.HemisphereLight(0xdbe8ff,0x1a2438,.85));
-const dl=new THREE.DirectionalLight(0xfff4e0,1.1);S.add(dl,dl.target);dl.castShadow=true;dl.shadow.mapSize.set(2048,2048);Object.assign(dl.shadow.camera,{left:-85,right:85,top:85,bottom:-85,near:1,far:260});dl.shadow.camera.updateProjectionMatrix();dl.shadow.bias=-.0004;
+const hemi=new THREE.HemisphereLight(0xdbe8ff,0x1a2438,.5);S.add(hemi);
+const dl=new THREE.DirectionalLight(0xfff4e0,.82);S.add(dl,dl.target);
+const fill=new THREE.DirectionalLight(0x8fb8ff,.2);fill.position.set(-60,34,-70);S.add(fill);dl.castShadow=true;dl.shadow.mapSize.set(2048,2048);Object.assign(dl.shadow.camera,{left:-85,right:85,top:85,bottom:-85,near:1,far:260});dl.shadow.camera.updateProjectionMatrix();dl.shadow.bias=-.0004;dl.shadow.normalBias=.035;
 function shadowAt(x,z){dl.position.set(x+30,70,z+20);dl.target.position.set(x,0,z);dl.target.updateMatrixWorld()}shadowAt(0,0);
 const touchDevice=()=>('ontouchstart' in window)||(navigator.maxTouchPoints>0)||!!(window.matchMedia&&matchMedia('(pointer: coarse)').matches);
 const mobileControls=$('mobileControls');
@@ -926,13 +1077,22 @@ const M=(c,o)=>{const opts=Object.assign({color:c},o||{});delete opts.specular;d
 const box=(w,h,d,c,x,y,z,o)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),M(c,o));m.position.set(x,y,z);S.add(m);return m};
 const PH=(c,o)=>new THREE.MeshPhongMaterial(Object.assign({color:c,shininess:90,specular:0x9aa6c0},o));const GLT={transparent:true,opacity:.10,depthWrite:false,side:THREE.DoubleSide};
 // ---------- pitch ----------
-for(let i=0;i<10;i++){const f=box(W,.5,L/10,i%2?0x23864e:0x1a6a3d,0,-.25,(i-4.5)*L/10);f.receiveShadow=true}
+// Fine turf grain, mown stripes and speckle, tinted per arena theme.
+const TURF_TEX=(()=>{const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d');
+x.fillStyle='#929292';x.fillRect(0,0,256,256);
+for(let i=0;i<4;i++){x.fillStyle=i%2?'rgba(255,255,255,.055)':'rgba(0,0,0,.05)';x.fillRect(0,i*64,256,32)}
+for(let i=0;i<3000;i++){const gx=Math.random()*256,gy=Math.random()*256,l=3+Math.random()*9;x.strokeStyle=['rgba(255,255,255,.20)','rgba(0,0,0,.16)','rgba(255,255,255,.10)','rgba(0,0,0,.10)'][i%4];x.lineWidth=.8+Math.random();x.beginPath();x.moveTo(gx,gy);x.lineTo(gx+(Math.random()-.5)*2.4,gy-l);x.stroke()}
+for(let i=0;i<160;i++){x.fillStyle=i%2?'rgba(255,255,255,.07)':'rgba(0,0,0,.07)';x.fillRect(Math.random()*256,Math.random()*256,6+Math.random()*22,1)}
+const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.anisotropy=4;return t})();
+for(let i=0;i<10;i++){const f=box(W,.5,L/10,i%2?0x2e8a4e:0x227a3f,0,-.25,(i-4.5)*L/10);f.receiveShadow=true;f.userData.turf=i%2?1:0;const map=TURF_TEX.clone();map.needsUpdate=true;map.repeat.set(4.2,5.6);f.material.map=map;f.material.needsUpdate=true}
+const lineMark=o=>{o.userData.line=1;o.position.y+=.02;const lm=Array.isArray(o.material)?o.material:[o.material];lm.forEach(m=>{if(m){m.polygonOffset=true;m.polygonOffsetFactor=-2;m.polygonOffsetUnits=-2}});return o};
 box(W+34,.5,L+64,0x0d1426,0,-.9,0);
-box(W,.06,.6,0xffffff,0,.03,0);
-[-1,1].forEach(s=>box(W,.06,.5,0xffffff,0,.03,s*(L/2-.3)));
+lineMark(box(W,.06,.6,0xffffff,0,.03,0));
+[-1,1].forEach(s=>lineMark(box(W,.06,.5,0xffffff,0,.03,s*(L/2-.3))));
 {const wm=new THREE.MeshBasicMaterial({color:0xffffff}),rg=new THREE.Mesh(new THREE.RingGeometry(13,13.7,64),wm),dt=new THREE.Mesh(new THREE.CircleGeometry(1,24),wm);
- rg.rotation.x=dt.rotation.x=-P/2;rg.position.y=dt.position.y=.06;S.add(rg,dt);
- [-1,1].forEach(s=>{box(GW+30,.06,.5,0xffffff,0,.03,s*(L/2-24));[-1,1].forEach(t=>box(.5,.06,24,0xffffff,t*(GW/2+15),.03,s*(L/2-12)))})}
+ rg.userData.line=1;dt.userData.line=1;
+ wm.polygonOffset=true;wm.polygonOffsetFactor=-3;wm.polygonOffsetUnits=-3;rg.rotation.x=dt.rotation.x=-P/2;rg.position.y=dt.position.y=.10;S.add(rg,dt);
+ [-1,1].forEach(s=>{lineMark(box(GW+30,.06,.5,0xffffff,0,.03,s*(L/2-24)));[-1,1].forEach(t=>lineMark(box(.5,.06,24,0xffffff,t*(GW/2+15),.03,s*(L/2-12))))})}
 // side walls + goal structures
 [-1,1].forEach(t=>{const x=t*(W/2+.5),N={emissive:0x7fc0ff};box(1,H,L,0x6fa8ff,x,H/2,0,GLT);box(1.2,.5,L,0x7fc0ff,x,.25,0,N);box(1.2,.5,L,0x7fc0ff,x,H,0,N)});
 [-1,1].forEach(s=>{
@@ -958,11 +1118,9 @@ box(W,.7,L,0x9bdcff,0,H,(0),glassMat);
 // Subtle glass framing makes the enclosure read as a complete box without
 // obscuring the cars, sod drivers, ball, or stadium beyond the panels.
 const frameMat={emissive:0x234b68};
-[-1,1].forEach(x=>[-1,1].forEach(z=>{
- box(.32,H,.32,0x7fc9ed,x*(W/2+.25),H/2,z*(L/2+.25),frameMat);
- box(.32,.32,L+.4,0x7fc9ed,x*(W/2+.25),H,z*0,frameMat);
- box(W+.4,.32,.32,0x7fc9ed,x*0,H,z*(L/2+.25),frameMat);
-}));
+[-1,1].forEach(x=>[-1,1].forEach(z=>box(.32,H,.32,0x7fc9ed,x*(W/2+.25),H/2,z*(L/2+.25),frameMat)));
+[-1,1].forEach(x=>box(.32,.32,L+.4,0x7fc9ed,x*(W/2+.25),H,0,frameMat));
+[-1,1].forEach(z=>box(W+.4,.32,.32,0x7fc9ed,0,H,z*(L/2+.25),frameMat));
 // Flat arena: ramps and wall-driving geometry have been removed.
 // Arena ceiling is glass too; the ball and players remain visible from outside.
 // Keep pitch geometry in one root so each match mode can resize the actual arena.
@@ -1204,8 +1362,8 @@ box(W+196,.36,L+268,0x151c2a,0,-1.34,0);          // ring service road
 box(W+132,.4,L+184,0x1b2434,0,-1.04,0);           // concrete concourse
 box(W+132,.06,.9,0x63748d,0,-.82,L/2+91);         // painted concourse edge
 box(W+132,.06,.9,0x63748d,0,-.82,-(L/2+91));
-box(.9,.06,L+184,0x63748d,W/2+65,-.82,0);
-box(.9,.06,L+184,0x63748d,-(W/2+65),-.82,0);
+box(.9,.06,L+184,0x63748d,W/2+65,-.80,0);
+box(.9,.06,L+184,0x63748d,-(W/2+65),-.80,0);
 box(W+64,.5,L+96,0x121b2c,0,-.78,0);              // kerb ring around the plinth
 // Boundary wall: plinth, panel, coping, pilasters, gate pylons, corner towers.
 const WY=-.84,WH=6.4;
@@ -1374,132 +1532,251 @@ function mkDecalTex(i){
  const t=new THREE.CanvasTexture(cv);t.minFilter=THREE.LinearFilter;t.magFilter=THREE.LinearFilter;t.needsUpdate=true;return t;
 }
 const DECAL_MAT=Array.from({length:6},(_,i)=>new THREE.MeshBasicMaterial({map:mkDecalTex(i),transparent:true,depthWrite:false,alphaTest:.02,polygonOffset:true,polygonOffsetFactor:-6,polygonOffsetUnits:-6,side:THREE.DoubleSide}));
+// Soft studio reflections give the paint, chrome and glass real highlights
+// without any post-processing pass.
+const CAR_ENV=(()=>{const c=document.createElement('canvas');c.width=256;c.height=128;const x=c.getContext('2d');
+ const g=x.createLinearGradient(0,0,0,128);g.addColorStop(0,'#b9cbe4');g.addColorStop(.42,'#5d789c');g.addColorStop(.56,'#243350');g.addColorStop(1,'#080d18');x.fillStyle=g;x.fillRect(0,0,256,128);
+ x.fillStyle='rgba(255,247,219,.95)';x.fillRect(24,8,52,20);x.fillRect(168,12,44,16);x.fillRect(96,60,18,8);
+ const t=new THREE.CanvasTexture(c);t.mapping=THREE.EquirectangularReflectionMapping;return t})();
 const CAR_SPECS=[
- {decal:[{w:1.7,h:1.3,x:0,y:1.64,z:1.45},{w:1.74,h:1.35,x:0,y:2.075,z:-.5},{w:1.9,h:1.12,x:0,y:1.565,z:-1.7}],back:{w:1.6,h:.6,x:0,y:.95,z:-2.22},sod:{y:3.12,z:-.3,s:1}},
- {decal:[{w:1.55,h:1.0,x:0,y:1.64,z:.95},{w:1.4,h:.6,x:0,y:1.51,z:-.9}],back:{w:1.6,h:.38,x:0,y:.95,z:-1.77},sod:{y:3.0,z:-.3,s:1}},
- {decal:[{w:1.7,h:1.05,x:0,y:.65,z:2.05},{w:1.08,h:1.2,x:0,y:1.54,z:-.3}],back:{w:1.6,h:.4,x:0,y:1.05,z:-2.365},sod:{y:2.66,z:-.18,s:.9}},
- {decal:[{w:1.9,h:1.5,x:0,y:2.31,z:1.35},{w:1.3,h:.78,x:0,y:2.49,z:-1.2}],back:{w:1.5,h:.55,x:0,y:1.66,z:-1.91},sod:{y:3.52,z:.9,s:1.02}},
- {decal:[{w:1.55,h:.55,x:0,y:1.06,z:1.35},{w:1.2,h:.26,x:0,y:1.06,z:.78}],back:{w:1.5,h:.42,x:0,y:.85,z:-2.07},sod:{y:2.74,z:-.3,s:.95}},
- {decal:[{w:1.9,h:1.2,x:0,y:1.34,z:1.5},{w:2.2,h:.98,x:0,y:1.09,z:-1.7}],back:{w:1.7,h:.5,x:0,y:.95,z:-2.31},sod:{y:3.26,z:-.3,s:1.07}}
+ {decal:[{w:0.93,h:0.59,x:0,y:1.32,z:1.55}],back:{w:0.93,h:0.34,x:0,y:1.24,z:-2.19},sod:{y:3.2,z:-.35,s:1}},
+ {decal:[{w:0.87,h:0.50,x:0,y:1.51,z:1.05}],back:{w:0.96,h:0.28,x:0,y:1.3,z:-2.38},sod:{y:3.06,z:-.35,s:.98}},
+ {decal:[{w:0.93,h:0.56,x:0,y:.7,z:2.0}],back:{w:0.99,h:0.26,x:0,y:1.0,z:-2.4},sod:{y:2.78,z:-.42,s:.92}},
+ {decal:[{w:0.99,h:0.59,x:0,y:2.31,z:1.35}],back:{w:0.99,h:0.31,x:0,y:1.42,z:-2.35},sod:{y:2.96,z:.95,s:1}},
+ {decal:[{w:0.87,h:0.50,x:0,y:1.05,z:1.1}],back:{w:0.93,h:0.25,x:0,y:1.0,z:-2.2},sod:{y:3.0,z:-.42,s:.95}},
+ {decal:[{w:0.99,h:0.59,x:0,y:1.32,z:1.6}],back:{w:1.05,h:0.34,x:0,y:1.12,z:-2.25},sod:{y:3.32,z:-.4,s:1.05}}
 ];
 const PGEO={};
 const decalGeo=(w,h)=>{const k=w+'x'+h;return PGEO[k]||(PGEO[k]=new THREE.PlaneGeometry(w,h))};
 const BODY_CACHE={};
+// Cars are authored as loose parts and merged into one mesh per material, so a
+// detailed body still costs only a handful of draw calls (important when 100
+// cars are pooled for a 50v50 match).
+function mergeCarParts(list){
+ const byMat=new Map();
+ list.forEach(o=>{o.updateMatrix();let arr=byMat.get(o.material);if(!arr){arr=[];byMat.set(o.material,arr)}arr.push({g:o.geometry,m:o.matrix.clone()})});
+ const out=[];
+ byMat.forEach((arr,mat)=>{
+  const pos=[],nor=[],uv=[];let normals=true,uvs=true;
+  arr.forEach(({g,m})=>{
+   const ng=g.index?g.toNonIndexed():g.clone();
+   ng.applyMatrix4(m);
+   const p=ng.attributes.position.array;for(let i=0;i<p.length;i++)pos.push(p[i]);
+   if(ng.attributes.normal&&normals){const n=ng.attributes.normal.array;for(let i=0;i<n.length;i++)nor.push(n[i])}else normals=false;
+   if(ng.attributes.uv&&uvs){const u=ng.attributes.uv.array;for(let i=0;i<u.length;i++)uv.push(u[i])}else uvs=false;
+   if(ng!==g)ng.dispose();
+  });
+  const geo=new THREE.BufferGeometry();
+  geo.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));
+  if(normals&&nor.length===pos.length)geo.setAttribute('normal',new THREE.Float32BufferAttribute(nor,3));else geo.computeVertexNormals();
+  if(uvs&&uv.length/2===pos.length/3)geo.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));
+  const mesh=new THREE.Mesh(geo,mat);mesh.castShadow=true;out.push(mesh);
+ });
+ return out;
+}
 function carBodyTemplate(model,col){
  const key=model+':'+col;
  if(BODY_CACHE[key])return BODY_CACHE[key];
  const g=new THREE.Group();
- const a=(geo,mat,x,y,z)=>{const m=new THREE.Mesh(geo,mat);m.position.set(x,y,z);g.add(m);return m};
- const B=(w,h,d)=>new THREE.BoxGeometry(w,h,d);
- const paint=PH(col), dark=PH(0x0b1220,{shininess:60}), black=M(0x07090e), glass=PH(0x18304f,{shininess:220,specular:0xffffff}), chrome=PH(0xd7e2f2,{shininess:200,specular:0xffffff}), gold=PH(0xd8a63a,{shininess:220,specular:0xfff2c8,emissive:0x2a1c02,emissiveIntensity:.5});
- const wheels=(x,z,r,w,rim)=>{const wg=new THREE.CylinderGeometry(r,r,w,14),rg=new THREE.CylinderGeometry(r*.58,r*.58,w*1.04,12),rm=rim||chrome;[[-x,z],[x,z],[-x,-z],[x,-z]].forEach(p=>{a(wg,black,p[0],r,p[1]).rotation.z=PX2;a(rg,rm,p[0],r,p[1]).rotation.z=PX2})};
- if(model===0){ // Street Racer - low coupe
-  a(B(2.4,.9,4.4),paint,0,.9,0);
-  a(B(2,.7,2.2),dark,0,1.65,-.3);
-  a(B(2.4,.12,.8),paint,0,1.9,-2.1);
-  a(B(2.5,.18,.5),black,0,1.35,2.25);
-  a(B(2.5,.1,.7),black,0,.42,2.45);
-  a(B(2.25,.34,1.5),paint,0,1.42,1.45);
-  a(B(2.3,.3,1.25),paint,0,1.4,-1.7);
-  const ws=a(B(1.78,.07,1.15),glass,0,1.77,.52);ws.rotation.x=-.62;
-  a(B(1.86,.09,1.5),paint,0,2.02,-.5);
-  [-1,1].forEach(s=>{a(B(.06,.14,3.6),PH(0xf4f7ff),s*1.22,1.12,0);a(B(.06,.1,3.4),PH(col,{emissive:col,emissiveIntensity:.55}),s*1.23,.8,0);a(B(.12,.18,3),dark,s*1.2,.5,0)});
-  [-.8,.8].forEach(x=>{a(B(.5,.2,.1),M(0xfff2b0),x,.95,2.48);a(B(.5,.2,.1),M(0xff2a2a),x,.95,-2.48)});
-  a(B(.55,.06,1.5),PH(0xf4f7ff),0,1.595,1.45);
-  wheels(1.25,1.4,.55,.5);
- }else if(model===1){ // Rally Buggy - lifted tub, open cockpit, roll hoop behind the driver
-  const matte=PH(col,{shininess:16,specular:0x111111}), tube=PH(0x2b3547);
-  a(B(2.05,.5,3.5),matte,0,.95,0);
-  a(B(2.2,.14,3.7),black,0,.66,0);
-  a(B(1.9,.42,1.4),matte,0,1.42,.95);              // hood, top 1.63
-  a(B(1.66,.34,.46),dark,0,1.33,.24);              // dash bulkhead, top 1.50
-  a(B(1.78,.5,1.6),dark,0,1.15,-.5);               // cockpit well
-  a(B(1.9,.12,1.5),matte,0,1.44,-1.5);             // rear deck, top 1.50
-  [-.86,.86].forEach(x=>a(B(.1,2.7,.1),tube,x,2.85,-1.35));   // hoop legs, 1.5-4.2
-  a(B(1.82,.1,.12),tube,0,4.2,-1.35);                         // hoop crown
-  [-.86,.86].forEach(x=>{const st=a(B(.09,1.5,.09),tube,x,2.1,-1.95);st.rotation.x=.55}); // rear stays
-  a(B(1.72,.1,.1),tube,0,1.6,-1.3);                           // cockpit rear rail
-  [-1,1].forEach(s=>{
-   a(B(.14,.16,2.3),tube,s*1.0,1.48,-.3);                      // low side rails
-   a(B(.34,.16,1.2),dark,s*1.1,1.15,1.35);                     // front fenders
-   a(B(.34,.16,1.2),dark,s*1.1,1.15,-1.35);                    // rear fenders
-   a(B(.12,.6,.12),chrome,s*.8,.85,2.05);                      // bumper posts
+ const parts=[];
+ const put=(geo,mat,x,y,z)=>{const m=new THREE.Mesh(geo,mat);m.position.set(x,y,z);parts.push(m);return m};
+ const bx=(w,h,d,mat,x,y,z)=>put(new THREE.BoxGeometry(w,h,d),mat,x,y,z);
+ const cyl=(rt,rb,h,seg,mat,x,y,z)=>put(new THREE.CylinderGeometry(rt,rb,h,seg),mat,x,y,z);
+ const paint=PH(col,{shininess:70,specular:0x2f3a4f,envMap:CAR_ENV,reflectivity:.11,combine:THREE.MixOperation});
+ const paintD=PH(tint(col,.58),{shininess:90,specular:0x39445a,envMap:CAR_ENV,reflectivity:.07,combine:THREE.MixOperation});
+ const paintL=PH(tint(col,1.24),{shininess:60,specular:0x2f3a4f,envMap:CAR_ENV,reflectivity:.09,combine:THREE.MixOperation});
+ const carbon=PH(0x151b27,{shininess:130,specular:0x8fa3bd});
+ const dark=PH(0x0b1220,{shininess:70});
+ const black=M(0x06080d);
+ const rubber=PH(0x0a0b10,{shininess:10,specular:0x1b1b1b});
+ const glass=PH(0x123152,{shininess:290,specular:0xffffff,transparent:true,opacity:.9});
+ const chrome=PH(0xc6d3e4,{shininess:250,specular:0xffffff,envMap:CAR_ENV,reflectivity:.3,combine:THREE.MixOperation});
+ const gold=PH(0xd8a63a,{shininess:250,specular:0xfff2c8,emissive:0x2a1c02,emissiveIntensity:.6,envMap:CAR_ENV,reflectivity:.4,combine:THREE.MixOperation});
+ const head=M(0xfff6d8),tail=M(0xff2a2a),amber=M(0xffb347),red=M(0xd8202a);
+ const neon=PH(0x5ff4ff,{emissive:0x2bd8ff,emissiveIntensity:.95,shininess:120});
+ // Wheel: tyre, rim face, hub, spokes, brake disc, caliper and optional tread.
+ const wheel=(x,z,r,w,rim,style)=>{
+  const spokes=style===1?6:5;
+  [[-x,z],[x,z],[-x,-z],[x,-z]].forEach(([px,pz])=>{
+   const ty=cyl(r,r,w,22,rubber,px,r,pz);ty.rotation.z=PX2;
+   const face=cyl(r*.62,r*.62,w*1.02,20,rim,px,r,pz);face.rotation.z=PX2;
+   const hub=cyl(r*.2,r*.2,w*1.1,10,chrome,px,r,pz);hub.rotation.z=PX2;
+   for(let k=0;k<spokes;k++){const sp=bx(.07,r*1.42,w*1.09,rim,px,r,pz);sp.rotation.x=k*Math.PI*2/spokes}
+   const disc=cyl(r*.46,r*.46,w*.96,16,carbon,px,r,pz);disc.rotation.z=PX2;
+   bx(.13,r*.5,w*.56,red,px+(px<0?w*.34:-w*.34),r*.2,pz);
+   if(style===1||style===2){for(let k=0;k<10;k++){const an=k*Math.PI/5;const t=bx(w*1.02,.09,.15,rubber,px,r*Math.cos(an),pz+r*Math.sin(an));t.rotation.x=-an}}
+   if(style===3){const cap=cyl(r*.3,r*.3,w*1.1,12,dark,px,r,pz);cap.rotation.z=PX2;const ring=cyl(r*.68,r*.68,.02,20,neon,px,r,pz);ring.rotation.z=PX2}
   });
-  for(let k=-1;k<=1;k++)a(B(.34,.18,.14),M(0xfff0c0),k*.5,1.55,1.66); // lamps on the hood face, under the chin
-  a(B(1.9,.12,.12),chrome,0,1.0,2.05);
-  a(new THREE.CylinderGeometry(.5,.5,.3,12),black,0,1.8,-2.15).rotation.x=PX2;
-  a(new THREE.CylinderGeometry(.28,.28,.32,10),chrome,0,1.8,-2.15).rotation.x=PX2;
-  wheels(1.2,1.35,.72,.62,PH(0x9fb0c8,{shininess:120}));
- }else if(model===2){ // Aero GT - long low wedge, big wing
-  const gloss=PH(col,{shininess:200,specular:0xffffff});
-  a(B(2.3,.38,4.7),gloss,0,.62,0);
-  a(B(2.05,.26,1.5),gloss,0,.5,2.0);
-  a(B(2.35,.16,.4),black,0,.42,2.72);
-  a(B(1.15,.62,2.0),gloss,0,1.15,-.1);
-  a(B(1.3,.1,1.5),gloss,0,1.48,-.25);
-  const ws2=a(B(1.5,.1,1.3),glass,0,1.18,.85);ws2.rotation.x=-.5;
-  a(B(1.9,.1,1.4),glass,0,1.44,-.2);
-  [-1,1].forEach(s=>{a(B(.26,.3,1.4),black,s*1.12,.85,-.5);a(B(.1,.18,3.4),PH(col,{emissive:col,emissiveIntensity:.4}),s*1.16,.62,0)});
-  a(B(2.5,.09,.6),gloss,0,1.72,-2.2);
-  a(B(.12,.42,.22),dark,-.95,1.5,-2.15);a(B(.12,.42,.22),dark,.95,1.5,-2.15);
-  a(B(.06,.16,.6),gold,-1.24,1.72,-2.2);a(B(.06,.16,.6),gold,1.24,1.72,-2.2);
-  a(B(2.2,.18,.5),black,0,.42,-2.35);
-  a(B(1.5,.08,.12),M(0xfff6d0),0,.66,2.76);a(B(1.9,.09,.12),M(0xff2a2a),0,.8,-2.42);
-  wheels(1.2,1.5,.52,.5,PH(0xb9c6da,{shininess:200}));
- }else if(model===3){ // Heavy Hauler - cab, flatbed, cargo, stacks
-  const truck=PH(col,{shininess:70,specular:0x8899aa});
-  a(B(2.3,.42,4.7),black,0,.72,0);
-  a(B(2.2,1.2,1.9),truck,0,1.55,1.35);
-  a(B(2.24,.16,2.0),truck,0,2.22,1.35);
-  const ws3=a(B(1.9,.6,.12),glass,0,1.86,2.32);ws3.rotation.x=-.18;
-  a(B(1.95,.5,.14),chrome,0,1.25,2.34);
-  a(B(2.4,.26,.22),chrome,0,.78,2.42);
-  a(B(2.2,.2,2.7),dark,0,1.18,-1.0);
-  a(B(1.9,.75,1.5),truck,0,1.66,-1.15);
-  a(B(1.5,.45,1.0),PH(tint(col,.6)),0,2.26,-1.2);
-  [-1,1].forEach(s=>{a(B(.1,.55,2.7),chrome,s*1.1,1.45,-1.0);a(new THREE.CylinderGeometry(.09,.09,1.7,8),chrome,s*1.02,2.1,.45)});
-  for(let k=-2;k<=2;k++)a(B(.16,.1,.1),M(0xffb347),k*.42,2.32,2.28);
-  a(B(1.9,.12,.12),M(0xff2a2a),0,1.0,-2.4);
-  wheels(1.16,1.5,.78,.7,PH(0xc3cede,{shininess:120}));
- }else if(model===4){ // Neon Sprint - low canopy racer, canopy bubble sits behind the driver
-  const hull=PH(0x101a2e,{shininess:240,specular:0x88ccff}), neon=M(0x4ff0ff);
-  a(B(1.95,.55,4.1),hull,0,.78,0);                 // hull, top 1.055
-  a(B(2.15,.12,3.2),PH(0x0a1120,{shininess:40}),0,.5,0);
-  a(new THREE.ConeGeometry(.52,1.7,6),hull,0,.8,2.5).rotation.x=PX2;
-  a(B(1.62,.34,1.75),PH(0x0a1120),0,1.2,-.45);     // cockpit well, top 1.37
-  a(B(1.5,.34,.26),hull,0,1.26,.5);                // dash, top 1.43
-  a(new THREE.SphereGeometry(.5,14,10),PH(0x1d4a72,{shininess:260,specular:0xffffff}),0,1.28,-1.5).scale.set(1.25,.6,1.05); // canopy behind the seat
-  const ws4=a(B(1.24,.05,.95),glass,0,1.14,.9);ws4.rotation.x=-.5;  // low screen, below the chin
+ };
+ // Segmented wheel arch, so the wheels sit in real fenders instead of hanging
+ // off a flat slab side.
+ const arch=(x,z,r,w,mat)=>{const t=put(new THREE.TorusGeometry(r+.03,.075,6,16,Math.PI),mat,x,r,z);t.rotation.y=Math.PI/2;t.scale.z=Math.max(1,w/.15)};
+ if(model===0){ // Street Racer — low mid-engine coupe, open cockpit
+  bx(2.32,.3,4.24,carbon,0,.66,0);
+  bx(2.42,.52,4.34,paint,0,.98,0);
+  bx(2.3,.26,1.5,paintD,0,1.18,1.55);
+  bx(2.36,.2,.7,paint,0,1.16,2.1);
+  bx(2.44,.1,.52,black,0,.56,2.2);
+  [-1,1].forEach(s=>bx(.5,.12,.5,black,s*.95,.68,2.2));
+  bx(.92,.1,.7,carbon,0,1.43,1.42);
+  bx(.8,.05,.56,dark,0,1.48,1.38);
+  [-1,1].forEach(s=>{bx(.3,.04,.5,black,s*.2,1.5,1.38);bx(.3,.03,.5,black,s*.2,1.51,1.48)});
+  [-1,1].forEach(s=>bx(.05,.06,1.3,black,s*.55,1.42,1.5));
+  bx(1.94,.06,1.62,dark,0,1.1,-.38);
+  [-1,1].forEach(s=>{bx(.1,.72,1.66,paint,s*.97,1.62,-.38);bx(.17,.12,1.66,paintL,s*1.0,2.0,-.38);bx(.05,.3,1.2,dark,s*1.06,1.72,-.3)});
+  bx(1.94,.8,.14,paint,0,1.66,-1.2);
+  bx(1.86,.62,.1,dark,0,1.62,.46);
+  bx(1.6,.34,.1,paintL,0,1.9,.4);
+  const ws=bx(1.72,.06,1.0,glass,0,1.72,.72);ws.rotation.x=-.55;
+  bx(1.8,.1,.3,paintL,0,2.0,.2);
+  bx(2.3,.3,1.3,paint,0,1.28,-1.5);
+  bx(1.0,.12,.9,carbon,0,1.46,-1.45);
+  [-1,1].forEach(s=>bx(.08,.34,.2,carbon,s*.82,1.46,-1.98));
+  bx(2.24,.08,.5,paint,0,1.66,-2.0);
+  [-1,1].forEach(s=>bx(.06,.12,.5,gold,s*1.1,1.64,-2.0));
+  bx(2.26,.16,.44,carbon,0,.62,-2.16);
+  for(let k=-2;k<=2;k++)bx(.07,.18,.4,dark,k*.44,.56,-2.2);
+  [-1,1].forEach(s=>{bx(.66,.2,.06,black,s*.7,1.19,2.42);bx(.42,.1,.08,head,s*.7,1.2,2.45);bx(.44,.04,.06,amber,s*.7,1.03,2.44);bx(.34,.06,.06,amber,s*1.12,1.0,-2.14)});
+  bx(1.94,.1,.06,tail,0,1.24,-2.19);
+  bx(.5,.12,.08,head,0,1.36,-2.16);
+  [-1,1].forEach(s=>{const e=cyl(.1,.1,.34,12,chrome,s*.54,.8,-2.2);e.rotation.x=PX2});
+  [-1,1].forEach(s=>{bx(.06,.16,.06,dark,s*1.16,1.68,.58);bx(.26,.1,.14,paint,s*1.28,1.76,.58);bx(.05,.05,.42,chrome,s*1.22,1.34,-.4)});
+  [-1,1].forEach(s=>{bx(.1,.26,2.2,paintD,s*1.18,.62,-.1);bx(.05,.08,1.6,black,s*1.22,.42,-.1);bx(.04,.06,2.5,dark,s*1.22,1.02,-.1)});
+  [-1,1].forEach(s=>{arch(s*1.22,1.42,.55,.34,paintD);arch(s*1.22,-1.42,.55,.34,paintD)});
+  wheel(1.22,1.42,.55,.5,chrome,0);
+ }else if(model===1){ // Rally Buggy — tube frame, light bar, spare tyre
+  const tube=PH(0x2b3547,{shininess:130,specular:0x9aabbe});
+  bx(2.0,.34,3.5,dark,0,.9,0);
+  bx(2.16,.16,3.72,black,0,.68,0);
+  bx(1.94,.4,1.3,paint,0,1.3,1.05);
+  bx(1.72,.3,.5,dark,0,1.24,.34);
+  bx(1.86,.42,.5,dark,0,1.1,-.62);
+  bx(1.94,.18,1.5,paint,0,1.26,-1.62);
+  bx(1.8,.6,.14,dark,0,1.25,.3);
   [-1,1].forEach(s=>{
-   a(B(.08,.5,1.7),hull,s*.85,1.42,-1.55).rotation.z=s*.18;
-   a(B(.07,.06,3.4),neon,s*.99,.95,0);
-   a(B(.07,.06,2.6),neon,s*.99,.62,-.2);
-   a(B(.11,.32,2.3),hull,s*.9,1.19,-.5);            // cockpit walls, top 1.35
+   bx(.12,.9,1.7,paint,s*.99,1.6,-.42);
+   bx(.22,.12,1.7,paintD,s*1.02,1.98,-.42);
+   bx(.34,.18,1.3,black,s*1.12,1.15,1.42);
+   bx(.34,.18,1.4,black,s*1.12,1.2,-1.5);
+   bx(.12,.62,.12,chrome,s*.85,.86,2.05);
+   bx(.1,1.7,.1,tube,s*.95,2.6,-1.35);
+   const st=bx(.09,1.3,.09,tube,s*.95,2.1,-1.85);st.rotation.x=.45;
   });
-  a(B(1.85,.06,3.3),new THREE.MeshBasicMaterial({color:0x4ff0ff,transparent:true,opacity:.28}),0,.28,0);
-  a(B(1.4,.1,.1),M(0xff3860),0,.92,-2.1);
-  a(B(1.2,.08,.1),M(0xe8fbff),0,.78,2.9);
-  wheels(1.02,1.35,.5,.44,PH(0x2a3d5a,{shininess:200}));
- }else{ // League Legend - wide champion build with gold
-  const gloss5=PH(col,{shininess:230,specular:0xffffff});
-  a(B(2.7,.55,4.6),gloss5,0,.8,0);
-  a(B(2.2,.42,1.6),gloss5,0,1.12,1.5);
-  a(B(2.05,.9,2.1),gloss5,0,1.45,-.3);
-  a(B(2.1,.12,2.2),gloss5,0,1.94,-.3);
-  a(B(2.14,.06,2.24),gold,0,2.02,-.3);
-  const ws5=a(B(1.8,.1,1.1),glass,0,1.2,.9);ws5.rotation.x=-.55;
-  [-1,1].forEach(s=>{a(B(.5,.34,1.6),gloss5,s*1.28,1.05,1.35);a(B(.5,.34,1.6),gloss5,s*1.28,1.05,-1.5);a(B(.07,.12,4.5),gold,s*1.36,1.0,0);a(B(.1,.18,3.2),PH(col,{emissive:col,emissiveIntensity:.5}),s*1.34,.62,0)});
-  a(B(2.8,.1,.7),gloss5,0,2.18,-2.2);
-  [-1,1].forEach(s=>{a(B(.08,.42,.72),gold,s*1.38,2.18,-2.2);a(B(.14,.5,.2),dark,s*1.0,1.9,-2.15)});
-  a(new THREE.CylinderGeometry(.14,.14,.5,8),chrome,-1.05,1.0,-2.4).rotation.x=PX2;
-  a(new THREE.CylinderGeometry(.14,.14,.5,8),chrome,1.05,1.0,-2.4).rotation.x=PX2;
-  a(new THREE.CylinderGeometry(.2,.2,.16,8),gold,0,1.34,2.28);
-  a(B(1.8,.1,.12),M(0xfff4c8),0,.92,2.35);a(B(2.2,.1,.12),M(0xff2a2a),0,1.0,-2.32);
-  wheels(1.35,1.5,.62,.56,gold);
+  bx(1.98,.1,.12,tube,0,3.44,-1.35);
+  bx(1.5,.18,.5,carbon,0,3.56,-1.3);
+  [-.45,0,.45].forEach(x=>{bx(.34,.22,.16,amber,x,3.62,-1.06);bx(.3,.16,.05,head,x,3.62,-1.13)});
+  const sp=cyl(.62,.62,.34,20,rubber,0,1.75,-2.02);sp.rotation.x=PX2;
+  const spr=cyl(.4,.4,.36,16,PH(0xf2f5fa,{shininess:140}),0,1.75,-2.02);spr.rotation.x=PX2;
+  [-1,1].forEach(s=>{bx(.4,.48,.06,black,s*1.15,.55,1.9);bx(.4,.48,.06,black,s*1.15,.55,-1.95)});
+  bx(.2,.12,.3,chrome,0,.72,2.16);
+  const ex=cyl(.09,.09,.4,10,chrome,.7,.8,-2.0);ex.rotation.x=PX2;
+  [-1,1].forEach(s=>{bx(.36,.2,.1,head,s*.6,1.34,1.72);bx(.3,.12,.1,amber,s*.6,1.2,1.74)});
+  for(let k=-1;k<=1;k++)bx(.3,.06,.5,black,k*.5,1.52,1.1);
+  wheel(1.2,1.36,.72,.62,PH(0xf2f5fa,{shininess:150}),1);
+ }else if(model===2){ // Aero GT — long wedge, swan-neck wing, canopy fairing
+  const gloss=PH(col,{shininess:245,specular:0xffffff});
+  bx(2.24,.34,4.7,gloss,0,.72,0);
+  bx(2.1,.22,1.7,gloss,0,.58,2.05);
+  bx(2.44,.08,.6,black,0,.5,2.42);
+  [-1,1].forEach(s=>bx(.06,.24,.6,black,s*1.2,.6,2.42));
+  bx(2.3,.1,.9,gloss,0,.86,-2.0);
+  bx(1.9,.06,1.8,dark,0,1.02,-.35);
+  [-1,1].forEach(s=>{bx(.3,.34,1.9,gloss,s*1.12,1.15,-.35);bx(.16,.62,1.4,gloss,s*1.02,1.5,-.4);bx(.1,.1,1.6,chrome,s*1.18,1.33,-.35)});
+  bx(1.9,.62,.14,gloss,0,1.42,-1.26);
+  bx(1.8,.4,.12,dark,0,1.4,.58);
+  const ws2=bx(1.62,.06,.95,glass,0,1.5,.72);ws2.rotation.x=-.44;
+  const cn=put(new THREE.SphereGeometry(.62,16,12),glass,0,1.42,-1.0);cn.scale.set(1.15,.62,1.5);
+  bx(1.7,.5,1.5,gloss,0,1.1,-1.6);
+  bx(.08,.6,1.4,gloss,0,1.6,-1.6);
+  bx(2.5,.08,.55,gloss,0,1.86,-2.18);
+  bx(1.9,.05,.4,carbon,0,1.79,-2.18);
+  [-1,1].forEach(s=>{const swp=bx(.09,.5,.34,carbon,s*.9,1.6,-2.08);swp.rotation.x=.3;bx(.06,.22,.6,gold,s*1.26,1.84,-2.18)});
+  bx(2.2,.18,.5,carbon,0,.55,-2.28);
+  for(let k=-2;k<=2;k++)bx(.07,.2,.44,dark,k*.42,.5,-2.3);
+  [-1,1].forEach(s=>{bx(.3,.22,1.2,dark,s*1.14,.92,-.2);bx(.06,.14,.06,dark,s*1.2,1.5,.5);bx(.26,.09,.14,gloss,s*1.3,1.56,.5);bx(.5,.06,.08,head,s*.66,.66,2.42);bx(.4,.06,.06,tail,s*.72,.94,-2.4)});
+  bx(.5,.1,.06,head,0,1.1,-2.3);
+  [-1,1].forEach(s=>{const e=cyl(.11,.11,.3,10,chrome,s*.28,1.06,-2.35);e.rotation.x=PX2});
+  [-1,1].forEach(s=>{arch(s*1.2,1.58,.52,.34,gloss);arch(s*1.2,-1.58,.52,.34,gloss)});
+  wheel(1.2,1.58,.52,.5,PH(0xb9c6da,{shininess:220}),0);
+ }else if(model===3){ // Heavy Hauler — cab, chrome stacks, loaded bed
+  const truck=PH(col,{shininess:110,specular:0xa2b3c7});
+  bx(2.2,.32,4.7,dark,0,.72,0);
+  bx(2.26,1.3,1.9,truck,0,1.5,1.35);
+  bx(2.3,.16,1.94,truck,0,2.22,1.35);
+  bx(1.95,.6,.12,glass,0,1.85,2.28);
+  [-1,1].forEach(s=>bx(.1,.5,1.1,glass,s*1.14,1.85,1.25));
+  bx(2.0,.5,.14,chrome,0,1.12,2.31);
+  for(let k=-2;k<=2;k++)bx(.1,.4,.06,black,k*.4,1.12,2.37);
+  bx(2.4,.22,.24,chrome,0,.72,2.42);
+  bx(2.3,.16,2.6,truck,0,1.16,-1.0);
+  [-1,1].forEach(s=>{bx(.12,.5,2.6,truck,s*1.1,1.42,-1.0);bx(.2,.1,2.6,chrome,s*1.1,1.7,-1.0)});
+  bx(2.2,.5,.12,truck,0,1.42,-2.28);
+  bx(2.05,.5,.16,dark,0,1.15,1.7);
+  bx(1.6,.7,1.1,PH(tint(col,.7)),0,1.62,-.55);
+  bx(.9,.5,.9,PH(0x9b6b3a),0,1.52,-1.55);
+  bx(1.7,.06,.08,black,0,1.78,-.55);
+  [-1,1].forEach(s=>bx(.06,.5,.4,amber,s*.8,1.05,-2.36));
+  bx(1.9,.12,.12,tail,0,.86,-2.38);
+  [-1,1].forEach(s=>{cyl(.11,.11,1.5,10,chrome,s*1.05,1.85,.55);cyl(.14,.14,.14,10,chrome,s*1.05,2.62,.55)});
+  for(let k=-2;k<=2;k++)bx(.16,.08,.1,amber,k*.4,2.34,2.2);
+  bx(1.4,.14,.14,amber,0,2.3,2.25);
+  [-1,1].forEach(s=>{bx(.06,.2,.06,dark,s*1.2,2.0,2.05);bx(.3,.14,.2,truck,s*1.35,2.08,2.05)});
+  [-1,1].forEach(s=>bx(.4,.2,.08,head,s*.85,1.45,2.33));
+  [-1,1].forEach(s=>{bx(.44,.5,.06,black,s*1.18,.55,1.96);bx(.44,.5,.06,black,s*1.18,.55,-2.2)});
+  wheel(1.18,1.5,.78,.7,PH(0xc3cede,{shininess:150}),2);
+ }else if(model===4){ // Neon Sprint — low canopy racer with light strips
+  const hull=PH(0x101a2e,{shininess:250,specular:0x88ccff});
+  bx(1.9,.5,4.1,hull,0,.78,0);
+  bx(2.14,.1,.9,hull,0,.6,2.15);
+  bx(2.3,.06,.4,neon,0,.56,2.42);
+  [-1,1].forEach(s=>bx(.06,.3,.44,neon,s*1.12,.66,2.42));
+  bx(2.02,.12,1.3,PH(0x0a1120),0,.98,1.1);
+  bx(1.62,.34,1.8,dark,0,1.16,-.4);
+  [-1,1].forEach(s=>{bx(.16,.6,1.7,hull,s*.99,1.5,-.4);bx(.06,.06,1.7,neon,s*1.02,1.8,-.4)});
+  bx(1.8,.55,.14,hull,0,1.4,-1.3);
+  bx(1.65,.5,.12,dark,0,1.28,.45);
+  const cn4=put(new THREE.SphereGeometry(.5,14,10),PH(0x1d4a72,{shininess:260,specular:0xffffff}),0,1.35,-1.15);cn4.scale.set(1.2,.65,1.6);
+  const ws4=bx(1.2,.05,.9,glass,0,1.16,.62);ws4.rotation.x=-.5;
+  bx(2.2,.09,.5,hull,0,1.84,-2.05);
+  [-1,1].forEach(s=>{bx(.07,.4,.3,dark,s*.9,1.62,-2.02);bx(.07,.3,.5,neon,s*1.1,1.84,-2.05)});
+  [-1,1].forEach(s=>{bx(.05,.06,3.2,neon,s*1.0,.92,0);bx(.05,.05,2.4,neon,s*1.0,.62,-.2);bx(.1,.36,1.4,hull,s*.94,1.2,-1.0);bx(.06,.14,.6,neon,s*1.0,.92,1.75)});
+  bx(1.85,.06,3.3,new THREE.MeshBasicMaterial({color:0x4ff0ff,transparent:true,opacity:.26}),0,.28,0);
+  bx(1.4,.1,.1,tail,0,.94,-2.19);
+  bx(1.1,.08,.1,head,0,.78,2.44);
+  [-1,1].forEach(s=>bx(.24,.16,.1,head,s*.6,.72,2.4));
+  [-1,1].forEach(s=>{arch(s*1.02,1.36,.5,.3,hull);arch(s*1.02,-1.36,.5,.3,hull)});
+  wheel(1.02,1.36,.5,.44,PH(0x24405e,{shininess:230}),3);
+ }else{ // League Legend — wide champion GT with gold detailing
+  const gloss5=PH(col,{shininess:245,specular:0xffffff});
+  bx(2.6,.5,4.5,gloss5,0,.9,0);
+  bx(2.4,.3,1.5,gloss5,0,1.16,1.6);
+  bx(2.56,.12,.6,black,0,.6,2.2);
+  bx(2.0,.5,.14,dark,0,1.3,.62);
+  bx(2.0,.06,1.7,dark,0,1.06,-.35);
+  [-1,1].forEach(s=>{bx(.16,.8,1.8,gloss5,s*1.15,1.6,-.35);bx(.18,.1,1.8,gold,s*1.17,2.0,-.35)});
+  bx(2.2,.8,.14,gloss5,0,1.62,-1.28);
+  bx(1.95,.55,.12,dark,0,1.55,.52);
+  const ws5=bx(1.85,.07,1.0,glass,0,1.66,.78);ws5.rotation.x=-.55;
+  bx(2.5,.3,1.4,gloss5,0,1.3,-1.45);
+  bx(2.0,.1,1.1,gold,0,1.46,-1.45);
+  bx(2.8,.1,.7,gloss5,0,2.14,-2.15);
+  [-1,1].forEach(s=>{bx(.1,.55,.5,gold,s*1.32,1.94,-2.15);bx(.1,.4,.3,dark,s*.95,1.75,-2.1)});
+  bx(2.4,.18,.5,carbon,0,.62,-2.22);
+  for(let k=-2;k<=2;k++)bx(.07,.22,.44,dark,k*.48,.56,-2.26);
+  [-1,1].forEach(s=>[-.18,.18].forEach(o=>{const e=cyl(.09,.09,.3,10,chrome,s*.75+o,.82,-2.2);e.rotation.x=PX2}));
+  [-1,1].forEach(s=>{bx(.62,.16,.08,head,s*.82,1.13,2.28);bx(.5,.07,.06,amber,s*.82,.98,2.3);bx(.44,.08,.06,tail,s*.9,1.12,-2.24)});
+  bx(2.0,.1,.06,tail,0,1.12,-2.24);
+  bx(.6,.14,.08,head,0,1.24,-2.22);
+  [-1,1].forEach(s=>{bx(.16,.4,1.2,dark,s*1.32,1.05,-.4);bx(.06,.14,.06,dark,s*1.28,1.7,.6);bx(.3,.1,.16,gloss5,s*1.4,1.78,.6);bx(.08,.12,4.2,gold,s*1.36,.98,-.05)});
+  bx(.2,.16,.6,gold,0,1.3,2.05);
+  [-1,1].forEach(s=>{arch(s*1.36,1.5,.62,.4,gloss5);arch(s*1.36,-1.5,.62,.4,gloss5)});
+  wheel(1.36,1.5,.62,.56,gold,2);
  }
- g.traverse(o=>{o.castShadow=true});
+ mergeCarParts(parts).forEach(m=>g.add(m));
+ g.traverse(o=>{if(o.isMesh)o.castShadow=true});
  BODY_CACHE[key]=g;return g;
 }
+
 function fitSod(g){
  const sp=CAR_SPECS[g.userData.model]&&CAR_SPECS[g.userData.model].sod,s=g.userData.sod;
  if(!sp||!s)return;
@@ -1581,8 +1858,8 @@ B.m.castShadow=true;S.add(B.m);
 const pads=[];
 function mkPad(x,z,amt,cool,r,color){
  const m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,.28,20),new THREE.MeshBasicMaterial({color}));m.position.set(x,.14,z);S.add(m);
- const g=new THREE.Mesh(new THREE.RingGeometry(r*1.06,r*1.3,20),new THREE.MeshBasicMaterial({color,transparent:true,opacity:.5,side:THREE.DoubleSide}));g.rotation.x=-P/2;g.position.set(x,.17,z);S.add(g);
- pads.push({x,z,bx:x,bz:z,amt,cd:cool,r,m,g,t:0,pulse:Math.random()*6});
+ const g=new THREE.Mesh(new THREE.RingGeometry(r*1.06,r*1.3,20),new THREE.MeshBasicMaterial({color,transparent:true,opacity:.5,side:THREE.DoubleSide,polygonOffset:true,polygonOffsetFactor:-3,polygonOffsetUnits:-3}));g.rotation.x=-P/2;g.position.set(x,.31,z);g.renderOrder=1;S.add(g);
+ pads.push({x,z,bx:x,bz:z,amt,cd:cool,r,m,g,t:0,pulse:Math.random()*6,col:color,big:amt>50});
 }
 {const X=W/2,Z=L/2;
 [[.9,-.73],[.9,.73],[-.9,-.73],[-.9,.73],[.75,0],[-.75,0]].forEach(p=>mkPad(p[0]*X,p[1]*Z,100,9,2.5,0xffc94a));
@@ -1590,14 +1867,14 @@ function mkPad(x,z,amt,cool,r,color){
 // ---------- state ----------
 const K={};let passXP=0,passWeek='';
 const currentPassWeek=()=>{const d=new Date(),day=(d.getUTCDay()+6)%7;d.setUTCDate(d.getUTCDate()-day);return d.toISOString().slice(0,10)};
-let carModel=0,carDecal=0;const CAR_MODELS=['Street Racer','Rally Buggy','Aero GT','Heavy Hauler','Neon Sprint','League Legend'];const CAR_DECALS=['Classic Stripe','Lightning','Checkerboard','Flames','Starburst','Champion Gold'];const PASS_REWARDS=['Mint Sod','Carbon Hat','Rally Buggy','Lightning Decal','Galaxy Sod','Aero GT','Crown Hat','Flame Decal','Gold Sod','Heavy Hauler','Neon Hat','Starburst Decal','Crystal Sod','Neon Sprint','Champion Hat','Gold Stripe','Shadow Sod','League Legend Car','Royal Crown','Champion Gold Decal','Frost Sod','Turbo Trail','Cosmic Hat','Diamond Decal','Magma Sod','Platinum Body','Victory Crown','Prism Decal','Legend Sod','Ultimate Champion Car'];let practiceMap=1,PRACTICE=false,practiceSavedMode=null,npzOpen=false,earlyEnd=false;let jr=0,ballCam=false,st='menu',t=300,gt=0,sc=[0,0],LEN=300,DF=1,pz=0,over=false,kc=0,msgT=0,shake=0,me=0,net=0,cheer=0,ws=null,tgt=null,lsend=0,ssend=0,muted=false,musicMuted=false,mySod=0,myHat=0,lastN=0,MODE=1,TEAM=0,netHost=false,myId=0,room=null,myName='Player',DM=false;
+let carModel=0,carDecal=0;const CAR_MODELS=['Street Racer','Rally Buggy','Aero GT','Heavy Hauler','Neon Sprint','League Legend'];const CAR_DECALS=['Classic Stripe','Lightning','Checkerboard','Flames','Starburst','Champion Gold'];const PASS_REWARDS=['Mint Sod','Carbon Hat','Rally Buggy','Lightning Decal','Galaxy Sod','Aero GT','Crown Hat','Flame Decal','Gold Sod','Heavy Hauler','Neon Hat','Starburst Decal','Crystal Sod','Neon Sprint','Champion Hat','Gold Stripe','Shadow Sod','League Legend Car','Royal Crown','Champion Gold Decal','Frost Sod','Turbo Trail','Cosmic Hat','Diamond Decal','Magma Sod','Platinum Body','Victory Crown','Prism Decal','Legend Sod','Ultimate Champion Car'];let practiceMap=1,mapTheme=0,PRACTICE=false,practiceSavedMode=null,npzOpen=false,earlyEnd=false;let jr=0,ballCam=false,st='menu',t=300,gt=0,sc=[0,0],LEN=300,DF=1,pz=0,over=false,kc=0,msgT=0,shake=0,me=0,net=0,cheer=0,ws=null,tgt=null,lsend=0,ssend=0,muted=false,musicMuted=false,mySod=0,myHat=0,lastN=0,MODE=1,TEAM=0,netHost=false,myId=0,room=null,myName='Player',DM=false;
 addEventListener('keydown',e=>{
+ if(lob.classList.contains('on'))return;
  if(e.repeat){K[e.code]=1}else K[e.code]=1;
  if(e.code=='Space'&&!e.repeat)jr=1;
  if(e.code=='KeyC'&&!e.repeat){ballCam=!ballCam;flash(ballCam?'BALL CAM':'CAR CAM',.8);$('cm').querySelector('b').textContent=ballCam?'Ball cam':'Car cam';sv()}
  if((e.code=='Escape'||e.code=='KeyP')&&!e.repeat&&(st=='play'||st=='goal'||st=='kickoff')&&!net)pause(!pz);
  if((e.code=='Escape'||e.code=='KeyP')&&!e.repeat&&net==1&&(st=='play'||st=='goal'||st=='kickoff'))netPause(!npzOpen);
- if(e.code=='KeyR'&&!e.repeat&&st!='menu'&&!net)start();
  if((st=='menu'||st=='end')&&(e.code=='Space'||e.code=='Enter')&&!e.repeat&&!lob.classList.contains('on')&&!loginOpen())net==1?toLobby():!net&&start();
  if(/^(Space|Arrow)/.test(e.code))e.preventDefault();
 });
@@ -2123,11 +2400,23 @@ const LS=[[180,'3 min'],[300,'5 min'],[600,'10 min']],DS=['Rookie','Pro','Champi
 function applyArenaSize(mode){
  const p=MAP_PROFILES[mode]||MAP_PROFILES[50];mapSX=p.x;mapSZ=p.z;PW=W*mapSX;PL=L*mapSZ;PGW=GW*mapSX;SHOW_Z=-PL/2+28*mapSZ;RAMP_X=0;RAMP_Z=0;
  pitchRoot.scale.set(mapSX,1,mapSZ);stadiumRoot.scale.set(mapSX,1,mapSZ);if(CU&&CU.uScale)CU.uScale.value.set(mapSX,mapSZ);syncBillboardPositions();
- pads.forEach(q=>{q.x=q.bx*mapSX;q.z=q.bz*mapSZ;q.m.position.set(q.x,.14,q.z);q.g.position.set(q.x,.17,q.z)});
+ pads.forEach(q=>{q.x=q.bx*mapSX;q.z=q.bz*mapSZ;q.m.position.set(q.x,.14,q.z);q.g.position.set(q.x,.31,q.z)});
  // Mode changes resize the pitch. Rebuild the showroom transform too, otherwise
  // the car stays at the old mode's coordinates and can disappear from view.
  if(st==='menu'&&typeof cars!=='undefined'&&cars.length&&cars[0])showroom();
- if($('md'))lb('md',(MN[mode===50?4:mode-1]||'Mode')+' · '+p.name);
+ if($('msInfo'))$('msInfo').textContent=(MN[mode===50?4:mode-1]||'Mode')+' · '+MAP_THEMES[mapTheme].name;
+}
+function applyMapTheme(i,silent){
+ mapTheme=clamp(i|0,0,MAP_THEMES.length-1);
+ const t=MAP_THEMES[mapTheme];
+ pitchRoot.traverse(o=>{if(!o.isMesh)return;const u=o.userData;if(u.turf!=null){o.material.color.setHex(t.turf[u.turf])}else if(u.line){o.material.color.setHex(t.line)}});
+ paintSky(t.sky);if(S.fog)S.fog.color.setHex(t.fog);
+ hemi.color.setHex(t.hemi[0]);hemi.groundColor.setHex(t.hemi[1]);dl.color.setHex(t.sun);
+ pitchRoot.traverse(o=>{if(o.isMesh&&o.material&&o.material.emissive&&o.material.opacity<.2)o.material.emissive.setHex(t.glass)});
+ pads.forEach(p=>{const c=p.big?t.padBig:t.padSmall;p.col=c;p.m.material.color.setHex(c);p.g.material.color.setHex(c)});
+ if(silent)return;
+ if($('msInfo'))$('msInfo').textContent=(MN[MODE===50?4:MODE-1]||'Mode')+' · '+t.name;
+ if($('lmap')&&document.activeElement!==$('lmap'))$('lmap').value=String(mapTheme);
 }
 
 const lb=(id,v)=>{$(id).querySelector('b').textContent=v};
@@ -2137,23 +2426,23 @@ $('sl').onclick=()=>{const n=LS[(LS.findIndex(a=>a[0]==LEN)+1)%3];LEN=n[0];t=LEN
 $('sd').onclick=()=>{DF=(DF+1)%3;lb('sd',DS[DF])};
 $('cm').onclick=()=>{ballCam=!ballCam;lb('cm',ballCam?CS[0]:CS[1])};
 const APP_VERSION=(document.querySelector('meta[name="sod-version"]')||{}).content||'0.0.0',CAM_MIG=2;
-const sv=()=>{try{syncCrowdBK()}catch(e){};try{localStorage.sodl=JSON.stringify({cv:CAM_MIG,ver:APP_VERSION,l:LEN,pm:practiceMap,d:DF,c:ballCam,m:muted?1:0,mm:musicMuted?1:0,k:mySod,hat:myHat,n:(practiceSavedMode!==null?practiceSavedMode:MODE),tm:TEAM,px:passXP,week:passWeek,car:carModel,decal:carDecal,wins:sodWins})}catch(e){}};
+const sv=()=>{try{syncCrowdBK()}catch(e){};try{localStorage.sodl=JSON.stringify({cv:CAM_MIG,ver:APP_VERSION,l:LEN,pm:practiceMap,d:DF,c:ballCam,m:muted?1:0,mm:musicMuted?1:0,k:mySod,hat:myHat,n:(practiceSavedMode!==null?practiceSavedMode:MODE),tm:TEAM,px:passXP,week:passWeek,car:carModel,decal:carDecal,map:mapTheme,wins:sodWins})}catch(e){}};
 $('sn').onclick=()=>{muted=!muted;lb('sn',muted?'Off':'On');syncMusicBtns()};
-$('md').onclick=()=>{
- const opts=[1,2,3,4,50];
- openNavPanel('SELECT MODE',opts.map(v=>`<button class="nav-choice ${MODE===v?'active':''}" data-mode="${v}">${v===50?'50v50 Deathmatch':v+'v'+v+' Soccer'}<span>${(MAP_PROFILES[v]||MAP_PROFILES[50]).name}</span></button>`).join('')+'<p class="nav-note">Choose an arena size and match type. Your selection is saved for your next game.</p>');
- $('navBody').querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{MODE=Number(b.dataset.mode);DM=MODE===50;applyArenaSize(MODE);sv();$('md').querySelector('b').textContent=(MN[MODE===50?4:MODE-1]||'Mode')+' · '+MAP_PROFILES[MODE].name;backToMainMenu()});
-};
+function arenaPanel(){
+ openNavPanel('SELECT ARENA',MAP_THEMES.map((t,i)=>`<button class="nav-choice ${mapTheme===i?'active':''}" data-arena="${i}"><strong>${t.name}</strong><span>${t.sub}</span></button>`).join('')+'<p class="nav-note">Every arena plays the same size and rules — only the look changes. In multiplayer the party host picks the arena.</p>');
+ $('navBody').querySelectorAll('[data-arena]').forEach(b=>b.onclick=()=>{applyMapTheme(+b.dataset.arena);sv();backToMainMenu()});
+}
 $('tb').onclick=()=>{TEAM=1-TEAM;lb('tb',TNM[TEAM]);if(st=='menu')setMenuCar()};
-['sl','sd','cm','sn','md','tb'].forEach(id=>{const f=$(id).onclick;$(id).onclick=()=>{f();sv()}});
+['sl','sd','cm','sn','tb'].forEach(id=>{const f=$(id).onclick;$(id).onclick=()=>{f();sv()}});
 try{const o=JSON.parse(localStorage.sodl||'{}'),m=LS.find(a=>a[0]==o.l);
  if(o.m)muted=true;if(o.mm)musicMuted=true;passXP=Math.max(0,o.px|0);passWeek=typeof o.week==='string'?o.week:'';const liveWeek=currentPassWeek();if(passWeek!==liveWeek){passXP=0;passWeek=liveWeek;}carModel=clamp(o.car|0,0,CAR_MODELS.length-1);carDecal=clamp(o.decal|0,0,CAR_DECALS.length-1);if(o.k>=0&&o.k<SOD_COUNT)mySod=o.k|0;if(o.hat>=0&&o.hat<HAT_NAMES.length)myHat=o.hat|0;
  if([1,3,4,50].includes(o.pm))practiceMap=o.pm;if([1,2,3,4,50].includes(o.n))MODE=o.n|0;DM=MODE===50;if(o.tm===0||o.tm===1)TEAM=o.tm;
  if(m){LEN=m[0];t=LEN;lb('sl',m[1])}
  if(o.d>=0&&o.d<3){DF=o.d;lb('sd',DS[DF])}
+ if(o.map>=0&&o.map<MAP_THEMES.length)mapTheme=o.map|0;
  if(o.cv===CAM_MIG&&typeof o.c=='boolean')ballCam=o.c;else ballCam=false;lb('cm',ballCam?CS[0]:CS[1])}catch(e){}
 sv();
-lb('sn',muted?'Off':'On');lb('tb',TNM[TEAM]);applyArenaSize(MODE);if($('lname'))$('lname').value=myName;setMenuCar();
+lb('sn',muted?'Off':'On');lb('tb',TNM[TEAM]);applyArenaSize(MODE);applyMapTheme(mapTheme);if($('lname'))$('lname').value=myName;setMenuCar();
 function saveProgress(){if(passWeek!==currentPassWeek()){passXP=0;passWeek=currentPassWeek();}sv();renderPass();}
 function passTier(){return Math.min(30,Math.floor(passXP/250)+1)}
 function rewardUnlocked(i){return passTier()>=i+1}
@@ -2161,7 +2450,30 @@ const CAR_UNLOCK_TIER=[1,3,5,7,9,11],DECAL_UNLOCK_TIER=[1,3,5,7,9,11],HAT_UNLOCK
 function hatUnlocked(i){return i===0||ownedHats.has(i)||passTier()>=(HAT_UNLOCK_TIER[i]||1)}
 function carUnlocked(i){return ownedCars.has(i)||passTier()>=CAR_UNLOCK_TIER[i]}
 function decalUnlocked(i){return ownedDecals.has(i)||passTier()>=DECAL_UNLOCK_TIER[i]}
-function renderPass(){const tier=passTier(),within=passXP%250;$('passRefresh').textContent='Weekly pass · refreshes every Monday (UTC) · next reset '+(()=>{const d=new Date(),day=(d.getUTCDay()+6)%7;d.setUTCDate(d.getUTCDate()+(7-day));d.setUTCHours(0,0,0,0);return d.toLocaleDateString()})();$('passLevel').textContent='TIER '+tier+' / 30';$('passXP').textContent=passXP+' XP';$('passFill').style.width=(tier>=30?100:within/250*100)+'%';$('passRewards').innerHTML=PASS_REWARDS.map((r,i)=>`<div class="pass-tier ${rewardUnlocked(i)?'unlocked':''}"><b>TIER ${i+1} ${rewardUnlocked(i)?'✓':'🔒'}</b>${r}${r==='Carbon Hat'&&rewardUnlocked(i)?'<div class="feature-muted">Available in Locker · Hats</div>':''}</div>`).join('');}
+function passIcon(n){
+ if(/car/i.test(n))return '🏎';
+ if(/crown/i.test(n))return '👑';
+ if(/hat|cap/i.test(n))return '🎩';
+ if(/decal|stripe|prism|diamond/i.test(n))return '✨';
+ if(/trail|turbo/i.test(n))return '💨';
+ if(/body|platinum/i.test(n))return '🛡';
+ return '🧊';
+}
+function renderPass(){
+ const tier=passTier(),within=passXP%250;
+ $('passRefresh').textContent='Weekly pass · refreshes every Monday (UTC) · next reset '+(()=>{const d=new Date(),day=(d.getUTCDay()+6)%7;d.setUTCDate(d.getUTCDate()+(7-day));d.setUTCHours(0,0,0,0);return d.toLocaleDateString()})();
+ $('passLevel').textContent='TIER '+tier+' / 30';
+ $('passXP').textContent=passXP+' XP';
+ if($('passTierBig'))$('passTierBig').textContent=tier;
+ if($('passNext'))$('passNext').textContent=tier>=30?'Season complete — every reward on this track is unlocked.':within+' / 250 XP · '+(250-within)+' XP to Tier '+(tier+1);
+ $('passFill').style.width=(tier>=30?100:within/250*100)+'%';
+ $('passRewards').innerHTML=PASS_REWARDS.map((r,i)=>{
+  const t=i+1,un=rewardUnlocked(i),cur=t===tier;
+  return `<div class="bp-tier${un?' unlocked':''}${cur?' current':''}"><div class="bp-tiernum">TIER ${t}</div><div class="bp-emblem">${passIcon(r)}</div><strong>${r}</strong><span class="bp-state">${un?'UNLOCKED':cur?'IN PROGRESS':'LOCKED'}</span>${r==='Carbon Hat'&&un?'<small>Locker · Hats</small>':''}</div>`;
+ }).join('');
+ const cur=$('passRewards').querySelector('.current');
+ if(cur&&cur.scrollIntoView)try{cur.scrollIntoView({inline:'center',block:'nearest'})}catch(e){}
+}
 function renderLocker(){$('lockerSodName').textContent=SOD.names[mySod]+(unlockedSods.has(mySod)?'':' 🔒 Item Shop');$('lockerHatName').textContent=HAT_NAMES[myHat]+(hatUnlocked(myHat)?'':' 🔒 Item Shop');$('lockerCarName').textContent=CAR_MODELS[carModel]+(carUnlocked(carModel)?'':' 🔒 Item Shop');$('lockerDecalName').textContent=CAR_DECALS[carDecal]+(decalUnlocked(carDecal)?'':' 🔒 Item Shop');$('lockerNotice').textContent='League Pass tier '+passTier()+' · '+passXP+' XP · ◆ '+leagueTokens+' Tokens'+(unlockedSods.has(BK_SOD)?' · ??? sod unlocked':' · Enter the ECHO code in Settings for the ??? sod');}
 function openLocker(){$('lockerPanel').classList.add('open');renderLocker()}
 function openPass(){if(passWeek!==currentPassWeek()){passXP=0;passWeek=currentPassWeek();sv();} $('passPanel').classList.add('open');renderPass()}
@@ -2184,7 +2496,6 @@ function backToMainMenu(){
 $('navBack').onclick=backToMainMenu;
 function openLocker(){showSubView();$('navPanel').style.display='none';$('lockerPanel').classList.add('open');renderLocker()}
 function openPass(){if(passWeek!==currentPassWeek()){passXP=0;passWeek=currentPassWeek();sv();}showSubView();$('navPanel').style.display='none';$('passPanel').classList.add('open');renderPass()}
-$('lockerOpen').onclick=openLocker;$('passOpen').onclick=openPass;
 $('lockerClose').onclick=backToMainMenu;$('passClose').onclick=backToMainMenu;
 $('lockerPass').onclick=()=>{$('lockerPanel').classList.remove('open');openPass()};$('passToLocker').onclick=()=>{$('passPanel').classList.remove('open');openLocker()};
 function cycleCosmetic(kind,dir){if(kind==='sod'){let n=mySod;for(let tries=0;tries<SOD_COUNT;tries++){n=(n+dir+SOD_COUNT)%SOD_COUNT;if(unlockedSods.has(n))break}mySod=n;setSod(cars[st==='menu'?0:me],mySod);syncCrowdBK()}if(kind==='hat'){
@@ -2198,9 +2509,10 @@ function cycleCosmetic(kind,dir){if(kind==='sod'){let n=mySod;for(let tries=0;tr
 [['sodPrev','sod',-1],['sodNext','sod',1],['hatPrev','hat',-1],['hatNext','hat',1],['carPrev','car',-1],['carNext','car',1],['decalPrev','decal',-1],['decalNext','decal',1]].forEach(([id,k,d])=>$(id).onclick=()=>cycleCosmetic(k,d));
 renderPass();
 $('settingsToggle').onclick=()=>{
- openNavPanel('SETTINGS',`<button class="nav-choice" id="navTeam">Team <span>${TNM[TEAM]}</span></button><button class="nav-choice" id="navLength">Match length <span>${LS.find(a=>a[0]===LEN)?.[1]||'5 min'}</span></button><button class="nav-choice" id="navSkill">Bot skill <span>${DS[DF]}</span></button><button class="nav-choice" id="navCamera">Camera <span>${ballCam?'Ball cam':'Car cam'}</span></button><button class="nav-choice" id="navSound">Sound <span>${muted?'Off':'On'}</span></button><p class="nav-note">Adjust your match preferences. Changes save automatically.</p>`);
+ openNavPanel('SETTINGS',`<button class="nav-choice" id="navArena">Arena <span>${MAP_THEMES[mapTheme].name}</span></button><button class="nav-choice" id="navTeam">Team <span>${TNM[TEAM]}</span></button><button class="nav-choice" id="navLength">Match length <span>${LS.find(a=>a[0]===LEN)?.[1]||'5 min'}</span></button><button class="nav-choice" id="navSkill">Bot skill <span>${DS[DF]}</span></button><button class="nav-choice" id="navCamera">Camera <span>${ballCam?'Ball cam':'Car cam'}</span></button><button class="nav-choice" id="navSound">Sound <span>${muted?'Off':'On'}</span></button><p class="nav-note">Adjust your match preferences. Changes save automatically.</p>`);
  const bind=(id,source)=>$(id).onclick=()=>{source.click();$('settingsToggle').querySelector('b').textContent='＋';$('settingsGroup').hidden=true;$('settingsToggle').onclick();};
  bind('navTeam',$('tb'));bind('navLength',$('sl'));bind('navSkill',$('sd'));bind('navCamera',$('cm'));bind('navSound',$('sn'));
+ $('navArena').onclick=()=>{arenaPanel()};
 };
  document.querySelectorAll('.mi').forEach(el=>{
  el.onmouseenter=el.onfocus=()=>$('ds').textContent=el.dataset.d;
@@ -2264,6 +2576,7 @@ function renderLobby(){
   $('t'+tm).innerHTML=rows.join('');
   const jb=$('j'+tm);jb.disabled=!!(mine&&mine[1]==tm)||hs.length>=n;jb.style.opacity=jb.disabled?.45:1});
  $('lm').value=String(n);$('lm').disabled=!host;
+ if($('lmap')){$('lmap').innerHTML=MAP_THEMES.map((t,i)=>`<option value="${i}">${t.name}</option>`).join('');$('lmap').value=String(mapTheme);$('lmap').disabled=!host}
  $('lr').textContent=host?'Start match':(mine&&mine[2]?'Cancel ready':'Ready');
  const hum=r.length,bots=2*n-hum;$('lp').textContent=hum+' player'+(hum>1?'s':'')+' \u00b7 '+bots+' bot'+(bots==1?'':'s')+' fill the rest';
 }
@@ -2279,7 +2592,9 @@ function conn(code,mk){if(sodSession!=='account')return accountNeeded();curCode=
   if(m.t=='none'||m.t=='full'||m.t=='busy'){lerr(m.t=='none'?'No party with that code.':m.t=='busy'?'That match is already in progress.':'That party is full.');leave();$s('l0',1);$s('l1',0)}
   else if(m.t=='room'){room=m;MODE=m.m;DM=MODE===50;applyArenaSize(MODE);myId=m.you;netHost=myId==0;
    if(net==1&&netHost)cars.forEach(c=>{if(c.kind=='net'&&!m.r.some(a=>a[0]==c.pid)){c.kind='bot';c.pid=-1}});
+   if(myId==0&&w.readyState==1)w.send(JSON.stringify({t:'map',v:mapTheme}));
    renderLobby()}
+  else if(m.t=='map'){applyMapTheme(m.v|0);renderLobby()}
   else if(m.t=='err'){lerr(m.m);if(room){applyArenaSize(room.m);renderLobby()}}
   else if(m.t=='closed'){leave();toLobby();lerr('The host left the party.')}
   else if(m.t=='start')begin(m.m,m.r);
@@ -2315,13 +2630,14 @@ $('lr').onclick=()=>{if(!ws||ws.readyState!=1||!room)return;
  if(myId==0){const w=room.r.filter(a=>a[0]!=0&&!a[2]).length;if(w)return lerr(w+' player'+(w>1?'s':'')+' not ready yet.');lerr('');ws.send(JSON.stringify({t:'go',r:buildRoster()}))}
  else{const a=room.r.find(a=>a[0]==myId);ws.send(JSON.stringify({t:'ready',v:a&&a[2]?0:1}))}};
 $('lm').onchange=()=>{const v=Number($('lm').value);if(ws&&room&&myId==0&&[1,2,3,4,50].includes(v)){applyArenaSize(v);ws.send(JSON.stringify({t:'mode',v}))}else renderLobby()};
+$('lmap').onchange=()=>{if(!room||myId!=0)return renderLobby();applyMapTheme(+$('lmap').value);sv();if(ws&&ws.readyState==1)ws.send(JSON.stringify({t:'map',v:mapTheme}))};
 $('j0').onclick=()=>{if(ws)ws.send(JSON.stringify({t:'team',v:0}))};
 $('j1').onclick=()=>{if(ws)ws.send(JSON.stringify({t:'team',v:1}))};
 $('lk').onclick=()=>{const u=location.href.split(/[?#]/)[0]+'?room='+curCode;navigator.clipboard?navigator.clipboard.writeText(u).then(()=>lerr('Invite link copied.'),()=>lerr(u)):lerr(u)};
 $('lj').onkeydown=e=>{if(e.key=='Enter')$('lg').click()};
 addEventListener('blur',()=>{Object.keys(K).forEach(k=>K[k]=0);mobileControls.querySelectorAll('button').forEach(b=>b.classList.remove('down'));if(!net&&!pz&&(st=='play'||st=='goal'||st=='kickoff'))pause(1)});
 document.addEventListener('visibilitychange',()=>{if(document.hidden){Object.keys(K).forEach(k=>K[k]=0);jr=0;mobileControls.querySelectorAll('button').forEach(b=>b.classList.remove('down'));if(!net&&!pz&&!npzOpen&&(st=='play'||st=='goal'||st=='kickoff'))pause(1)}});
-addEventListener('keydown',e=>{if(loginOpen())return;if(e.code=='KeyM'&&document.activeElement!==$('lj'))$('sn').click();if(e.code=='KeyF'&&document.activeElement!==$('lj')){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen()}});
+addEventListener('keydown',e=>{if(loginOpen()||lob.classList.contains('on'))return;if(e.code=='KeyM'&&document.activeElement!==$('lj'))$('sn').click();if(e.code=='KeyF'&&document.activeElement!==$('lj')){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen()}});
 {const q=new URLSearchParams(location.search).get('room');if(q)window.__sodRoom=q.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,6)}
 $('lx').onclick=()=>{leave();backToMainMenu()};
 
@@ -2429,9 +2745,17 @@ function safeText(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<
 const ACCOUNT_API_BASE='https://sod-league.baileystudios2021.workers.dev';
 async function api(path,{method='GET',body}={}){const headers={};if(accountToken)headers.authorization='Bearer '+accountToken;if(body!==undefined)headers['content-type']='application/json';let r;try{r=await fetch(ACCOUNT_API_BASE+path,{method,headers,body:body===undefined?undefined:JSON.stringify(body),mode:'cors',cache:'no-store'})}catch(e){throw Error('Cannot reach the Sod League account server. Check the Worker URL, deployment and allowed website origin.')}const d=await r.json().catch(()=>({error:'Account server returned an invalid response'}));if(!r.ok)throw Error(d.error||('Account server error ('+r.status+')'));return d}
 function localSavePayload(){return {careerXP,careerCredits,careerClaimed,achievements:[...achievementIds],sods:[...unlockedSods],sodsV:2,wins:sodWins,tokens:leagueTokens,hats:[...ownedHats],cars:[...ownedCars],decals:[...ownedDecals],name:playerName(),mode:MODE,team:TEAM,sod:mySod,hat:myHat,car:carModel,decal:carDecal,passXP,passWeek,matchLength:LEN,difficulty:DF,ballCam,muted}}
-function applyCloudSave(data){if(!data||typeof data!=='object')return;careerXP=Math.max(careerXP,Number(data.careerXP)||0);careerCredits=Math.max(careerCredits,Number(data.careerCredits)||0);careerClaimed=Math.max(1,careerClaimed,Math.min(87,Number(data.careerClaimed)||0));if(Array.isArray(data.achievements))data.achievements.forEach(x=>{if(typeof x==='string')achievementIds.add(x)});if(Array.isArray(data.sods)&&Number(data.sodsV)>=2)data.sods.forEach(s=>{if(Number.isInteger(s)&&s>=0&&s<SOD_COUNT)unlockedSods.add(s)});if(Number.isFinite(data.wins))sodWins=Math.max(sodWins,data.wins|0);if(Number.isFinite(data.tokens))leagueTokens=Math.max(leagueTokens,data.tokens|0);if(Array.isArray(data.hats))data.hats.forEach(i=>{if(Number.isInteger(i))ownedHats.add(i)});if(Array.isArray(data.cars))data.cars.forEach(i=>{if(Number.isInteger(i))ownedCars.add(i)});if(Array.isArray(data.decals))data.decals.forEach(i=>{if(Number.isInteger(i))ownedDecals.add(i)});if([1,2,3,4,50].includes(data.mode))MODE=data.mode;if(data.team===0||data.team===1)TEAM=data.team;if(Number.isInteger(data.sod)&&data.sod>=0&&data.sod<SOD_COUNT)mySod=data.sod;if(Number.isInteger(data.hat)&&data.hat>=0&&data.hat<HAT_NAMES.length)myHat=data.hat;if(Number.isInteger(data.car)&&data.car>=0&&data.car<CAR_MODELS.length)carModel=data.car;if(Number.isInteger(data.decal)&&data.decal>=0&&data.decal<CAR_DECALS.length)carDecal=data.decal;if(Number.isFinite(data.passXP))passXP=Math.max(passXP,data.passXP);if(typeof data.passWeek==='string'&&data.passWeek===currentPassWeek())passWeek=data.passWeek;if(!unlockedSods.has(mySod))mySod=0;saveCareerLocal();applyArenaSize(MODE);setMenuCar();paintAccountBillboards()}
+// Progress belongs to the account you sign into. Guest progress is imported
+// only into the first account this device ever creates (MIGRATED_KEY), and
+// signing in restores that account's own cloud save instead of merging the
+// level left behind by a different account.
+const MIGRATED_KEY='sodleague_account_migrated';
+function resetCareer(){careerXP=0;careerCredits=0;careerClaimed=1;sodWins=0;achievementIds=new Set();unlockedSods=new Set([0,1,2]);leagueTokens=0;tokenWeek='';tokenTier=0;ownedHats=new Set();ownedCars=new Set();ownedDecals=new Set();passXP=0;passWeek=currentPassWeek();mySod=0;myHat=0;carModel=0;carDecal=0}
+function applyCloudSave(data,mode){if(mode==='replace')resetCareer();
+ if(!data||typeof data!=='object'){saveCareerLocal();applyArenaSize(MODE);setMenuCar();paintAccountBillboards();return}
+ careerXP=Math.max(careerXP,Number(data.careerXP)||0);careerCredits=Math.max(careerCredits,Number(data.careerCredits)||0);careerClaimed=Math.max(1,careerClaimed,Math.min(87,Number(data.careerClaimed)||0));if(Array.isArray(data.achievements))data.achievements.forEach(x=>{if(typeof x==='string')achievementIds.add(x)});if(Array.isArray(data.sods)&&Number(data.sodsV)>=2)data.sods.forEach(s=>{if(Number.isInteger(s)&&s>=0&&s<SOD_COUNT)unlockedSods.add(s)});if(Number.isFinite(data.wins))sodWins=Math.max(sodWins,data.wins|0);if(Number.isFinite(data.tokens))leagueTokens=Math.max(leagueTokens,data.tokens|0);if(Array.isArray(data.hats))data.hats.forEach(i=>{if(Number.isInteger(i))ownedHats.add(i)});if(Array.isArray(data.cars))data.cars.forEach(i=>{if(Number.isInteger(i))ownedCars.add(i)});if(Array.isArray(data.decals))data.decals.forEach(i=>{if(Number.isInteger(i))ownedDecals.add(i)});if([1,2,3,4,50].includes(data.mode))MODE=data.mode;if(data.team===0||data.team===1)TEAM=data.team;if(Number.isInteger(data.sod)&&data.sod>=0&&data.sod<SOD_COUNT)mySod=data.sod;if(Number.isInteger(data.hat)&&data.hat>=0&&data.hat<HAT_NAMES.length)myHat=data.hat;if(Number.isInteger(data.car)&&data.car>=0&&data.car<CAR_MODELS.length)carModel=data.car;if(Number.isInteger(data.decal)&&data.decal>=0&&data.decal<CAR_DECALS.length)carDecal=data.decal;if(Number.isFinite(data.passXP))passXP=Math.max(passXP,data.passXP);if(typeof data.passWeek==='string'&&data.passWeek===currentPassWeek())passWeek=data.passWeek;if(!unlockedSods.has(mySod))mySod=0;saveCareerLocal();applyArenaSize(MODE);setMenuCar();paintAccountBillboards()}
 async function syncCloudSave(){if(!accountToken)return;try{await api('/api/save',{method:'PUT',body:{save:localSavePayload()}})}catch(e){console.warn('Sod League cloud save:',e.message)}}
-async function refreshAccount(){if(!accountToken){paintAccountBillboards();updateProfileBadge();return}try{const meData=await api('/api/me');accountUser=meData.user;if(Array.isArray(meData.achievements))meData.achievements.forEach(x=>achievementIds.add(x));const saved=await api('/api/save');if(saved.save)applyCloudSave(saved.save);unlockAchievement('account_created');try{const p=await api('/api/profile');myBio=p.bio||'';myPfp=p.pfp||null}catch(e){}}catch(e){console.warn('Sod League account restore:',e.message);if(/sign in again|not signed in/i.test(e.message)){accountToken='';accountUser=null;localStorage.removeItem('sod_account_token')}}paintAccountBillboards();updateProfileBadge()}
+async function refreshAccount(){if(!accountToken){paintAccountBillboards();updateProfileBadge();return}try{const meData=await api('/api/me');accountUser=meData.user;resetCareer();if(Array.isArray(meData.achievements))meData.achievements.forEach(x=>achievementIds.add(x));const saved=await api('/api/save');applyCloudSave(saved.save,'replace');unlockAchievement('account_created');try{const p=await api('/api/profile');myBio=p.bio||'';myPfp=p.pfp||null}catch(e){}}catch(e){console.warn('Sod League account restore:',e.message);if(/sign in again|not signed in/i.test(e.message)){accountToken='';accountUser=null;localStorage.removeItem('sod_account_token')}}paintAccountBillboards();updateProfileBadge()}
 function sodSwatch(i){return i===BK_SOD?'#5a34c8':'hsl('+((i*47)%360)+'deg,55%,38%)'}
 function myProfileHtml(){
  const sodsHtml=Array.from({length:SOD_COUNT},(_,i)=>{const have=unlockedSods.has(i);return `<div class="sod-chip ${have?'':'locked'}" style="background:${sodSwatch(i)}" title="${safeText(SOD.names[i])}">${have?'★':'?'}<b>${i+1}</b></div>`}).join('');
@@ -2444,7 +2768,7 @@ function myProfileHtml(){
 <button class="nav-choice" id="careerView"><strong>CAREER LEVEL</strong><span>LEVEL ${careerLevel()} / 87</span></button>
 <button class="nav-choice" id="achievementView"><strong>ACHIEVEMENTS</strong><span>${achievementIds.size} / ${ACHIEVEMENTS.length}</span></button>
 <button class="nav-choice" id="accountSync">SYNC NOW <span>CLOUD SAVE</span></button>
-<button class="nav-choice" id="accountLogout">SIGN OUT <span>KEEP LOCAL SAVE</span></button>`
+<button class="nav-choice" id="accountLogout">SIGN OUT <span>PROGRESS STAYS IN CLOUD</span></button>`
 }
 function profilePanel(){
  const logged=!!accountToken;
@@ -2554,9 +2878,9 @@ function backToMainMenu(){const id=++menuTransitionId;clearTimeout(menuCloseTime
 function openLocker(){showSubView();$('navPanel').style.display='none';$('passPanel').classList.remove('open');$('lockerPanel').classList.add('open');renderLocker()}
 function openPass(){if(passWeek!==currentPassWeek()){passXP=0;passWeek=currentPassWeek();sv()}showSubView();$('navPanel').style.display='none';$('lockerPanel').classList.remove('open');$('passPanel').classList.add('open');renderPass()}
 $('navBack').onclick=backToMainMenu;$('lockerClose').onclick=backToMainMenu;$('passClose').onclick=backToMainMenu;
-$('lockerOpen').onclick=openLocker;$('passOpen').onclick=openPass;$('profileOpen').onclick=profilePanel;$('profileBadge').onclick=profilePanel;
+$('profileOpen').onclick=profilePanel;$('profileBadge').onclick=profilePanel;
 $('lockerPass').onclick=openPass;$('passToLocker').onclick=openLocker;
-$('md').onclick=()=>{const modes=[{v:1,n:'1V1 SOCCER',s:'COMPACT'},{v:2,n:'2V2 SOCCER',s:'COMPACT'},{v:3,n:'3V3 SOCCER',s:'MEDIUM'},{v:4,n:'4V4 SOCCER',s:'LARGE'},{v:50,n:'50V50 DEATHMATCH',s:'HUGE'}];openNavPanel('SELECT MODE',modes.map(o=>`<button class="nav-choice mode-choice ${MODE===o.v?'active':''}" data-mode="${o.v}" aria-pressed="${MODE===o.v}"><strong>${o.n}</strong><span>${o.s}</span></button>`).join('')+'<p class="nav-note">Select a mode to update the arena and match rules.</p>');$('navBody').querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{const v=Number(b.dataset.mode);if(![1,2,3,4,50].includes(v))return;MODE=v;DM=v===50;applyArenaSize(v);setMenuCar();sv();$('md').querySelector('b').textContent=(MN[v===50?4:v-1]||'1v1')+' · '+MAP_PROFILES[v].name;$('navBody').querySelectorAll('[data-mode]').forEach(x=>{x.classList.toggle('active',x===b);x.setAttribute('aria-pressed',x===b?'true':'false')});setTimeout(backToMainMenu,140)})};
+$('ms').onclick=matchSetupPanel;
 $('settingsToggle').onclick=()=>openNavPanel('SETTINGS',`<button class="nav-choice" id="navTeam">TEAM <span>${TNM[TEAM]}</span></button><button class="nav-choice" id="navLength">MATCH LENGTH <span>${LS.find(a=>a[0]===LEN)?.[1]||'5 min'}</span></button><button class="nav-choice" id="navSkill">BOT SKILL <span>${DS[DF]}</span></button><button class="nav-choice" id="navCamera">CAMERA <span>${ballCam?'BALL CAM':'CAR CAM'}</span></button><button class="nav-choice" id="navSound">SOUND <span>${muted?'OFF':'ON'}</span></button><button class="nav-choice with-art" id="navMusic"><img class="nav-coco" src="assets/mama-coco.jpg" alt=""><span class="nav-lbl">Shut the fuck up music</span><span class="nav-state" data-music>ON</span></button><button class="nav-choice" id="navControls">CONTROLS <span>KEYBOARD + PAD</span></button><button class="nav-choice" id="navCode">REDEEM CODE <span>ENTER A CODE</span></button>`);
 // Rebind settings panel buttons after opening, without nested modal tricks.
 const oldOpenNavPanel=openNavPanel;openNavPanel=function(title,html){oldOpenNavPanel(title,html);if(title==='SETTINGS'){const binds=[['navTeam','tb'],['navLength','sl'],['navSkill','sd'],['navCamera','cm'],['navSound','sn']];binds.forEach(([a,b])=>{const el=$(a);if(el)el.onclick=()=>{ $(b).click();$('settingsToggle').onclick()}});const nm=$('navMusic');if(nm)nm.onclick=()=>toggleMusic();const nc=$('navControls');if(nc)nc.onclick=()=>controlsPanel();const rc=$('navCode');if(rc)rc.onclick=redeemPanel;syncMusicBtns()}};
@@ -2779,7 +3103,12 @@ async function lgAuth(){
   accountToken=d.token||'';accountUser=d.user||{username:u};sodSession='account';
   try{localStorage.setItem(LS_CURRENT,accountToken);localStorage.setItem('sodleague_current_name',accountUser.username||u)}catch(e){}
   rememberAccount(accountUser.username||u,accountToken);
-  if(d.save)applyCloudSave(d.save);
+  if(reg){
+   let firstAccount=false;
+   try{firstAccount=!localStorage.getItem(MIGRATED_KEY);localStorage.setItem(MIGRATED_KEY,'1')}catch(e){}
+   if(firstAccount){if(d.save)applyCloudSave(d.save,'merge')}          // first account keeps this device's guest progress
+   else{resetCareer();applyCloudSave(d.save,'replace')}                // later accounts start from their own save
+  }else{resetCareer();applyCloudSave(d.save,'replace')}                 // logging in never inherits another account's level
   unlockAchievement('account_created');
   grantMemberBonus();
   await syncCloudSave();
@@ -2800,9 +3129,10 @@ async function resumeAccount(a){
   const me=await api('/api/me');
   accountUser=me.user;sodSession='account';
   try{localStorage.setItem(LS_CURRENT,accountToken);localStorage.setItem('sodleague_current_name',accountUser.username||a.username)}catch(e){}
+  resetCareer();
   if(Array.isArray(me.achievements))me.achievements.forEach(x=>achievementIds.add(x));
   const saved=await api('/api/save');
-  if(saved.save)applyCloudSave(saved.save);
+  applyCloudSave(saved.save,'replace');
   grantMemberBonus();await syncCloudSave();
   lgView='account';applySession();renderLogin();
  }catch(e){
@@ -2833,6 +3163,7 @@ function lgPlay(){
  window.__sodRoom=null;
 }
 function enterGuest(){
+ if(sodSession==='account')resetCareer();   // a guest never inherits the signed-in account's level
  sodSession='guest';accountToken='';accountUser=null;
  try{localStorage.removeItem(LS_CURRENT)}catch(e){}
  lgError='';lgNotice='';applySession();
@@ -2840,6 +3171,7 @@ function enterGuest(){
  if(window.__sodRoom){window.__sodRoom=null;flash('Guest accounts cannot join lobbies — sign in for multiplayer.',2.8,'#ffd36a')}
 }
 function signOutToLogin(){
+ resetCareer();                             // next sign-in loads that account's own save
  accountToken='';accountUser=null;sodSession='none';
  try{localStorage.removeItem(LS_CURRENT);localStorage.removeItem('sodleague_current_name')}catch(e){}
  updateProfileBadge();openLogin('switch');
@@ -2935,7 +3267,42 @@ const _refreshAccount=refreshAccount;refreshAccount=async function(){
  if(accountToken&&accountUser&&sodSession==='none'){sodSession='account';try{localStorage.setItem('sodleague_current_name',accountUser.username||'')}catch(e){};if(loginOpen()){lgView='account';renderLogin();drawLoginSod()}updateProfileBadge()}
 };
 $('on').onclick=()=>{if(sodSession!=='account')return accountNeeded();if(net==1)return toLobby();lerr('');showSubView();$('navPanel').style.display='none';$('lob').classList.add('on');$s('l0',!ws);$s('l1',!!ws);renderLobby()};
-$('lockerOpen').onclick=openLocker;$('passOpen').onclick=openPass;$('shopOpen').onclick=openShop;
+// One Match setup panel and one Customise hub replace the old Mode, Arena,
+// Locker, League Pass and Item Shop rows in the main menu.
+const SETUP_MODES=[{v:1,n:'1V1 SOCCER',s:'COMPACT'},{v:2,n:'2V2 SKIRMISH',s:'COMPACT'},{v:3,n:'3V3 SOCCER',s:'MEDIUM'},{v:4,n:'4V4 SOCCER',s:'LARGE'},{v:50,n:'50V50 DEATHMATCH',s:'HUGE'}];
+function setupLabel(){
+ const el=$('msInfo')||($('ms')&&$('ms').querySelector('b'));
+ if(el)el.textContent=(MN[MODE===50?4:MODE-1]||'1v1')+' · '+MAP_THEMES[mapTheme].name;
+}
+function matchSetupPanel(){
+ openNavPanel('MATCH SETUP',`
+  <div class="setup-block"><span class="setup-kicker">Mode & arena size</span><div class="setup-grid">${SETUP_MODES.map(o=>`<button class="setup-opt${MODE===o.v?' on':''}" data-mode="${o.v}" aria-pressed="${MODE===o.v}"><b>${o.n}</b><span>${o.s}</span></button>`).join('')}</div></div>
+  <div class="setup-block"><span class="setup-kicker">Arena look · pitch size never changes</span><div class="setup-grid arenas">${MAP_THEMES.map((t,i)=>`<button class="setup-opt${mapTheme===i?' on':''}" data-arena="${i}" aria-pressed="${mapTheme===i}"><b>${t.name}</b><span>${t.sub}</span></button>`).join('')}</div></div>
+  <p class="nav-note">Arena looks only repaint the turf, sky, lighting and boost pads — the pitch, rules and physics stay the same for every mode. In a party the host picks the look for everyone.</p>`);
+ const body=$('navBody');
+ body.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{
+  const v=Number(b.dataset.mode);if(![1,2,3,4,50].includes(v))return;
+  MODE=v;DM=v===50;applyArenaSize(v);setMenuCar();sv();setupLabel();
+  body.querySelectorAll('[data-mode]').forEach(x=>{x.classList.toggle('on',x===b);x.setAttribute('aria-pressed',x===b?'true':'false')});
+ });
+ body.querySelectorAll('[data-arena]').forEach(b=>b.onclick=()=>{
+  applyMapTheme(+b.dataset.arena);sv();setupLabel();
+  body.querySelectorAll('[data-arena]').forEach(x=>{x.classList.toggle('on',x===b);x.setAttribute('aria-pressed',x===b?'true':'false')});
+ });
+}
+function hubPanel(){
+ openNavPanel('CUSTOMISE',`
+  <div class="hub-grid">
+   <button class="hub-card gold" data-hub="pass"><span class="hub-ico">🏆</span><b>League Pass</b><em>Season 01 · Tier ${passTier()} of 30 · ${passXP} XP</em><span class="hub-go">VIEW REWARDS →</span></button>
+   <button class="hub-card" data-hub="locker"><span class="hub-ico">🔧</span><b>Locker</b><em>${SOD.names[mySod]} · ${HAT_NAMES[myHat]} · ${CAR_MODELS[carModel]}</em><span class="hub-go">EQUIP →</span></button>
+   <button class="hub-card" data-hub="shop"><span class="hub-ico">🛒</span><b>Item Shop</b><em>◆ ${leagueTokens} League Tokens to spend</em><span class="hub-go">SPEND →</span></button>
+  </div>
+  <p class="nav-note">Your sod, hat, car and decals live in the Locker. Earn rewards on the pass track, spend tokens in the shop.</p>`);
+ $('navBody').querySelectorAll('[data-hub]').forEach(b=>{const k=b.dataset.hub;b.onclick=k==='pass'?openPass:k==='locker'?openLocker:openShop});
+ const hi=$('hubInfo');if(hi)hi.textContent='◆ '+leagueTokens+' Tokens';
+}
+$('hubOpen').onclick=hubPanel;
+setupLabel();
 $('lockerClose').onclick=backToMainMenu;$('passClose').onclick=backToMainMenu;
 if($('shopClose'))$('shopClose').onclick=backToMainMenu;
 $('profileOpen').onclick=profilePanel;$('profileBadge').onclick=profilePanel;
