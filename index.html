@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8">
+<html lang="en" class="sod-booting"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="sod-version" content="1.6.1">
+<meta name="sod-version" content="1.8.0">
 <title>Sod League</title>
 <link rel="icon" type="image/png" href="assets/logo.png">
 <meta name="theme-color" content="#0a1120">
@@ -697,6 +697,10 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
  font-family:system-ui,sans-serif;color:#e9f0ff;opacity:0;transition:opacity .3s ease;touch-action:manipulation}
 #login.on{opacity:1}
 #login.off{opacity:0;pointer-events:none}
+/* First paint goes straight to the boot splash: the menu stays hidden until
+   the staged loader below has actually pulled the audio and art in. */
+html.sod-booting #login{display:flex;opacity:1}
+html.sod-booting #ov,html.sod-booting #hud,html.sod-booting #lob,html.sod-booting #sn,html.sod-booting #pmBtn,html.sod-booting #msg,html.sod-booting #mobileControls{visibility:hidden}
 #login::before{content:'';position:absolute;inset:-32%;background-image:url(assets/logo.png);background-size:clamp(92px,11vw,134px) auto;background-repeat:repeat;opacity:.075;filter:grayscale(1) brightness(1.95) blur(.3px);transform:rotate(-7deg);pointer-events:none;animation:lgLogos 62s linear infinite;will-change:background-position}
 @keyframes lgLogos{from{background-position:0 0}to{background-position:-1340px 0}}
 #login .lg-tint{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 20% 24%,rgba(47,140,255,.22),transparent 50%),radial-gradient(ellipse at 84% 80%,rgba(255,138,31,.17),transparent 48%),radial-gradient(ellipse at 50% 48%,transparent 38%,rgba(2,5,12,.66) 100%)}
@@ -765,6 +769,11 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 #login .lg-bar{width:min(60vw,430px);height:13px;border-radius:99px;background:#0a1220;border:1px solid rgba(150,180,225,.22);overflow:hidden;box-shadow:inset 0 1px 5px rgba(0,0,0,.7)}
 #login .lg-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#2f8cff,#8fc4ff 62%,#ffb066);transition:width .16s linear}
 #login .lg-splash p{margin:0;font:800 11.5px system-ui;letter-spacing:.24em;text-transform:uppercase;color:#8fc4ff}
+#login .lg-splash .lg-sub{margin:-10px 0 0;font:700 9.5px system-ui;letter-spacing:.18em;color:#6f88a8;min-height:12px;text-transform:uppercase}
+#login .lg-bar{position:relative}
+#login .lg-bar i{position:relative;overflow:hidden}
+#login .lg-bar i::after{content:'';position:absolute;inset:0;background:linear-gradient(100deg,transparent 20%,rgba(255,255,255,.55) 50%,transparent 80%);transform:translateX(-120%);animation:lgBarShine 1.5s linear infinite}
+@keyframes lgBarShine{to{transform:translateX(120%)}}
 /* Shop */
 #shopPanel{display:none;position:fixed;z-index:45;inset:0;align-items:center;justify-content:flex-start;padding:4vh 4vw 8vh;background:transparent;pointer-events:none;overflow:hidden;opacity:0;transform:translateX(-32px);transition:opacity .28s ease,transform .34s cubic-bezier(.2,.8,.2,1)}
 #shopPanel.open{display:flex;opacity:1;transform:translateX(0);pointer-events:auto;animation:panelFadeIn .22s ease both}
@@ -955,8 +964,66 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
  .bp-tier{flex:0 0 118px;padding:14px 10px 10px}
  .bp-emblem{width:38px;height:38px;font-size:17px}
 }
+@media (max-width:760px) and (max-height:720px){
+ #ov{align-items:flex-start;overflow-y:auto}
+ #mn{margin-top:6px;padding-bottom:14px}
+}
 @media(prefers-reduced-motion:reduce){
  #mn>.mi,#mn>.menu-label,.brand,#op,#news,#navBody .nav-choice,#navBody .setup-opt,#navBody .hub-card,#lockerPanel.open .feature-card,#login.on .lg-card,#login.on .lg-character,.nav-panel-inner,#passPanel .feature-wrap{animation:none!important}
+}
+
+/* ===== Friends, presence and party invites ===== */
+.mi-friends b{color:#8ff0ff}
+.mi-friends b.hot{color:#ffd36a;text-shadow:0 0 14px rgba(255,211,106,.5)}
+.fr-hero{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;margin:0 0 12px;border:1px solid #7fc0ff3d;border-radius:9px;background:linear-gradient(115deg,#16294a,#0a1526)}
+.fr-hero-l{display:grid;gap:3px;min-width:0}
+.fr-kicker{font:900 8px/1 system-ui,sans-serif;letter-spacing:.26em;color:#8fc4ff}
+.fr-hero strong{font:italic 900 20px/1.1 system-ui,sans-serif;color:#fff;letter-spacing:.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fr-hero small{font:700 10.5px/1.3 system-ui,sans-serif;letter-spacing:.08em;color:#9db6d3}
+.fr-ghost{border:1px solid #ffffff2a;background:#0d1726;color:#dbe9ff;font:900 9px/1 system-ui,sans-serif;letter-spacing:.14em;padding:10px 12px;border-radius:6px;cursor:pointer;white-space:nowrap}
+.fr-ghost:hover{background:#17263c;border-color:#7fc0ff88}
+.fr-tabs{display:flex;gap:6px;margin:0 0 10px}
+.fr-tabs button{flex:1;min-height:40px;border:1px solid #ffffff18;border-radius:7px;background:#0c1624;color:#a9bdd6;font:italic 900 10.5px/1 system-ui,sans-serif;letter-spacing:.12em;cursor:pointer}
+.fr-tabs button b{display:inline-block;min-width:17px;margin-left:5px;padding:1px 4px;border-radius:99px;background:#1d2c44;color:#8fc4ff;font:900 9px/1.35 system-ui,sans-serif;font-style:normal}
+.fr-tabs button.on{background:linear-gradient(100deg,#dceaff,#a9caff);color:#071329;border-color:#c6e1ff}
+.fr-tabs button.on b{background:#0b2f57;color:#dceaff}
+.fr-pane{display:grid;gap:7px;min-height:120px;align-content:start}
+.fr-row{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:11px;padding:10px 12px;border:1px solid #ffffff14;border-radius:8px;background:linear-gradient(110deg,#111d2f,#0a121e);animation:fadeUp .28s ease backwards}
+.fr-av{position:relative;display:grid;place-items:center;width:36px;height:36px;border-radius:8px;background:linear-gradient(150deg,#27466b,#0e1a2c);color:#cfe6ff;font:900 11px/1 system-ui,sans-serif;letter-spacing:.06em;border:1px solid #ffffff1a}
+.fr-av.on::after{content:'';position:absolute;right:-3px;bottom:-3px;width:10px;height:10px;border-radius:50%;background:#4bef8a;box-shadow:0 0 8px #4bef8a,0 0 0 2px #0a121e}
+.fr-who{display:grid;gap:2px;min-width:0}
+.fr-who strong{font:800 13px/1.2 system-ui,sans-serif;color:#eef5ff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fr-who small{font:800 8.5px/1.3 system-ui,sans-serif;letter-spacing:.13em;color:#8fa6c2}
+.fr-acts{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}
+.fr-acts button{min-height:30px;padding:6px 9px;border:0;border-radius:5px;background:#1b3a5e;color:#dceaff;font:900 8.5px/1 system-ui,sans-serif;letter-spacing:.1em;cursor:pointer}
+.fr-acts button:hover{background:#245081}
+.fr-acts button:first-child{background:linear-gradient(100deg,#dceaff,#a9caff);color:#071329}
+.fr-search{display:flex;gap:7px;margin:0 0 3px}
+.fr-search input{flex:1;min-width:0;border:1px solid #526783;border-left:3px solid #79bcff;border-radius:6px;background:#080d16;color:#f4f7ff;padding:10px 11px;font:800 12px/1 system-ui,sans-serif;letter-spacing:.08em}
+.fr-party{display:grid;gap:6px;padding:12px;border:1px dashed #ffd36a66;border-radius:8px;background:linear-gradient(120deg,#241d10,#0d131c)}
+.fr-party b{font:italic 900 24px/1 system-ui,sans-serif;letter-spacing:.22em;color:#ffd36a}
+.fr-party small{font:800 9px/1.3 system-ui,sans-serif;letter-spacing:.14em;color:#b9a875}
+.fr-note{font:600 11.5px/1.5 system-ui,sans-serif;color:#8ea6c4;margin:0}
+.fr-sec{font:900 8.5px/1 system-ui,sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#7f9dc4;margin:6px 0 1px}
+#inviteToast{position:fixed;z-index:60;right:max(14px,3vw);bottom:calc(env(safe-area-inset-bottom,0px) + 76px);display:none;gap:12px;align-items:center;padding:13px 15px;border:1px solid #8ff0ff66;border-radius:10px;background:linear-gradient(120deg,#0f2136,#071019);box-shadow:0 18px 50px #000a;color:#eaf6ff;max-width:min(92vw,380px)}
+#inviteToast.on{display:flex;animation:fadeUp .3s ease both}
+#inviteToast>div:first-child{display:grid;gap:2px;min-width:0}
+#inviteToast span{font:900 8px/1 system-ui,sans-serif;letter-spacing:.24em;color:#8ff0ff}
+#inviteToast strong{font:italic 900 16px/1.15 system-ui,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#inviteToast em{font:800 9.5px/1.2 system-ui,sans-serif;letter-spacing:.14em;color:#9fb6d2;font-style:normal}
+#inviteToast button{min-height:38px;padding:8px 12px;border:0;border-radius:6px;background:linear-gradient(100deg,#dceaff,#a9caff);color:#071329;font:900 10px/1 system-ui,sans-serif;letter-spacing:.12em;cursor:pointer}
+#inviteToast #itDismiss{background:#16233a;color:#cfe0f5;min-width:38px}
+.prof{position:relative}
+.prof-dot{position:absolute;right:3px;top:3px;width:9px;height:9px;border-radius:50%;background:#ffd36a;box-shadow:0 0 10px #ffd36a}
+@media(max-width:760px){
+ .fr-tabs{gap:4px}
+ .fr-tabs button{font-size:9px;letter-spacing:.04em;padding:0 3px}
+ .fr-tabs button b{margin-left:3px;min-width:14px;padding:1px 3px;font-size:8px}
+ .fr-hero{flex-direction:column;align-items:stretch}
+ .fr-ghost{width:100%}
+ .fr-row{grid-template-columns:auto 1fr;grid-template-rows:auto auto}
+ .fr-acts{grid-column:1 / -1;justify-content:flex-start}
+ #inviteToast{left:max(12px,3vw);right:max(12px,3vw);max-width:none;bottom:calc(env(safe-area-inset-bottom,0px) + 70px)}
 }
 </style></head><body>
 <div id="hud">
@@ -967,12 +1034,14 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 </div>
 <div id="bx"><i id="bf"></i><span id="bn">33</span></div>
 <div id="msg"></div>
+<div id="inviteToast" hidden><div><span>PARTY INVITE</span><strong id="itFrom">Player</strong><em id="itCode">PARTY CODE</em></div><div><button id="itJoin">JOIN</button><button id="itDismiss" aria-label="Dismiss invite">✕</button></div></div>
 <div id="ov"><div id="mn">
   <div class="brand"><img class="brand-logo" src="assets/logo.png" alt="Sod League"><b id="ot" class="brand-result"></b></div>
   <p id="op">Rocket-powered car soccer and 50v50 team deathmatch with bots or friends.</p>
   <button class="mi prime" id="go" data-d="Play against bots. Pick your mode and team below."><i id="gl">Single player</i></button>
   <button class="mi" id="pr" data-d="Free play with just you and the ball. Pick your map size."><i>Practice<b>Free play</b></i></button>
   <button class="mi" id="on" data-d="Create a party or join one with a code. Empty slots are filled with bots."><i>Multiplayer</i></button>
+  <button class="mi mi-friends" id="friendsOpen" data-d="Add friends, see who is online, and invite them into your party."><i>Friends<b id="friendsBadge">Add friends</b></i></button>
   <button class="mi" id="ms" data-d="Pick the mode and the arena look in one place. Arena size follows the mode."><i>Match setup<b id="msInfo">1v1 · League Stadium</b></i></button>
   <div class="menu-label">Collection</div>
   <button class="mi" id="hubOpen" data-d="League Pass, Locker and Item Shop, all in one place."><i>Customise<b id="hubInfo">Pass · Locker · Shop</b></i></button>
@@ -999,12 +1068,12 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 </aside>
 <section id="navPanel" aria-live="polite"><div class="nav-panel-inner"><div class="nav-panel-head"><div><span class="nav-kicker">SOD LEAGUE · MENU</span><h2 id="navTitle">MODE SELECT</h2></div><button id="navBack" class="nav-back">← BACK</button></div><div id="navBody"></div></div></section>
 <footer id="ft">
-  <div class="prof" id="profileBadge"><span class="av"></span><div><b id="profileName">Sod rookie</b><em id="profileLevel">LVL 1 · BLUE</em></div></div>
+  <div class="prof" id="profileBadge"><span class="av"></span><div><b id="profileName">Sod rookie</b><em id="profileLevel">LVL 1 · BLUE</em></div><span class="prof-dot" id="profDot" hidden></span></div>
   <div class="wel">Welcome to Sod League!</div>
   <div class="hint">Press <kbd>Space</kbd> to play</div>
 </footer></div>
 <div id="lob"><div><h2>Multiplayer</h2><input id="lname" maxlength="16" placeholder="Multiplayer name" autocomplete="nickname"><small class="npad" style="margin:-4px 0 2px">Temporary multiplayer name · resets when you sign in again</small><div id="l0"><button id="lc">Create party</button><input id="lj" maxlength="6" placeholder="CODE"><button id="lg">Join party</button></div>
-<div id="l1" style="display:none"><p id="lcode"></p><select id="lm" aria-label="Game mode"><option value="1">1v1 \u00b7 Compact</option><option value="2">2v2 Skirmish \u00b7 Compact</option><option value="3">3v3 \u00b7 Medium</option><option value="4">4v4 \u00b7 Large</option><option value="50">50v50 Deathmatch \u00b7 Huge</option></select><select id="lmap" aria-label="Arena style"></select><div id="lt"><div class="tc b"><b>BLUE</b><div id="t0"></div><button id="j0" class="alt">Join Blue</button></div><div class="tc o"><b>ORANGE</b><div id="t1"></div><button id="j1" class="alt">Join Orange</button></div></div><p id="lp"></p><button id="lr">Ready</button><button id="lk" class="alt">Copy invite link</button></div><p id="le"></p><button id="lobMusic" class="alt">Music: on</button><button id="lx" class="alt">Back</button></div></div>
+<div id="l1" style="display:none"><p id="lcode"></p><select id="lm" aria-label="Game mode"><option value="1">1v1 \u00b7 Compact</option><option value="2">2v2 Skirmish \u00b7 Compact</option><option value="3">3v3 \u00b7 Medium</option><option value="4">4v4 \u00b7 Large</option><option value="50">50v50 Deathmatch \u00b7 Huge</option></select><select id="lmap" aria-label="Arena style"></select><div id="lt"><div class="tc b"><b>BLUE</b><div id="t0"></div><button id="j0" class="alt">Join Blue</button></div><div class="tc o"><b>ORANGE</b><div id="t1"></div><button id="j1" class="alt">Join Orange</button></div></div><p id="lp"></p><button id="lr">Ready</button><button id="linvite">Invite friends</button><button id="lk" class="alt">Copy invite link</button></div><p id="le"></p><button id="lobMusic" class="alt">Music: on</button><button id="lx" class="alt">Back</button></div></div>
 
 <div id="mobileControls" aria-label="Touch driving controls">
  <div class="stick-wrap"><div id="stickBase"><div id="stickNub"></div></div></div>
@@ -1041,7 +1110,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   <div class="lg-character"><canvas id="lgSod" width="512" height="700"></canvas><p id="lgSodName">Classic</p></div>
   <section class="lg-card" id="lgCard" aria-live="polite"></section>
  </div>
- <div class="lg-splash" id="lgSplash"><img src="assets/logo.png" alt="Sod League"><div class="lg-bar"><i id="lgBarFill"></i></div><p id="lgSplashText">Logging into account</p></div>
+ <div class="lg-splash" id="lgSplash"><img src="assets/logo.png" alt="Sod League"><div class="lg-bar"><i id="lgBarFill"></i></div><p id="lgSplashText">Loading game assets</p><p class="lg-sub" id="lgSplashSub">0 KB LOADED · 0/4 FILES</p></div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
@@ -1554,7 +1623,16 @@ const BODY_CACHE={};
 // cars are pooled for a 50v50 match).
 function mergeCarParts(list){
  const byMat=new Map();
- list.forEach(o=>{o.updateMatrix();let arr=byMat.get(o.material);if(!arr){arr=[];byMat.set(o.material,arr)}arr.push({g:o.geometry,m:o.matrix.clone()})});
+ // Lamps, vents, grilles and fender trim are authored flush against the hull.
+ // Two faces on exactly the same plane fight for the same pixels, so each part
+ // is grown outward by a unique few millimetres before merging. Nothing moves
+ // visibly, but no two surfaces can ever share a plane again.
+ list.forEach((o,pi)=>{o.updateMatrix();
+  if(!o.geometry.boundingSphere)o.geometry.computeBoundingSphere();
+  const rad=Math.max(.08,(o.geometry.boundingSphere&&o.geometry.boundingSphere.radius)||.5);
+  const grow=(.0035+pi*.00016)/rad;
+  o.matrix.scale(new THREE.Vector3(1+grow,1+grow,1+grow));
+  let arr=byMat.get(o.material);if(!arr){arr=[];byMat.set(o.material,arr)}arr.push({g:o.geometry,m:o.matrix.clone()})});
  const out=[];
  byMat.forEach((arr,mat)=>{
   const pos=[],nor=[],uv=[];let normals=true,uvs=true;
@@ -1592,7 +1670,7 @@ function carBodyTemplate(model,col){
  const glass=PH(0x123152,{shininess:290,specular:0xffffff,transparent:true,opacity:.9});
  const chrome=PH(0xc6d3e4,{shininess:250,specular:0xffffff,envMap:CAR_ENV,reflectivity:.3,combine:THREE.MixOperation});
  const gold=PH(0xd8a63a,{shininess:250,specular:0xfff2c8,emissive:0x2a1c02,emissiveIntensity:.6,envMap:CAR_ENV,reflectivity:.4,combine:THREE.MixOperation});
- const head=M(0xfff6d8),tail=M(0xff2a2a),amber=M(0xffb347),red=M(0xd8202a);
+ const head=M(0xfff6d8,{emissive:0x6d5f34}),tail=M(0xff2a2a,{emissive:0x8c1010}),amber=M(0xffb347,{emissive:0x7a3d0c}),red=M(0xd8202a);
  const neon=PH(0x5ff4ff,{emissive:0x2bd8ff,emissiveIntensity:.95,shininess:120});
  // Wheel: tyre, rim face, hub, spokes, brake disc, caliper and optional tread.
  const wheel=(x,z,r,w,rim,style)=>{
@@ -1636,7 +1714,7 @@ function carBodyTemplate(model,col){
   [-1,1].forEach(s=>bx(.06,.12,.5,gold,s*1.1,1.64,-2.0));
   bx(2.26,.16,.44,carbon,0,.62,-2.16);
   for(let k=-2;k<=2;k++)bx(.07,.18,.4,dark,k*.44,.56,-2.2);
-  [-1,1].forEach(s=>{bx(.66,.2,.06,black,s*.7,1.19,2.42);bx(.42,.1,.08,head,s*.7,1.2,2.45);bx(.44,.04,.06,amber,s*.7,1.03,2.44);bx(.34,.06,.06,amber,s*1.12,1.0,-2.14)});
+  [-1,1].forEach(s=>{bx(.66,.2,.06,black,s*.7,1.19,2.44);bx(.42,.1,.08,head,s*.7,1.2,2.475);bx(.44,.04,.06,amber,s*.7,1.03,2.465);bx(.34,.06,.06,amber,s*1.12,1.0,-2.14)});
   bx(1.94,.1,.06,tail,0,1.24,-2.19);
   bx(.5,.12,.08,head,0,1.36,-2.16);
   [-1,1].forEach(s=>{const e=cyl(.1,.1,.34,12,chrome,s*.54,.8,-2.2);e.rotation.x=PX2});
@@ -1664,7 +1742,7 @@ function carBodyTemplate(model,col){
   });
   bx(1.98,.1,.12,tube,0,3.44,-1.35);
   bx(1.5,.18,.5,carbon,0,3.56,-1.3);
-  [-.45,0,.45].forEach(x=>{bx(.34,.22,.16,amber,x,3.62,-1.06);bx(.3,.16,.05,head,x,3.62,-1.13)});
+  [-.45,0,.45].forEach(x=>{bx(.34,.22,.16,amber,x,3.62,-1.06);bx(.3,.16,.05,head,x,3.62,-1.2)});
   const sp=cyl(.62,.62,.34,20,rubber,0,1.75,-2.02);sp.rotation.x=PX2;
   const spr=cyl(.4,.4,.36,16,PH(0xf2f5fa,{shininess:140}),0,1.75,-2.02);spr.rotation.x=PX2;
   [-1,1].forEach(s=>{bx(.4,.48,.06,black,s*1.15,.55,1.9);bx(.4,.48,.06,black,s*1.15,.55,-1.95)});
@@ -1693,7 +1771,7 @@ function carBodyTemplate(model,col){
   [-1,1].forEach(s=>{const swp=bx(.09,.5,.34,carbon,s*.9,1.6,-2.08);swp.rotation.x=.3;bx(.06,.22,.6,gold,s*1.26,1.84,-2.18)});
   bx(2.2,.18,.5,carbon,0,.55,-2.28);
   for(let k=-2;k<=2;k++)bx(.07,.2,.44,dark,k*.42,.5,-2.3);
-  [-1,1].forEach(s=>{bx(.3,.22,1.2,dark,s*1.14,.92,-.2);bx(.06,.14,.06,dark,s*1.2,1.5,.5);bx(.26,.09,.14,gloss,s*1.3,1.56,.5);bx(.5,.06,.08,head,s*.66,.66,2.42);bx(.4,.06,.06,tail,s*.72,.94,-2.4)});
+  [-1,1].forEach(s=>{bx(.3,.22,1.2,dark,s*1.14,.92,-.2);bx(.06,.14,.06,dark,s*1.2,1.5,.5);bx(.26,.09,.14,gloss,s*1.3,1.56,.5);bx(.52,.1,.08,head,s*.66,.82,2.37);bx(.4,.06,.06,tail,s*.72,.94,-2.4)});
   bx(.5,.1,.06,head,0,1.1,-2.3);
   [-1,1].forEach(s=>{const e=cyl(.11,.11,.3,10,chrome,s*.28,1.06,-2.35);e.rotation.x=PX2});
   [-1,1].forEach(s=>{arch(s*1.2,1.58,.52,.34,gloss);arch(s*1.2,-1.58,.52,.34,gloss)});
@@ -1705,8 +1783,8 @@ function carBodyTemplate(model,col){
   bx(2.3,.16,1.94,truck,0,2.22,1.35);
   bx(1.95,.6,.12,glass,0,1.85,2.28);
   [-1,1].forEach(s=>bx(.1,.5,1.1,glass,s*1.14,1.85,1.25));
-  bx(2.0,.5,.14,chrome,0,1.12,2.31);
-  for(let k=-2;k<=2;k++)bx(.1,.4,.06,black,k*.4,1.12,2.37);
+  bx(2.0,.46,.14,chrome,0,1.0,2.31);
+  for(let k=-2;k<=2;k++)bx(.1,.38,.06,black,k*.4,1.0,2.37);
   bx(2.4,.22,.24,chrome,0,.72,2.42);
   bx(2.3,.16,2.6,truck,0,1.16,-1.0);
   [-1,1].forEach(s=>{bx(.12,.5,2.6,truck,s*1.1,1.42,-1.0);bx(.2,.1,2.6,chrome,s*1.1,1.7,-1.0)});
@@ -1721,7 +1799,7 @@ function carBodyTemplate(model,col){
   for(let k=-2;k<=2;k++)bx(.16,.08,.1,amber,k*.4,2.34,2.2);
   bx(1.4,.14,.14,amber,0,2.3,2.25);
   [-1,1].forEach(s=>{bx(.06,.2,.06,dark,s*1.2,2.0,2.05);bx(.3,.14,.2,truck,s*1.35,2.08,2.05)});
-  [-1,1].forEach(s=>bx(.4,.2,.08,head,s*.85,1.45,2.33));
+  [-1,1].forEach(s=>bx(.42,.14,.1,head,s*.85,1.45,2.42));
   [-1,1].forEach(s=>{bx(.44,.5,.06,black,s*1.18,.55,1.96);bx(.44,.5,.06,black,s*1.18,.55,-2.2)});
   wheel(1.18,1.5,.78,.7,PH(0xc3cede,{shininess:150}),2);
  }else if(model===4){ // Neon Sprint — low canopy racer with light strips
@@ -1741,9 +1819,9 @@ function carBodyTemplate(model,col){
   [-1,1].forEach(s=>{bx(.07,.4,.3,dark,s*.9,1.62,-2.02);bx(.07,.3,.5,neon,s*1.1,1.84,-2.05)});
   [-1,1].forEach(s=>{bx(.05,.06,3.2,neon,s*1.0,.92,0);bx(.05,.05,2.4,neon,s*1.0,.62,-.2);bx(.1,.36,1.4,hull,s*.94,1.2,-1.0);bx(.06,.14,.6,neon,s*1.0,.92,1.75)});
   bx(1.85,.06,3.3,new THREE.MeshBasicMaterial({color:0x4ff0ff,transparent:true,opacity:.26}),0,.28,0);
-  bx(1.4,.1,.1,tail,0,.94,-2.19);
-  bx(1.1,.08,.1,head,0,.78,2.44);
-  [-1,1].forEach(s=>bx(.24,.16,.1,head,s*.6,.72,2.4));
+  bx(1.4,.1,.1,tail,0,.94,-2.07);
+  bx(1.1,.08,.1,head,0,.78,2.11);
+  [-1,1].forEach(s=>bx(.24,.16,.1,head,s*.6,.72,2.1));
   [-1,1].forEach(s=>{arch(s*1.02,1.36,.5,.3,hull);arch(s*1.02,-1.36,.5,.3,hull)});
   wheel(1.02,1.36,.5,.44,PH(0x24405e,{shininess:230}),3);
  }else{ // League Legend — wide champion GT with gold detailing
@@ -1764,7 +1842,7 @@ function carBodyTemplate(model,col){
   bx(2.4,.18,.5,carbon,0,.62,-2.22);
   for(let k=-2;k<=2;k++)bx(.07,.22,.44,dark,k*.48,.56,-2.26);
   [-1,1].forEach(s=>[-.18,.18].forEach(o=>{const e=cyl(.09,.09,.3,10,chrome,s*.75+o,.82,-2.2);e.rotation.x=PX2}));
-  [-1,1].forEach(s=>{bx(.62,.16,.08,head,s*.82,1.13,2.28);bx(.5,.07,.06,amber,s*.82,.98,2.3);bx(.44,.08,.06,tail,s*.9,1.12,-2.24)});
+  [-1,1].forEach(s=>{bx(.62,.16,.08,head,s*.82,1.13,2.38);bx(.5,.07,.06,amber,s*.82,.98,2.39);bx(.44,.08,.06,tail,s*.9,1.12,-2.24)});
   bx(2.0,.1,.06,tail,0,1.12,-2.24);
   bx(.6,.14,.08,head,0,1.24,-2.22);
   [-1,1].forEach(s=>{bx(.16,.4,1.2,dark,s*1.32,1.05,-.4);bx(.06,.14,.06,dark,s*1.28,1.7,.6);bx(.3,.1,.16,gloss5,s*1.4,1.78,.6);bx(.08,.12,4.2,gold,s*1.36,.98,-.05)});
@@ -2638,7 +2716,7 @@ $('lj').onkeydown=e=>{if(e.key=='Enter')$('lg').click()};
 addEventListener('blur',()=>{Object.keys(K).forEach(k=>K[k]=0);mobileControls.querySelectorAll('button').forEach(b=>b.classList.remove('down'));if(!net&&!pz&&(st=='play'||st=='goal'||st=='kickoff'))pause(1)});
 document.addEventListener('visibilitychange',()=>{if(document.hidden){Object.keys(K).forEach(k=>K[k]=0);jr=0;mobileControls.querySelectorAll('button').forEach(b=>b.classList.remove('down'));if(!net&&!pz&&!npzOpen&&(st=='play'||st=='goal'||st=='kickoff'))pause(1)}});
 addEventListener('keydown',e=>{if(loginOpen()||lob.classList.contains('on'))return;if(e.code=='KeyM'&&document.activeElement!==$('lj'))$('sn').click();if(e.code=='KeyF'&&document.activeElement!==$('lj')){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen()}});
-{const q=new URLSearchParams(location.search).get('room');if(q)window.__sodRoom=q.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,6)}
+{const sp=new URLSearchParams(location.search),j=sp.get('join')||sp.get('room');if(j)window.__sodRoom=j.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,6)}
 $('lx').onclick=()=>{leave();backToMainMenu()};
 
 // ---------- audio ----------
@@ -2800,57 +2878,218 @@ function profilePanel(){
   catch(e){$('profileMsg').textContent=e.message||'Could not save profile.'}
  };
 }
-function friendRowHtml(username,kind){
- let actions='';
- if(kind==='friend')actions=`<button data-act="view" data-u="${safeText(username)}">VIEW</button><button data-act="remove" data-u="${safeText(username)}">REMOVE</button>`;
- else if(kind==='incoming')actions=`<button data-act="accept" data-u="${safeText(username)}">ACCEPT</button><button data-act="decline" data-u="${safeText(username)}">DECLINE</button>`;
- else actions=`<button data-act="cancel" data-u="${safeText(username)}">CANCEL</button>`;
- return `<div class="friend-row"><div class="pfp-wrap"></div><div><strong>${safeText(username)}</strong><small>${kind==='incoming'?'Wants to be friends':kind==='outgoing'?'Request sent':'Friend'}</small></div><div class="fr-actions">${actions}</div></div>`;
+/* ===== Friends hub and party invites ===== */
+const FR_INVITE_LS='sodleague_party_invites';
+const frState={friends:[],incoming:[],outgoing:[],invites:[],tab:'friends',err:'',server:null};
+const seenInvites=new Set();
+const frNameOf=u=>typeof u==='string'?u:(u&&(u.username||u.name))||'';
+const frOnline=u=>!!(u&&typeof u==='object'&&(u.online||u.party||u.room));
+const frInitials=n=>String(n||'?').replace(/[^A-Za-z0-9]/g,'').slice(0,2).toUpperCase()||'?';
+const inviteLinkFor=code=>location.href.split(/[?#]/)[0]+'?join='+encodeURIComponent(code);
+async function copyText(t){
+ try{await navigator.clipboard.writeText(t);return true}
+ catch(e){
+  try{const a=document.createElement('textarea');a.value=t;a.style.cssText='position:fixed;top:0;left:0;opacity:0';document.body.appendChild(a);a.select();document.execCommand('copy');a.remove();return true}
+  catch(x){return false}
+ }
 }
-async function friendsPanel(){
- openNavPanel('FRIENDS','<div class="friend-search"><input id="friendSearchInput" maxlength="16" placeholder="Search by username…"><button class="nav-choice" id="friendSearchBtn">SEARCH</button></div><div id="friendSearchResults"></div><h3 class="friend-section-title">REQUESTS</h3><div id="friendRequests"><p class="friend-empty">Loading…</p></div><h3 class="friend-section-title">YOUR FRIENDS</h3><div id="friendList"><p class="friend-empty">Loading…</p></div>');
- if(!accountToken){$('friendRequests').innerHTML='';$('friendList').innerHTML='<p class="friend-empty">Create a free account to add friends.</p>';return}
- const doSearch=async()=>{
-  const q=$('friendSearchInput').value.trim();
-  if(!q){$('friendSearchResults').innerHTML='';return}
-  $('friendSearchResults').innerHTML='<p class="friend-empty">Searching…</p>';
-  try{
-   const d=await api('/api/users/search?q='+encodeURIComponent(q.toLowerCase()));
-   $('friendSearchResults').innerHTML=(d.results||[]).length?d.results.map(r=>{
-    const label=r.status==='friends'?'FRIENDS':r.status==='pending_out'?'REQUESTED':r.status==='pending_in'?'SEE REQUESTS':'ADD FRIEND';
-    const disabled=(r.status==='friends'||r.status==='pending_out'||r.status==='pending_in')?'disabled':'';
-    return `<div class="friend-row"><div class="pfp-wrap"></div><div><strong>${safeText(r.username)}</strong></div><div class="fr-actions"><button data-act="add" data-u="${safeText(r.username)}" ${disabled}>${label}</button></div></div>`;
-   }).join(''):'<p class="friend-empty">No players found.</p>';
-   $('friendSearchResults').querySelectorAll('[data-act="add"]:not([disabled])').forEach(b=>b.onclick=async()=>{
-    b.disabled=true;
-    try{await api('/api/friends/request',{method:'POST',body:{username:b.dataset.u}});flash('FRIEND REQUEST SENT',1.6,'#ffd36a');friendsPanel()}
-    catch(e){flash(e.message,2,'#ff5b5b');b.disabled=false}
-   });
-  }catch(e){$('friendSearchResults').innerHTML='<p class="friend-empty">'+safeText(e.message)+'</p>'}
- };
- $('friendSearchBtn').onclick=doSearch;
- $('friendSearchInput').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();doSearch()}};
+function readLocalInvites(){try{const a=JSON.parse(localStorage.getItem(FR_INVITE_LS)||'[]');return Array.isArray(a)?a:[]}catch(e){return []}}
+function writeLocalInvites(a){try{localStorage.setItem(FR_INVITE_LS,JSON.stringify(a.slice(0,20)))}catch(e){}}
+function pushLocalInvite(inv){const a=readLocalInvites().filter(x=>!(String(x.code)===String(inv.code)&&String(x.to).toLowerCase()===String(inv.to).toLowerCase()));a.unshift(inv);writeLocalInvites(a)}
+function dropInvite(inv){writeLocalInvites(readLocalInvites().filter(x=>!(String(x.code)===String(inv.code)&&Number(x.at)===Number(inv.at))))}
+function updateFriendsBadge(){
+ const b=$('friendsBadge'),dot=$('profDot');
+ const pending=frState.incoming.length+frState.invites.length;
+ const online=frState.friends.filter(frOnline).length;
+ if(b){
+  b.textContent=!accountToken?'Add friends':pending?(pending+' invite'+(pending>1?'s':'')):(online?online+' online':(frState.friends.length?frState.friends.length+' friends':'Find friends'));
+  b.classList.toggle('hot',pending>0);
+ }
+ if(dot)dot.hidden=!(pending>0);
+}
+async function sendPartyInvite(to){
+ if(!to)return;
+ if(!curCode){flash('START A PARTY FIRST',1.9,'#ffd36a');return}
+ pushLocalInvite({to,from:playerName(),code:curCode,at:Date.now()});
+ let delivered=false;
+ try{await api('/api/invites',{method:'POST',body:{to,code:curCode}});delivered=true;frState.server=true}
+ catch(e){frState.server=false}
+ if(delivered)flash('INVITE SENT · '+String(to).toUpperCase(),1.9,'#8ff0ff');
+ else{const ok=await copyText(inviteLinkFor(curCode));flash(ok?'INVITE LINK COPIED — SEND IT TO '+String(to).toUpperCase():'INVITE LINK: '+inviteLinkFor(curCode),2.9,'#ffd36a')}
+ pollInvites();renderFriendsPane();
+}
+function pollInvites(){
+ if(!accountToken)return;
+ const me=String(playerName()).toLowerCase();
+ const list=readLocalInvites().filter(i=>String(i.to||'').toLowerCase()===me&&Date.now()-Number(i.at||0)<45*60*1000);
+ frState.invites=list;
+ list.forEach(i=>{const k=i.at+'|'+i.code+'|'+i.from;if(seenInvites.has(k))return;seenInvites.add(k);showInviteToast(i)});
+ updateFriendsBadge();
+ if(frState.tab==='invites'&&$('friendsPane'))renderFriendsPane();
+}
+async function syncInvites(){
+ if(!accountToken||frState.server===false)return;
+ try{
+  const d=await api('/api/invites');frState.server=true;
+  const list=Array.isArray(d.invites)?d.invites:Array.isArray(d)?d:[];
+  list.forEach(i=>{if(!i||!i.code)return;const k='s|'+i.at+'|'+i.code+'|'+(i.from||'');if(seenInvites.has(k))return;seenInvites.add(k);showInviteToast({from:i.from,code:i.code,at:i.at})});
+ }catch(e){if(/404|405|501|not found/i.test(String(e.message||'')))frState.server=false}
+}
+function showInviteToast(inv){
+ const el=$('inviteToast');if(!el)return;
+ $('itFrom').textContent=String(inv.from||'A friend');
+ $('itCode').textContent='PARTY '+(inv.code||'????');
+ el.hidden=false;el.classList.add('on');
+ clearTimeout(showInviteToast._t);
+ showInviteToast._t=setTimeout(()=>{el.classList.remove('on');el.hidden=true},28000);
+ $('itJoin').onclick=()=>{el.classList.remove('on');el.hidden=true;joinPartyCode(inv.code,inv)};
+ $('itDismiss').onclick=()=>{el.classList.remove('on');el.hidden=true;dropInvite(inv);pollInvites()};
+ try{if(!muted)sfx('pad')}catch(e){}
+}
+function joinPartyCode(code,inv){
+ code=String(code||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,6);
+ if(!code)return;
+ if(inv)dropInvite(inv);
+ if(!accountToken||sodSession!=='account'){
+  window.__sodRoom=code;
+  if(!loginOpen())openLogin('switch');
+  flash('SIGN IN TO JOIN PARTY '+code,2.6,'#ffd36a');
+  return;
+ }
+ if(st!=='menu'&&st!=='end')return flash('FINISH THIS MATCH FIRST',2,'#ffd36a');
+ leave();toLobby();
+ $('lj').value=code;
+ $s('l0',0);$s('l1',1);
+ conn(code,0);
+}
+function openInvitePanel(){
+ if(!curCode){flash('START A PARTY FIRST',1.9,'#ffd36a');return}
+ if(lob.classList.contains('on'))lob.classList.remove('on');
+ friendsPanel('invites');
+}
+async function loadFriends(){
+ if(!accountToken){frState.friends=[];frState.incoming=[];frState.outgoing=[];updateFriendsBadge();return}
  try{
   const d=await api('/api/friends');
-  const reqHtml=(d.incoming||[]).map(u=>friendRowHtml(u,'incoming')).join('')+(d.outgoing||[]).map(u=>friendRowHtml(u,'outgoing')).join('');
-  $('friendRequests').innerHTML=reqHtml||'<p class="friend-empty">No pending requests.</p>';
-  $('friendList').innerHTML=(d.friends||[]).length?d.friends.map(f=>friendRowHtml(f.username,'friend')).join(''):'<p class="friend-empty">No friends yet — search above to add some.</p>';
-  $('friendRequests').querySelectorAll('button').forEach(b=>b.onclick=async()=>{
-   const act=b.dataset.act,u=b.dataset.u;
-   try{
-    if(act==='accept')await api('/api/friends/accept',{method:'POST',body:{username:u}});
-    else if(act==='decline')await api('/api/friends/decline',{method:'POST',body:{username:u}});
-    else if(act==='cancel')await api('/api/friends/cancel',{method:'POST',body:{username:u}});
-    friendsPanel();
-   }catch(e){flash(e.message,2,'#ff5b5b')}
-  });
-  $('friendList').querySelectorAll('button').forEach(b=>b.onclick=async()=>{
-   const act=b.dataset.act,u=b.dataset.u;
-   if(act==='view')return viewProfile(u);
-   if(act==='remove'){try{await api('/api/friends/remove',{method:'POST',body:{username:u}});friendsPanel()}catch(e){flash(e.message,2,'#ff5b5b')}}
-  });
- }catch(e){$('friendRequests').innerHTML='';$('friendList').innerHTML='<p class="friend-empty">'+safeText(e.message)+'</p>'}
+  frState.friends=Array.isArray(d.friends)?d.friends:[];
+  frState.incoming=Array.isArray(d.incoming)?d.incoming:[];
+  frState.outgoing=Array.isArray(d.outgoing)?d.outgoing:[];
+  frState.err='';
+ }catch(e){frState.err=String(e.message||'Could not load friends.')}
+ updateFriendsBadge();
 }
+function frRowHtmlNew(u,kind){
+ const name=frNameOf(u),online=frOnline(u),party=(u&&typeof u==='object'&&(u.party||u.room))||'';
+ const acts=[
+  kind==='friend'?`<button data-act="inv" data-u="${safeText(name)}">INVITE</button>`:'',
+  kind==='friend'&&party?`<button data-act="join" data-u="${safeText(party)}">JOIN</button>`:'',
+  kind==='friend'?`<button data-act="view" data-u="${safeText(name)}">PROFILE</button><button data-act="remove" data-u="${safeText(name)}">REMOVE</button>`:'',
+  kind==='incoming'?`<button data-act="accept" data-u="${safeText(name)}">ACCEPT</button><button data-act="decline" data-u="${safeText(name)}">DECLINE</button>`:'',
+  kind==='outgoing'?`<button data-act="cancel" data-u="${safeText(name)}">CANCEL</button>`:''
+ ].join('');
+ const sub=kind==='incoming'?'WANTS TO BE FRIENDS':kind==='outgoing'?'REQUEST SENT':party?'IN A PARTY · '+String(party).toUpperCase():online?'ONLINE':'FRIEND';
+ return `<div class="fr-row"><span class="fr-av${online||party?' on':''}">${safeText(frInitials(name))}</span><div class="fr-who"><strong>${safeText(name)}</strong><small>${safeText(sub)}</small></div><div class="fr-acts">${acts}</div></div>`;
+}
+function renderFriendsPane(){
+ const pane=$('friendsPane');if(!pane)return;
+ const tab=frState.tab;
+ if($('frCountFriends'))$('frCountFriends').textContent=frState.friends.length;
+ if($('frCountReq'))$('frCountReq').textContent=frState.incoming.length+frState.outgoing.length;
+ if($('frCountInv'))$('frCountInv').textContent=frState.invites.length;
+ if($('frHandle'))$('frHandle').textContent=playerName();
+ if($('frSub'))$('frSub').textContent=curCode?'Party '+curCode+' is open':(!accountToken?'Sign in to add friends':'No party open');
+ let html='';
+ if(tab==='friends'){
+  if(!accountToken)html='<p class="fr-note">Create a free account to add friends and invite them into a party.</p>';
+  else if(frState.err)html=`<p class="fr-note">${safeText(frState.err)}</p>`;
+  else if(!frState.friends.length)html='<p class="fr-note">No friends yet — open the <b>REQUESTS</b> tab to search for players by name.</p>';
+  else html=frState.friends.map(f=>frRowHtmlNew(f,'friend')).join('');
+ }else if(tab==='requests'){
+  html=`<div class="fr-search"><input id="frSearch" maxlength="16" placeholder="Search players…" autocomplete="off"><button class="fr-ghost" id="frSearchBtn">SEARCH</button></div><div id="frSearchResults"></div>`;
+  html+=`<div class="fr-sec">Requests received</div>`+(frState.incoming.length?frState.incoming.map(u=>frRowHtmlNew(u,'incoming')).join(''):'<p class="fr-note">No new requests.</p>');
+  html+=`<div class="fr-sec">Requests sent</div>`+(frState.outgoing.length?frState.outgoing.map(u=>frRowHtmlNew(u,'outgoing')).join(''):'<p class="fr-note">Nothing waiting on other players.</p>');
+ }else{
+  html=curCode?`<div class="fr-party"><span class="fr-kicker">YOUR PARTY CODE</span><b>${safeText(curCode)}</b><small>Share the code or invite friends below.</small></div>`:`<div class="fr-party"><span class="fr-kicker">NO PARTY OPEN</span><b>——</b><small>Start a party from Multiplayer, then invite your friends.</small><button class="fr-ghost" data-act="start">START A PARTY</button></div>`;
+  if(curCode){
+   html+='<div class="fr-sec">Party invites</div>'+(frState.invites.length?frState.invites.map(i=>`<div class="fr-row"><span class="fr-av on">${safeText(frInitials(i.from))}</span><div class="fr-who"><strong>${safeText(i.from||'A friend')}</strong><small>PARTY ${safeText(i.code)}</small></div><div class="fr-acts"><button data-act="join" data-u="${safeText(i.code)}">JOIN</button><button data-act="dismiss" data-u="${safeText(i.code)}" data-at="${Number(i.at)||0}">DISMISS</button></div></div>`).join(''):'<p class="fr-note">No invites waiting.</p>');
+   html+='<div class="fr-sec">Invite your friends</div>'+(frState.friends.length?frState.friends.map(f=>`<div class="fr-row"><span class="fr-av${frOnline(f)?' on':''}">${safeText(frInitials(frNameOf(f)))}</span><div class="fr-who"><strong>${safeText(frNameOf(f))}</strong><small>${frOnline(f)?'ONLINE':'FRIEND'}</small></div><div class="fr-acts"><button data-act="inv" data-u="${safeText(frNameOf(f))}">INVITE</button></div></div>`).join(''):'<p class="fr-note">Add friends first, then invite them here.</p>');
+  }
+ }
+ pane.innerHTML=html;
+ pane.querySelectorAll('[data-act]').forEach(b=>b.onclick=async()=>{
+  const act=b.dataset.act,u=b.dataset.u;
+  if(act==='inv')return sendPartyInvite(u);
+  if(act==='join')return joinPartyCode(u,{code:u,at:Number(b.dataset.at)||0});
+  if(act==='view')return viewProfile(u);
+  if(act==='start')return startPartyFromFriends();
+  if(act==='copy'){const ok=await copyText(inviteLinkFor(curCode));flash(ok?'INVITE LINK COPIED':'INVITE LINK: '+inviteLinkFor(curCode),2.4,'#8ff0ff');return}
+  if(act==='dismiss'){dropInvite({code:u,at:Number(b.dataset.at)||0});return pollInvites()}
+  try{
+   if(act==='accept')await api('/api/friends/accept',{method:'POST',body:{username:u}});
+   else if(act==='decline')await api('/api/friends/decline',{method:'POST',body:{username:u}});
+   else if(act==='cancel')await api('/api/friends/cancel',{method:'POST',body:{username:u}});
+   else if(act==='remove')await api('/api/friends/remove',{method:'POST',body:{username:u}});
+   else return;
+   await loadFriends();renderFriendsPane();
+  }catch(e){flash(e.message,2,'#ff5b5b')}
+ });
+ if(tab==='requests'){
+  const run=async()=>{
+   const q=($('frSearch').value||'').trim();
+   if(!q)return;
+   $('frSearchResults').innerHTML='<p class="fr-note">Searching…</p>';
+   try{
+    const d=await api('/api/users/search?q='+encodeURIComponent(q.toLowerCase()));
+    const rows=(d.results||[]);
+    $('frSearchResults').innerHTML=rows.length?rows.map(r=>{
+     const label=r.status==='friends'?'FRIENDS':r.status==='pending_out'?'REQUESTED':r.status==='pending_in'?'SEE REQUESTS':'ADD FRIEND';
+     const dis=(r.status==='friends'||r.status==='pending_out'||r.status==='pending_in')?' disabled':'';
+     return `<div class="fr-row"><span class="fr-av">${safeText(frInitials(r.username))}</span><div class="fr-who"><strong>${safeText(r.username)}</strong><small>${safeText(label)}</small></div><div class="fr-acts"><button data-add="${safeText(r.username)}"${dis}>${safeText(label)}</button></div></div>`;
+    }).join(''):'<p class="fr-note">No players found.</p>';
+    $('frSearchResults').querySelectorAll('[data-add]:not([disabled])').forEach(x=>x.onclick=async()=>{
+     x.disabled=true;
+     try{await api('/api/friends/request',{method:'POST',body:{username:x.dataset.add}});flash('FRIEND REQUEST SENT',1.8,'#ffd36a');await loadFriends();renderFriendsPane()}
+     catch(e){flash(e.message,2,'#ff5b5b');x.disabled=false}
+    });
+   }catch(e){$('frSearchResults').innerHTML='<p class="fr-note">'+safeText(e.message)+'</p>'}
+  };
+  $('frSearchBtn').onclick=run;
+  $('frSearch').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();run()}};
+ }
+}
+function startPartyFromFriends(){
+ backToMainMenu();
+ setTimeout(()=>{const b=$('on');if(b)b.click()},430);
+}
+async function friendsPanel(tab){
+ frState.tab=tab||frState.tab||'friends';
+ if(!['friends','requests','invites'].includes(frState.tab))frState.tab='friends';
+ openNavPanel('FRIENDS',`
+  <div class="fr-hero">
+   <div class="fr-hero-l"><span class="fr-kicker">SOD LEAGUE · FRIENDS</span><strong id="frHandle">${safeText(playerName())}</strong><small id="frSub">Loading…</small></div>
+   <div class="fr-hero-r"><button id="frCopy" class="fr-ghost">COPY INVITE LINK</button></div>
+  </div>
+  <div class="fr-tabs" role="tablist"><button data-ftab="friends"${frState.tab==='friends'?' class="on"':''}>FRIENDS <b id="frCountFriends">0</b></button><button data-ftab="requests"${frState.tab==='requests'?' class="on"':''}>REQUESTS <b id="frCountReq">0</b></button><button data-ftab="invites"${frState.tab==='invites'?' class="on"':''}>INVITES <b id="frCountInv">0</b></button></div>
+  <div id="friendsPane" class="fr-pane"><p class="fr-note">Loading…</p></div>`);
+ const tabs=$('navBody').querySelectorAll('[data-ftab]');
+ tabs.forEach(b=>b.onclick=()=>{frState.tab=b.dataset.ftab;tabs.forEach(x=>x.classList.toggle('on',x===b));renderFriendsPane()});
+ $('frCopy').onclick=async()=>{
+  if(!curCode)return flash('START A PARTY FIRST',1.9,'#ffd36a');
+  const ok=await copyText(inviteLinkFor(curCode));
+  flash(ok?'INVITE LINK COPIED':'INVITE LINK: '+inviteLinkFor(curCode),2.4,'#8ff0ff');
+ };
+ renderFriendsPane();
+ if(!accountToken)return;
+ await loadFriends();
+ pollInvites();
+ renderFriendsPane();
+}
+$('friendsOpen').onclick=()=>friendsPanel('friends');
+$('linvite').onclick=openInvitePanel;
+updateFriendsBadge();
+setInterval(()=>{pollInvites();if(accountToken)syncInvites()},9000);
+setInterval(()=>{if(accountToken)loadFriends()},60000);
+
 async function viewProfile(username){
  openNavPanel('PROFILE','<p class="friend-empty">Loading…</p>');
  try{
@@ -3316,32 +3555,88 @@ $('lname').onchange=()=>{
 };
 
 // ---------- boot ----------
+// Stage 1 really downloads the music and the menu art; stage 2 is a deliberate
+// fake sign-in that stutters and stalls so the hand-off feels like a real one.
 (function bootLogin(){
  const el=$('login');if(!el)return;
  el.style.display='flex';el.classList.add('on');
  lgView='login';
  drawLoginSod();renderLogin();updateProfileBadge();
- const fill=$('lgBarFill'),txt=$('lgSplashText'),sp=$('lgSplash');
+ const fill=$('lgBarFill'),txt=$('lgSplashText'),sub=$('lgSplashSub'),sp=$('lgSplash');
  const hasToken=!!localStorage.getItem(LS_CURRENT);
- if(txt)txt.textContent=hasToken?'Logging into account':'Loading Sod League';
- let pct=0,waited=0;
- const finish=()=>{
+ const ASSETS=['audio/lobby.mp3','audio/Minion-March.mp3','assets/mama-coco.jpg','assets/logo.png'];
+ const frac=ASSETS.map(()=>0),bytes=ASSETS.map(()=>0);
+ let shown=0,target=0,finished=0,done=false,stageTwo=false;
+ const started=performance.now();
+ const set=v=>{target=Math.max(target,Math.min(100,v))};
+ // A plain interval, not requestAnimationFrame: background tabs throttle rAF
+ // hard, and the bar must still land on 100% before the splash fades.
+ const paint=()=>{shown+=(target-shown)*.38;if(target-shown<.5)shown=target;if(fill)fill.style.width=Math.min(100,shown).toFixed(1)+'%'};
+ const paintTimer=setInterval(paint,30);
+ const mb=()=>{const b=bytes.reduce((a,c)=>a+c,0);return b>1048576?(b/1048576).toFixed(1)+' MB':Math.max(1,Math.round(b/1024))+' KB'};
+ const stageOne=()=>{
+  if(stageTwo)return;
+  const p=Math.min(1,frac.reduce((a,c)=>a+c,0)/ASSETS.length);
+  set(2+p*64);
+  if(sub)sub.textContent=finished>=ASSETS.length?'ALL ASSETS READY':mb()+' LOADED  ·  '+Math.min(finished,ASSETS.length)+'/'+ASSETS.length+' FILES';
+ };
+ paint();
+ if(txt)txt.textContent='LOADING GAME ASSETS';
+ if(sub)sub.textContent='0 KB LOADED  ·  0/'+ASSETS.length+' FILES';
+ function fakeStage(){
+  if(stageTwo)return;stageTwo=true;
+  const start=performance.now();
+  let pct=66;
+  if(txt)txt.textContent='LOGGING INTO ACCOUNT';
+  if(sub)sub.textContent='RESTORING SESSION';
+  const phrases=['RESTORING SESSION','SYNCING SAVE','CHECKING LEAGUE TOKENS','FETCHING PROFILE'];
+  const step=()=>{
+   if(done)return;
+   const r=Math.random();
+   pct=Math.min(96,pct+(r<.18?0:r<.55?Math.random()*1.6:.8+Math.random()*4));
+   set(pct);
+   if(sub&&Math.random()<.35)sub.textContent=phrases[Math.floor(Math.random()*phrases.length)];
+   const stall=Math.random()<.16?240+Math.random()*460:0;
+   if(pct<96)setTimeout(step,80+Math.random()*150+stall);
+  };
+  step();
+  const ready=()=>{
+   const waited=performance.now()-start;
+   const acc=!hasToken||accountUser||!accountToken;
+   if(waited<2100||(!acc&&waited<3200)){setTimeout(ready,120);return}
+   if(sub)sub.textContent='WELCOME BACK';
+   set(100);
+   setTimeout(()=>{done=true;finish()},400);
+  };
+  setTimeout(ready,320);
+ }
+ function toStageTwo(){
+  if(stageTwo)return;
+  try{MUS.lobby.load();MUS.match.load()}catch(e){}
+  const wait=Math.max(0,900-(performance.now()-started));
+  setTimeout(fakeStage,wait);
+ }
+ function finish(){
+  clearInterval(paintTimer);
+  if(fill)fill.style.width='100%';
+  document.documentElement.classList.remove('sod-booting');
   if(sp){sp.style.opacity='0';setTimeout(()=>{sp.hidden=true},340)}
   if(accountToken&&accountUser&&sodSession==='none'){sodSession='account';try{localStorage.setItem('sodleague_current_name',accountUser.username||'')}catch(e){}}
   if(sodSession==='account'){lgView='account';applySession()}
   else{lgView='login'}
   lgError='';renderLogin();drawLoginSod();
- };
- const timer=setInterval(()=>{
-  pct=Math.min(100,pct+13);if(fill)fill.style.width=pct+'%';
-  if(pct<100)return;
-  clearInterval(timer);
-  const wait=setInterval(()=>{
-   waited+=120;
-   const ready=!hasToken||accountUser||!accountToken||waited>2200;
-   if(ready){clearInterval(wait);setTimeout(finish,260)}
-  },120);
- },110);
+ }
+ ASSETS.forEach((u,i)=>{
+  const xhr=new XMLHttpRequest();
+  xhr.open('GET',u,true);xhr.responseType='blob';
+  const settle=()=>{if(frac[i]>=1)return;frac[i]=1;finished++;stageOne();if(finished>=ASSETS.length)toStageTwo()};
+  xhr.onprogress=e=>{if(e.loaded){bytes[i]=e.loaded;frac[i]=Math.min(.96,e.lengthComputable&&e.total?e.loaded/e.total:e.loaded/400000);stageOne()}};
+  xhr.onload=()=>{bytes[i]=(xhr.response&&xhr.response.size)||bytes[i];settle()};
+  xhr.onerror=xhr.onabort=xhr.ontimeout=()=>settle();
+  try{xhr.send()}catch(e){settle()}
+ });
+ // Never let a stalled asset hold the splash hostage.
+ setTimeout(toStageTwo,8000);
 })();
 
 // ===== Version lock: if a newer build is published, block play until the player reloads =====
