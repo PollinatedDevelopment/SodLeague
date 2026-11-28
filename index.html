@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="sod-booting"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="sod-version" content="1.8.3">
+<meta name="sod-version" content="1.8.4">
 <title>Sod League</title>
 <link rel="icon" type="image/png" href="assets/logo.png">
 <meta name="theme-color" content="#0a1120">
@@ -3108,7 +3108,7 @@ async function renderDiscordRow(){
   $('frDcUnlink').onclick=async()=>{try{await api('/api/discord/unlink',{method:'POST',body:{}});flash('DISCORD UNLINKED',1.9,'#8ff0ff');renderDiscordRow()}catch(e){flash(e.message,2.2,'#ff5b5b')}};
   return;
  }
- el.innerHTML=`<div class="fr-dc-row"><span class="fr-dc-tag">DISCORD</span><a class="fr-ghost" id="frDcAdd" href="${DISCORD_INSTALL_URL}" target="_blank" rel="noopener">ADD BOT</a><button class="fr-ghost" id="frDcHow">HOW TO LINK</button></div><small>Tap <b>ADD BOT</b> (no server needed), DM it <b>/link</b>, then paste the code it replies with below.</small><div class="fr-dc-row"><input id="frDcCode" maxlength="8" placeholder="LINK CODE" autocomplete="off" spellcheck="false"><button class="fr-ghost" id="frDcSave">LINK</button></div>`;
+ el.innerHTML=`<div class="fr-dc-row"><span class="fr-dc-tag">DISCORD</span><a class="fr-ghost" id="frDcAdd" href="${DISCORD_INSTALL_URL}" target="_blank" rel="noopener">ADD BOT</a><button class="fr-ghost" id="frDcHow">HOW TO LINK</button></div><small>Tap <b>ADD BOT</b> (no server needed) — the bot DMs you a code the second you authorize. No DM? Message it <b>/link</b>.</small><div class="fr-dc-row"><input id="frDcCode" maxlength="8" placeholder="LINK CODE" autocomplete="off" spellcheck="false"><button class="fr-ghost" id="frDcSave">LINK</button></div>`;
  const save=async()=>{
   const code=String($('frDcCode').value||'').trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
   if(code.length<4)return flash('PASTE THE CODE FROM DISCORD',2,'#ffd36a');
@@ -3117,6 +3117,13 @@ async function renderDiscordRow(){
  };
  $('frDcSave').onclick=save;
  $('frDcCode').onkeydown=e=>{if(e.key==='Enter')save()};
+ // After ADD BOT the player authorizes in another tab, so the welcome DM (and
+ // the link it contains) can land while this card is open. Poll while visible.
+ if(!window.__frDcWatch)window.__frDcWatch=setInterval(()=>{
+  const el=$('frDiscord');
+  if(!el||!el.isConnected||!$('frDcAdd')){clearInterval(window.__frDcWatch);window.__frDcWatch=null;return}
+  if(document.visibilityState==='visible')renderDiscordRow();
+ },5000);
  $('frDcHow').onclick=()=>flash('IN DISCORD, DM THE BOT: /link',2.6,'#a9b6ff');
  const pending=window.__sodDiscordCode;
  if(pending){window.__sodDiscordCode='';$('frDcCode').value=pending;save()}
