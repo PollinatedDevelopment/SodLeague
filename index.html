@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="sod-booting"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="sod-version" content="1.8.2">
+<meta name="sod-version" content="1.8.3">
 <title>Sod League</title>
 <link rel="icon" type="image/png" href="assets/logo.png">
 <meta name="theme-color" content="#0a1120">
@@ -2830,7 +2830,7 @@ function careerPanel(){const p=careerProgress();openNavPanel('CAREER · LEVEL '+
 function achievementsPanel(){openNavPanel('ACHIEVEMENTS',`<div class="achievement-count">${achievementIds.size} / ${ACHIEVEMENTS.length} UNLOCKED</div><div class="achievement-list">${ACHIEVEMENTS.map(a=>`<article class="achievement ${achievementIds.has(a[0])?'earned':''}"><b>${achievementIds.has(a[0])?'★':'◇'}</b><div><strong>${a[1]}</strong><small>${a[2]}</small></div><em>${achievementIds.has(a[0])?'UNLOCKED':'LOCKED'}</em></article>`).join('')}</div>`)}
 function safeText(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 const ACCOUNT_API_BASE='https://sod-league.baileystudios2021.workers.dev';
-const DISCORD_APP_ID='157602956249351484';
+const DISCORD_APP_ID='1576029562469351484';
 const DISCORD_INSTALL_URL='https://discord.com/oauth2/authorize?client_id='+DISCORD_APP_ID+'&integration_type=1&scope=applications.commands';
 async function api(path,{method='GET',body}={}){const headers={};if(accountToken)headers.authorization='Bearer '+accountToken;if(body!==undefined)headers['content-type']='application/json';let r;try{r=await fetch(ACCOUNT_API_BASE+path,{method,headers,body:body===undefined?undefined:JSON.stringify(body),mode:'cors',cache:'no-store'})}catch(e){throw Error('Cannot reach the Sod League account server. Check the Worker URL, deployment and allowed website origin.')}const d=await r.json().catch(()=>({error:'Account server returned an invalid response'}));if(!r.ok)throw Error(d.error||('Account server error ('+r.status+')'));return d}
 function localSavePayload(){return {careerXP,careerCredits,careerClaimed,achievements:[...achievementIds],sods:[...unlockedSods],sodsV:2,wins:sodWins,tokens:leagueTokens,hats:[...ownedHats],cars:[...ownedCars],decals:[...ownedDecals],name:playerName(),mode:MODE,team:TEAM,sod:mySod,hat:myHat,car:carModel,decal:carDecal,passXP,passWeek,matchLength:LEN,difficulty:DF,ballCam,muted}}
