@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="sod-booting"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="sod-version" content="1.8.0">
+<meta name="sod-version" content="1.8.2">
 <title>Sod League</title>
 <link rel="icon" type="image/png" href="assets/logo.png">
 <meta name="theme-color" content="#0a1120">
@@ -1004,6 +1004,15 @@ html.sod-booting #ov,html.sod-booting #hud,html.sod-booting #lob,html.sod-bootin
 .fr-party b{font:italic 900 24px/1 system-ui,sans-serif;letter-spacing:.22em;color:#ffd36a}
 .fr-party small{font:800 9px/1.3 system-ui,sans-serif;letter-spacing:.14em;color:#b9a875}
 .fr-note{font:600 11.5px/1.5 system-ui,sans-serif;color:#8ea6c4;margin:0}
+.fr-discord{display:grid;gap:7px;padding:11px 13px;margin:0 0 12px;border:1px solid #5865f255;border-radius:8px;background:linear-gradient(120deg,#171c38,#0a0f1e)}
+.fr-discord .fr-dc-tag{font:900 8px/1 system-ui,sans-serif;letter-spacing:.22em;color:#a9b6ff}
+.fr-discord strong{font:900 13px/1.2 system-ui,sans-serif;color:#eef2ff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fr-discord small{font:600 11px/1.45 system-ui,sans-serif;color:#9aa8cc}
+.fr-discord b{color:#c9d3ff;font-weight:800}
+.fr-discord a.fr-ghost{display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
+.fr-dc-row{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.fr-dc-row .fr-ghost{width:auto;flex:0 0 auto}
+.fr-dc-row input{flex:1;min-width:120px;border:1px solid #526783;border-left:3px solid #5865f2;border-radius:6px;background:#080d16;color:#f4f7ff;padding:9px 10px;font:800 12px/1 system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase}
 .fr-sec{font:900 8.5px/1 system-ui,sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#7f9dc4;margin:6px 0 1px}
 #inviteToast{position:fixed;z-index:60;right:max(14px,3vw);bottom:calc(env(safe-area-inset-bottom,0px) + 76px);display:none;gap:12px;align-items:center;padding:13px 15px;border:1px solid #8ff0ff66;border-radius:10px;background:linear-gradient(120deg,#0f2136,#071019);box-shadow:0 18px 50px #000a;color:#eaf6ff;max-width:min(92vw,380px)}
 #inviteToast.on{display:flex;animation:fadeUp .3s ease both}
@@ -2716,7 +2725,7 @@ $('lj').onkeydown=e=>{if(e.key=='Enter')$('lg').click()};
 addEventListener('blur',()=>{Object.keys(K).forEach(k=>K[k]=0);mobileControls.querySelectorAll('button').forEach(b=>b.classList.remove('down'));if(!net&&!pz&&(st=='play'||st=='goal'||st=='kickoff'))pause(1)});
 document.addEventListener('visibilitychange',()=>{if(document.hidden){Object.keys(K).forEach(k=>K[k]=0);jr=0;mobileControls.querySelectorAll('button').forEach(b=>b.classList.remove('down'));if(!net&&!pz&&!npzOpen&&(st=='play'||st=='goal'||st=='kickoff'))pause(1)}});
 addEventListener('keydown',e=>{if(loginOpen()||lob.classList.contains('on'))return;if(e.code=='KeyM'&&document.activeElement!==$('lj'))$('sn').click();if(e.code=='KeyF'&&document.activeElement!==$('lj')){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen()}});
-{const sp=new URLSearchParams(location.search),j=sp.get('join')||sp.get('room');if(j)window.__sodRoom=j.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,6)}
+{const sp=new URLSearchParams(location.search),j=sp.get('join')||sp.get('room'),dc=sp.get('discord');if(j)window.__sodRoom=j.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,6);if(dc)window.__sodDiscordCode=dc.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,8)}
 $('lx').onclick=()=>{leave();backToMainMenu()};
 
 // ---------- audio ----------
@@ -2821,6 +2830,8 @@ function careerPanel(){const p=careerProgress();openNavPanel('CAREER · LEVEL '+
 function achievementsPanel(){openNavPanel('ACHIEVEMENTS',`<div class="achievement-count">${achievementIds.size} / ${ACHIEVEMENTS.length} UNLOCKED</div><div class="achievement-list">${ACHIEVEMENTS.map(a=>`<article class="achievement ${achievementIds.has(a[0])?'earned':''}"><b>${achievementIds.has(a[0])?'★':'◇'}</b><div><strong>${a[1]}</strong><small>${a[2]}</small></div><em>${achievementIds.has(a[0])?'UNLOCKED':'LOCKED'}</em></article>`).join('')}</div>`)}
 function safeText(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 const ACCOUNT_API_BASE='https://sod-league.baileystudios2021.workers.dev';
+const DISCORD_APP_ID='157602956249351484';
+const DISCORD_INSTALL_URL='https://discord.com/oauth2/authorize?client_id='+DISCORD_APP_ID+'&integration_type=1&scope=applications.commands';
 async function api(path,{method='GET',body}={}){const headers={};if(accountToken)headers.authorization='Bearer '+accountToken;if(body!==undefined)headers['content-type']='application/json';let r;try{r=await fetch(ACCOUNT_API_BASE+path,{method,headers,body:body===undefined?undefined:JSON.stringify(body),mode:'cors',cache:'no-store'})}catch(e){throw Error('Cannot reach the Sod League account server. Check the Worker URL, deployment and allowed website origin.')}const d=await r.json().catch(()=>({error:'Account server returned an invalid response'}));if(!r.ok)throw Error(d.error||('Account server error ('+r.status+')'));return d}
 function localSavePayload(){return {careerXP,careerCredits,careerClaimed,achievements:[...achievementIds],sods:[...unlockedSods],sodsV:2,wins:sodWins,tokens:leagueTokens,hats:[...ownedHats],cars:[...ownedCars],decals:[...ownedDecals],name:playerName(),mode:MODE,team:TEAM,sod:mySod,hat:myHat,car:carModel,decal:carDecal,passXP,passWeek,matchLength:LEN,difficulty:DF,ballCam,muted}}
 // Progress belongs to the account you sign into. Guest progress is imported
@@ -2911,10 +2922,10 @@ async function sendPartyInvite(to){
  if(!to)return;
  if(!curCode){flash('START A PARTY FIRST',1.9,'#ffd36a');return}
  pushLocalInvite({to,from:playerName(),code:curCode,at:Date.now()});
- let delivered=false;
- try{await api('/api/invites',{method:'POST',body:{to,code:curCode}});delivered=true;frState.server=true}
+ let delivered=false,discord=false;
+ try{const r=await api('/api/invites',{method:'POST',body:{to,code:curCode}});delivered=true;discord=!!(r&&r.discord);frState.server=true}
  catch(e){frState.server=false}
- if(delivered)flash('INVITE SENT · '+String(to).toUpperCase(),1.9,'#8ff0ff');
+ if(delivered)flash(discord?'INVITE DM\'D ON DISCORD · '+String(to).toUpperCase():'INVITE SENT · '+String(to).toUpperCase(),1.9,'#8ff0ff');
  else{const ok=await copyText(inviteLinkFor(curCode));flash(ok?'INVITE LINK COPIED — SEND IT TO '+String(to).toUpperCase():'INVITE LINK: '+inviteLinkFor(curCode),2.9,'#ffd36a')}
  pollInvites();renderFriendsPane();
 }
@@ -3069,6 +3080,7 @@ async function friendsPanel(tab){
    <div class="fr-hero-l"><span class="fr-kicker">SOD LEAGUE · FRIENDS</span><strong id="frHandle">${safeText(playerName())}</strong><small id="frSub">Loading…</small></div>
    <div class="fr-hero-r"><button id="frCopy" class="fr-ghost">COPY INVITE LINK</button></div>
   </div>
+  <div class="fr-discord" id="frDiscord"></div>
   <div class="fr-tabs" role="tablist"><button data-ftab="friends"${frState.tab==='friends'?' class="on"':''}>FRIENDS <b id="frCountFriends">0</b></button><button data-ftab="requests"${frState.tab==='requests'?' class="on"':''}>REQUESTS <b id="frCountReq">0</b></button><button data-ftab="invites"${frState.tab==='invites'?' class="on"':''}>INVITES <b id="frCountInv">0</b></button></div>
   <div id="friendsPane" class="fr-pane"><p class="fr-note">Loading…</p></div>`);
  const tabs=$('navBody').querySelectorAll('[data-ftab]');
@@ -3079,10 +3091,35 @@ async function friendsPanel(tab){
   flash(ok?'INVITE LINK COPIED':'INVITE LINK: '+inviteLinkFor(curCode),2.4,'#8ff0ff');
  };
  renderFriendsPane();
+ renderDiscordRow();
  if(!accountToken)return;
  await loadFriends();
  pollInvites();
  renderFriendsPane();
+ }
+async function renderDiscordRow(){
+ const el=$('frDiscord');if(!el)return;
+ if(!accountToken){el.innerHTML='<span class="fr-dc-tag">DISCORD</span><small>Create an account to get party invites as Discord DMs.</small>';return}
+ let d=null;
+ try{d=await api('/api/discord')}
+ catch(e){el.innerHTML='<span class="fr-dc-tag">DISCORD</span><small>Discord linking needs the updated account server.</small>';return}
+ if(d&&d.linked){
+  el.innerHTML=`<div class="fr-dc-row"><span class="fr-dc-tag">DISCORD</span><strong>@${safeText(d.name||'linked')}</strong><button class="fr-ghost" id="frDcUnlink">UNLINK</button></div><small>Party invites are DM'd to you by the Sod League bot.</small>`;
+  $('frDcUnlink').onclick=async()=>{try{await api('/api/discord/unlink',{method:'POST',body:{}});flash('DISCORD UNLINKED',1.9,'#8ff0ff');renderDiscordRow()}catch(e){flash(e.message,2.2,'#ff5b5b')}};
+  return;
+ }
+ el.innerHTML=`<div class="fr-dc-row"><span class="fr-dc-tag">DISCORD</span><a class="fr-ghost" id="frDcAdd" href="${DISCORD_INSTALL_URL}" target="_blank" rel="noopener">ADD BOT</a><button class="fr-ghost" id="frDcHow">HOW TO LINK</button></div><small>Tap <b>ADD BOT</b> (no server needed), DM it <b>/link</b>, then paste the code it replies with below.</small><div class="fr-dc-row"><input id="frDcCode" maxlength="8" placeholder="LINK CODE" autocomplete="off" spellcheck="false"><button class="fr-ghost" id="frDcSave">LINK</button></div>`;
+ const save=async()=>{
+  const code=String($('frDcCode').value||'').trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
+  if(code.length<4)return flash('PASTE THE CODE FROM DISCORD',2,'#ffd36a');
+  try{const r=await api('/api/discord/link',{method:'POST',body:{code}});flash('DISCORD LINKED · @'+String(r.name||'').toUpperCase(),2.2,'#8ff0ff');renderDiscordRow()}
+  catch(e){flash(e.message,2.6,'#ff5b5b')}
+ };
+ $('frDcSave').onclick=save;
+ $('frDcCode').onkeydown=e=>{if(e.key==='Enter')save()};
+ $('frDcHow').onclick=()=>flash('IN DISCORD, DM THE BOT: /link',2.6,'#a9b6ff');
+ const pending=window.__sodDiscordCode;
+ if(pending){window.__sodDiscordCode='';$('frDcCode').value=pending;save()}
 }
 $('friendsOpen').onclick=()=>friendsPanel('friends');
 $('linvite').onclick=openInvitePanel;
